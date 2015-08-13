@@ -4,137 +4,117 @@
 		"selected_items":
 		[
 			[
-				"font",
-				"font-weight"
+				"random",
+				"randomInt"
 			],
 			[
-				"i",
-				"italic"
+				"p",
+				"p	Tag"
 			],
 			[
-				"margin",
-				"margin-bottom"
-			],
-			[
-				"padd",
-				"padding-top"
-			],
-			[
-				"mar",
-				"margin-top"
-			],
-			[
-				"inline",
-				"inline-block"
-			],
-			[
-				"in",
-				"inline-block〔value〕"
-			],
-			[
-				"marg",
-				"margin-left"
-			],
-			[
-				"text",
-				"text-transform"
-			],
-			[
-				"inli",
-				"inline-block"
-			],
-			[
-				"rel",
-				"relative"
-			],
-			[
-				"pad",
-				"padding"
-			],
-			[
-				"wid",
-				"width"
-			],
-			[
-				"background-c",
-				"background-color"
+				"le",
+				"left"
 			],
 			[
 				"re",
 				"relative"
 			],
 			[
-				"ma",
+				"mar",
+				"margin-top"
+			],
+			[
+				"marti",
+				"margin-top"
+			],
+			[
+				"rand",
+				"randInit〔variable〕"
+			],
+			[
+				"new",
+				"newGroove〔variable〕"
+			],
+			[
+				"selec",
+				"selectedGroove〔variable〕"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"sSl",
+				"sSlicesArray"
+			],
+			[
+				"font",
+				"font-size: 〔property〕"
+			],
+			[
+				"text",
+				"text-decoration"
+			],
+			[
+				"padd",
+				"padding-top"
+			],
+			[
+				"border",
+				"border-left"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"seqf",
+				"seqFX7〔variable〕"
+			],
+			[
+				"se",
+				"seqFX2"
+			],
+			[
+				"pad",
+				"padding"
+			],
+			[
+				"marg",
 				"margin-left"
+			],
+			[
+				"z",
+				"z-index"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"imo",
+				"import	@import"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"in",
+				"inline-block"
 			],
 			[
 				"ce",
 				"center"
 			],
 			[
-				"he",
-				"height〔function〕"
+				"tex",
+				"text-align"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "/Users/mgs/Desktop/builder/new/builder-src/core/functions/bang.js",
-			"settings":
-			{
-				"buffer_size": 2198,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "note.js",
-			"settings":
-			{
-				"buffer_size": 1337,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/mgs/Desktop/builder/new/builder-src/core/base/debug-config.js",
-			"settings":
-			{
-				"buffer_size": 55,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/mgs/Desktop/builder/new/builder-src/core/functions/loads.js",
-			"settings":
-			{
-				"buffer_size": 539,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/mgs/Desktop/builder/new/builder-src/core/app.js",
-			"settings":
-			{
-				"buffer_size": 38303,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/mgs/Desktop/builder/new/builder-src/core/base/vars.js",
-			"settings":
-			{
-				"buffer_size": 930,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Users/mgs/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/builder.js",
-			"settings":
-			{
-				"buffer_size": 38342,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -143,59 +123,62 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 269.0,
-		"last_filter": "set type",
+		"height": 137.0,
+		"last_filter": "install",
 		"selected_items":
 		[
-			[
-				"set type",
-				"Set Syntax: TypeScript"
-			],
 			[
 				"install",
 				"Package Control: Install Package"
 			],
 			[
-				"set js",
-				"Set Syntax: JavaScript"
+				"github",
+				"Github: Repository"
+			],
+			[
+				"INSTALL",
+				"Package Control: Install Package"
 			],
 			[
 				"set html",
 				"Set Syntax: HTML"
 			],
 			[
-				"preto",
-				"HTMLPrettify: Set Keyboard Shortcuts"
+				"package ",
+				"Package Control: List Packages"
 			],
 			[
-				"pret",
-				"HTMLPrettify: Set Prettify Preferences"
-			],
-			[
-				"beau",
-				"Javascript Beautify"
+				"insta",
+				"Colorsublime: Install Theme"
 			],
 			[
 				"pack",
-				"Package Control: Install Package"
+				"Package Control: Remove Package"
+			],
+			[
+				"set",
+				"Set Syntax: HTML"
+			],
+			[
+				"set scss",
+				"Set Syntax: SCSS"
+			],
+			[
+				"set htm",
+				"Set Syntax: HTML"
 			],
 			[
 				"set ht",
 				"Set Syntax: HTML"
-			],
-			[
-				"pac",
-				"Package Control: Install Package"
 			]
 		],
-		"width": 563.0
+		"width": 579.0
 	},
 	"console":
 	{
-		"height": 126.0,
+		"height": 0.0,
 		"history":
 		[
-			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
 	"distraction_free":
@@ -207,153 +190,140 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
-	"expanded_folders":
-	[
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/.codekit-cache",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/classes",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/data",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions",
-		"/Users/mgs/Desktop/builder/new/builder-src",
-		"/Users/mgs/Desktop/builder/new/builder-src/core",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/base",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/classes",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions"
-	],
 	"file_history":
 	[
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/inits.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/utils.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/classes/clip.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/classes/note.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/gets.js",
-		"/Users/mgs/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/GetClyphXID.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/creates.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/base/in-outs.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/vars.js",
 		"/Users/mgs/Desktop/builder/new/builder-src/core/app.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/sets.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/database/templates.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/bang_options.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/custom.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/log.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/loads.js",
 		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/loads.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/sets.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/bang.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/maths.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/note_creator.js",
 		"/Users/mgs/Desktop/builder/new/builder-src/core/base/debug-config.js",
+		"/Users/mgs/Desktop/builder/new/builder-src/core/functions/bang.js",
 		"/Users/mgs/Desktop/builder/new/builder-src/core/base/vars.js",
-		"/Users/mgs/Library/Caches/Cleanup At Startup/Transmit/9B6567D8-75CF-4DBC-B173-33470C9830DC/ver_id_camp.php",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/base/core.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/min/core-min.js",
-		"/Users/mgs/Desktop/builder/new/builder-src/core/core.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/in-outs.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/new/builder-src/core/core.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/new/builder-src/core/functions/creates.js",
-		"/Users/mgs/Downloads/angular-master/modules/examples/e2e_test/async/async_spec.ts",
-		"/Users/mgs/Downloads/angular-master/modules/examples/src/zippy_component/zippy.html",
-		"/Users/mgs/Downloads/angular-master/modules/examples/src/zippy_component/zippy.ts",
-		"/Users/mgs/Downloads/angular-master/modules/angular2_material/src/components/checkbox/checkbox.html",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/new/core/functions/log.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/log.js",
-		"/Users/mgs/Dropbox/trabalho/builder/ableton/example src/functions/bang.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/info.TODO",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/pages/_home.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/whyus.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/products.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/custom.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/components/_loader.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/team.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/services.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/canvas-map.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/contact.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/index.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/pages/home.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/template/nav.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/components/_navigation.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/components/_buttons.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/components/_map.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/numbers.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/themes/_default.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/components/_cover.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/layout/_footer.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/themes/_red.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/screens/_phones.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/template/footer.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/clientmap.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/pages/_default.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jsmap/br_states.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site/assets/js/controller.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site/assets/js/app.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site/assets/js/main.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/generator/New site/index.html",
-		"/Users/mgs/Downloads/css3-preloader-transition-1125/css3-preloader-transition-finish/css/main.css",
-		"/Users/mgs/Downloads/css3-preloader-transition-1125/css3-preloader-transition-finish/index.html",
-		"/Users/mgs/Downloads/css3-preloader-transition-1125/css3-preloader-transition-finish/js/main.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/main.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/clicktocall/presite/js/main.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/clicktocall/conad-webcall-back/index.php",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/layout/_forms.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/clicktocall/conad-webcall-back/js/main.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/clicktocall/conad-webcall-back/css/style.css",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/about.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/screens/_tablets.scss",
-		"/Users/mgs/Downloads/fullPage.js-master/examples/looping.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/main.js",
-		"/Users/mgs/Github/angular-scroll/example/index.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/controllers/appController.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/app.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/controllers/aboutController.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/controllers/index.js",
-		"/Users/mgs/Downloads/fullPage.js-master/examples/examples.js",
-		"/Users/mgs/Downloads/fullPage.js-master/examples/navigationV.html",
-		"/Users/mgs/Downloads/fullPage.js-master/examples/apple.html",
-		"/Users/mgs/Downloads/angular-scroll-master/demo.html",
-		"/Users/mgs/Downloads/fullPage.js-master/examples/backgrounds.html",
-		"/Users/mgs/Downloads/fullPage.js-master/tests/functions.html",
-		"/Users/mgs/Downloads/nikku-requirejs-angular-define-aaa450a/example/ngr.html",
-		"/Users/mgs/Downloads/nikku-requirejs-angular-define-aaa450a/test/unit/testapp/app.js",
-		"/Users/mgs/Downloads/funkyrobot-angular-slidescroll-master/demos/simple_example/bower_components/funkyrobot-angular-slidescroll/README.md",
-		"/Users/mgs/Downloads/funkyrobot-angular-slidescroll-master/demos/simple_example/demo.html",
-		"/Users/mgs/Downloads/funkyrobot-angular-slidescroll-master/demos/simple_example/demo.js",
-		"/Users/mgs/Downloads/funkyrobot-angular-slidescroll-master/demos/simple_example/bower_components/funkyrobot-angular-slidescroll/angular-slidescroll.js",
-		"/Users/mgs/Downloads/funkyrobot-angular-slidescroll-master/demos/simple_example/bower_components/angular/index.js",
-		"/Users/mgs/Desktop/My Site/index.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/app/modules/banner2.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/stylesheets/scss/screens/_desktops.scss",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/test.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/usa_states.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/jquery.mapael.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.brazil.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.europe.js",
-		"/Users/mgs/Downloads/manifestinteractive-jqvmap-1044285/samples/usa.html",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/raphael-min.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.russia.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.algeria.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.usa.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/jquery.vmap.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/maps/jquery.vmap.france.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/data/jquery.vmap.sampledata.js",
-		"/Users/mgs/Dropbox/trabalho/xvox/dev/site-seed-ARB/assets/js/vendors/jqvmap/jqvmap.css",
-		"/Users/mgs/Downloads/manifestinteractive-jqvmap-1044285/jqvmap/maps/jquery.vmap.algeria.js",
-		"/Users/mgs/Downloads/manifestinteractive-jqvmap-1044285/jqvmap/maps/jquery.vmap.europe.js",
-		"/Users/mgs/Downloads/manifestinteractive-jqvmap-1044285/jqvmap/maps/jquery.vmap.brazil.js",
-		"/Users/mgs/Github/jqvmap/jqvmap/maps/jquery.vmap.brazil.js",
-		"/Users/mgs/Downloads/Shapely-1.2.16/README.rst",
-		"/Users/mgs/Github/jqvmap/jqvmap/maps/jquery.vmap.algeria.js",
-		"/Users/mgs/Github/jqvmap/jqvmap/maps/jquery.vmap.usa.js",
-		"/Users/mgs/Desktop/world.json",
-		"/Users/mgs/Desktop/converter.py",
-		"/Users/mgs/Github/jqvmap/jqvmap/maps/continents/jquery.vmap.asia.js",
-		"/Users/mgs/Github/jqvmap/jqvmap/maps/jquery.vmap.europe.js",
-		"/Users/mgs/Downloads/startbootstrap-grayscale-1.0.4/js/grayscale.js",
-		"/Users/mgs/Github/jqvmap/samples/algeria.html"
+		"/Users/mgs/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/builder.js",
+		"/Users/Thiago/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/Thiago/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/example.js",
+		"/Users/Thiago/Gerais/programing/example src/tasks.todo",
+		"/Users/Thiago/Gerais/programing/example src/vars.js",
+		"/Users/Thiago/Dropbox/Aplicativos/Heroku/thiagovisionaffair/namegen/index.html",
+		"/Users/Thiago/Desktop/index.html",
+		"/Users/Thiago/Gerais/programing/example src/functions/core.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/creates.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/bang_options.js",
+		"/Users/Thiago/Dropbox/Public/online.js",
+		"/Users/Thiago/Dropbox/trabalho/Preferences.sublime-settings",
+		"/Users/Thiago/Dropbox/trabalho/Default (OSX).sublime-keymap",
+		"/Users/Thiago/Gerais/programing/example src/functions/loads.js",
+		"/Users/Thiago/Gerais/programing/example src/data/templates.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/note_creator.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/gets.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/sets.js",
+		"/Users/Thiago/Gerais/programing/example src/data/note_source.js",
+		"/Users/Thiago/Gerais/programing/example src/in-outs.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/bang.js",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/983F4FA5-11C7-4BB3-820F-10C0E82A8E09/billing.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/67D649BF-583B-417D-A34A-9F4B4408E41A/load_data_billing.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/1672E5A8-7183-41FE-AC79-CFCADAF706E1/billing.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/391B9F93-D8F0-4FDE-A3CB-FEE3B34C11BA/default.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/DE94ACCB-2A02-4836-B9CA-68024D59FCF2/pag_relat_atend_perd_dist.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/3ABB1012-74BF-466E-B3AE-779616E58AC3/relatorio_atend_perd_dist.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/97C282F2-8AB3-4763-8113-28C9B895FAA3/pagination_billing.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/1276E772-4B56-49F6-9060-4FE530910E93/relatorio_atend_perd_dist.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/E9D208F3-03B5-41B7-8A9A-F8DBB86F89AD/pag_relat_atend_perd_dist.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/F4731A5D-4A1F-4277-AB85-CA19579ABAA7/pag_relat_atend_perd_dist.php",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/E9770567-4937-4947-9117-BF655E45135C/pag_ativ_camp_3.php",
+		"/Users/Thiago/Dropbox/trabalho/xvox/dev/site-seed-ARB/info.TODO",
+		"/Users/Thiago/Gerais/programing/example src/data/dev_sequences.js",
+		"/Users/Thiago/Gerais/programing/example src/functions/custom.js",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/053C9B93-E44F-4ABA-8BB8-9D5A28B84A87/responsive.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/29521D75-31F4-4AEB-82C8-88E8F129B771/bestsellerproductslider.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/magentothem/bestsellerproductslider/bestsellerproductslider.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/wpk/css/style.css",
+		"/Users/Thiago/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/test.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/new/example src/in-outs.js",
+		"/Users/Thiago/Gerais/programing/example src/main.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/example src/main.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/example src/in-outs.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/example src/vars.js",
+		"/Users/Thiago/Desktop/example src/vars.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/example src/data/templates.js",
+		"/Users/Thiago/Dropbox/Thiago/programming/ableton/example src/functions/deletes.js",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/A653948C-9331-4CB0-B6A1-5E30ACD25482/styles.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/99783FAB-60AF-4BBA-ABEC-C051068DD87D/styles.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/79AAC742-EE6F-46BB-940B-8F5AA98CF511/header.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/B400F903-8C3A-4096-8F49-D154936EC42B/page.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/layout/page.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/base/default/template/page/html/top.links.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/base/default/layout/wishlist.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/default/modern/layout/wishlist.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/rwd/default/layout/wishlist.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/default/iphone/layout/wishlist.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Wishlist/etc/config.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/base/default/template/customer/wishlist.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/rwd/default/template/page/template/links.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/default/iphone/template/page/template/links.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/base/default/template/page/template/links.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Page/Block/Html/Toplinks.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/page/html/header.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/67837A6F-1ACF-45F6-8004-8DEB9F86BA3A/shipping_method.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/CA943261-4593-45F6-892E-5F3AF246CF56/styles.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/85F06E13-8B58-4150-850B-CDE0FAF0201F/available.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/57080B6C-D97A-48C0-8D3A-816E4E8AFB58/ajax_cart_super.js",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/1A4DE39B-CA87-4207-A116-AA7CFD8877EF/timer.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/checkout/payment/payment_methods.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/prototype/validation.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/magentothem/timer.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/Mage.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/index.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/magentothem/owl.carousel.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/index.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/skin/frontend/assyrian/ma_assyrian2/onepagecheckout/js/mst-jquery-noconflict.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/index.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/XmlConnect/Block/Cart/Paypal/Mecl/Shippingmethods.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/checkout/shipping/shipping_method.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/checkout/shipping/shipping_method/available.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/checkout/delivery/datetime.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/onepagecheckout/checkout/shipping/shipping_address.phtml",
+		"/Users/Thiago/Desktop/binth_backup/final/app/design/frontend/assyrian/ma_assyrian2/layout/checkout.xml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/2C58245E-46FD-4E02-BA2D-80BBA9ADBF0B/header.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/15B84804-BF8F-4596-8DF3-C8231DAA975F/styles.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/1C819B36-F8ED-4DF9-B91A-3BA27041CA16/customer.xml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/7BEC2633-FE01-4463-BC83-3F1A9C67C270/local.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/etc/local.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/checkout/cart/crosssell.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/magentothem/categorytabs/categorytabs.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/4B229DDC-5185-43E7-8561-3294342E92C5/checkout.xml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/486C56F5-CB72-4E69-93FC-25711F8ED522/checkout.xml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/A1A4C322-8A1F-448E-B5F3-637F59587205/customer.xml",
+		"/Users/Thiago/Gerais/Estudo HTML/git-rsc/angular-requirejs-seed/package.json",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/magentothem/prozoom/ma.zoom.js",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/js/magentothem/quickview/ma_quickview.js",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/F2E4F303-0846-48CD-949B-3A860BF36D9B/styles.css",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/011EC9ED-EB96-4EB8-B6B8-70B97C18B967/media.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/magentothem/prozoom/media.phtml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/4F8FD018-F21A-402D-A0B4-4B85FA21FDC3/trackorder.xml",
+		"/Users/Thiago/Library/Caches/Cleanup At Startup/Transmit/CB1E3BDD-CE0E-4E04-9EB5-A761E24084AB/trackorder.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Adminhtml/Block/Promo/Widget/Chooser/Sku.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/lib/Zend/Feed/Builder/Header.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/lib/Zend/Reflection/Docblock.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/lib/Zend/Feed/Builder.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/local/Magentothem/Bestsellerproductslider/etc/system.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/ProductAlert/Block/Email/Abstract.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Payment/Model/Recurring/Profile.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/local/Magentothem/Featuredproduct/etc/system.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Rss/Block/Catalog/Special.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/catalogsearch/advanced/form.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/catalogsearch/advanced/result.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/catalog/product/list.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/catalog/product/list2.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/catalog/product/view.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/design/frontend/assyrian/ma_assyrian2/template/magentothem/ajaxcartsuper/ajaxcartsuper.phtml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Catalog/etc/config.xml",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Rss/Block/Catalog/New.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Catalog/Model/Api2/Product.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Catalog/Model/Resource/Setup.php",
+		"/Users/Thiago/Dropbox/Thiago/Freela/magento/app/code/core/Mage/Catalog/etc/wsdl.xml"
 	],
 	"find":
 	{
-		"height": 37.0
+		"height": 23.0
 	},
 	"find_in_files":
 	{
@@ -367,22 +337,69 @@
 		"case_sensitive": false,
 		"find_history":
 		[
-			"noteTrack",
-			"createCSequence",
-			"noteTrack",
-			"noteTrack;\n",
-			"var noteTrack;\n",
-			"setNoteSeq",
-			"totalDropDowns",
-			"setCustomTrack",
-			"tgr",
-			"isInArray",
-			"setCGroove",
-			"createClipCustom",
-			"v-center",
-			".bloc{\n        padding-left: 20px; \n        padding-right: 20px;  \n    }",
-			"Console",
-			"\"\n"
+			"randomint",
+			"log",
+			"cgsele",
+			"isinarray",
+			"\"5\"",
+			"\"4\"",
+			"\"3\"",
+			"\"2\"",
+			"\"1\"",
+			"23:59:59",
+			"00:00",
+			"0,",
+			"0,2",
+			"0,3",
+			"0,4",
+			"0,1",
+			"log",
+			"gnc.length",
+			"$_productCollection",
+			"getNotesApp",
+			"}}",
+			"getnotesapp",
+			"setdevice",
+			"setDeviceSelector",
+			"logo",
+			"alert",
+			"validate-one-required-by-name",
+			"hide",
+			"shippingRateGroups ",
+			"s_method_flatrate_flatrate",
+			"shipment-methods",
+			"favoritos",
+			"thumbnail-item",
+			"cloud-zoom-gallery",
+			"thumbnail-item",
+			"sku",
+			"short description",
+			"short_description",
+			"search",
+			"payment",
+			"}}",
+			"width=\"42\"",
+			"width='42'",
+			"http://www.itstoreonline.com.br/skin/frontend/ft001-sofia/default/images/pagseguro/",
+			".product-options dd select",
+			"a-close-frm",
+			"Login or create accounta-close-frm",
+			"Login or create account",
+			"logout",
+			".top-link .box-links",
+			"expected",
+			"style=\"background-color: rgb(251, 251, 251);\"",
+			"slick-uniqueid",
+			"ID-PrMoHMy-Ska8yRnosAy8jA",
+			"splitview",
+			"expectedDuration",
+			"local.uidk",
+			"slick-uniqueid",
+			"background-c",
+			"slick-uni",
+			"middle",
+			"part",
+			"width"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -400,652 +417,18 @@
 	"groups":
 	[
 		{
-			"selected": 1,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/Users/mgs/Desktop/builder/new/builder-src/core/functions/bang.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 2198,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1009,
-								1009
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 186.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "note.js",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 1337,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1145,
-								1145
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"bh_regions":
-							[
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/Users/mgs/Desktop/builder/new/builder-src/core/base/debug-config.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 55,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								53,
-								53
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/Users/mgs/Desktop/builder/new/builder-src/core/functions/loads.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 539,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								333,
-								333
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "/Users/mgs/Desktop/builder/new/builder-src/core/app.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 38303,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								38279
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 16441.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 4,
-					"type": "text"
-				}
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 5,
-					"file": "/Users/mgs/Desktop/builder/new/builder-src/core/base/vars.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 930,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								355,
-								355
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 7.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				}
 			]
 		},
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 6,
-					"file": "/Users/mgs/Music/Ableton/User Library/Presets/Audio Effects/Max Audio Effect/Imported/builder.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 38342,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								38342,
-								38342
-							]
-						],
-						"settings":
-						{
-							"BracketHighlighterBusy": false,
-							"auto_complete": false,
-							"bh_regions":
-							[
-								"bh_double_quote",
-								"bh_double_quote_center",
-								"bh_double_quote_open",
-								"bh_double_quote_close",
-								"bh_double_quote_content",
-								"bh_tag",
-								"bh_tag_center",
-								"bh_tag_open",
-								"bh_tag_close",
-								"bh_tag_content",
-								"bh_regex",
-								"bh_regex_center",
-								"bh_regex_open",
-								"bh_regex_close",
-								"bh_regex_content",
-								"bh_default",
-								"bh_default_center",
-								"bh_default_open",
-								"bh_default_close",
-								"bh_default_content",
-								"bh_square",
-								"bh_square_center",
-								"bh_square_open",
-								"bh_square_close",
-								"bh_square_content",
-								"bh_angle",
-								"bh_angle_center",
-								"bh_angle_open",
-								"bh_angle_close",
-								"bh_angle_content",
-								"bh_curly",
-								"bh_curly_center",
-								"bh_curly_open",
-								"bh_curly_close",
-								"bh_curly_content",
-								"bh_round",
-								"bh_round_center",
-								"bh_round_open",
-								"bh_round_close",
-								"bh_round_content",
-								"bh_c_define",
-								"bh_c_define_center",
-								"bh_c_define_open",
-								"bh_c_define_close",
-								"bh_c_define_content",
-								"bh_single_quote",
-								"bh_single_quote_center",
-								"bh_single_quote_open",
-								"bh_single_quote_close",
-								"bh_single_quote_content",
-								"bh_unmatched",
-								"bh_unmatched_center",
-								"bh_unmatched_open",
-								"bh_unmatched_close",
-								"bh_unmatched_content"
-							],
-							"side_bar_folders_auto_load_folder": 1,
-							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 21330.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 3,
-					"type": "text"
-				}
 			]
 		}
 	],
@@ -1055,7 +438,7 @@
 	},
 	"input":
 	{
-		"height": 31.0
+		"height": 33.0
 	},
 	"layout":
 	{
@@ -1094,6 +477,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 23.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0
