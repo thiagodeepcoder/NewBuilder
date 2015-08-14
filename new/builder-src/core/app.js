@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Ver 1.3
+=======
+// Ver 2.0
+>>>>>>> origin/master
 autowatch = 1;
 outlets = 1;
 setinletassist(0, "bang triggers action specified in args");
@@ -67,6 +71,9 @@ var cgPads = "";
 var cgLeads = "";
 
 var totalDropDowns = 16;
+
+//new 2.0
+var introKickBass = false;
 
 var DEBUG = true;
 var testSingleChannel = [true,"SC"];
@@ -1132,6 +1139,11 @@ function setNote(note) {
     }
 }
 
+function setIntroKickBass (v) {
+    if(v=="Enable") { introKickBass = true; }
+    else { introKickBass = false; }
+}
+
 
 
 //--------------------------------------------------------------------
@@ -1407,13 +1419,9 @@ function bang() {
     liveSet = new LiveAPI("live_set");
 
     liveView.call("focus_view", "Session");
-
-    if (channelSequence[countBangs] == "Loop") {
-        createTTrack(channelSequence[countBangs]);
-    } else {
-        createTrack(channelSequence[countBangs]);
-        loadDefaults(channelSequence[countBangs]);
-    }
+   
+    createTrack(channelSequence[countBangs]);
+    loadDefaults(channelSequence[countBangs]);
 
     trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
 
