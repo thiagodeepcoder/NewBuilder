@@ -5,13 +5,9 @@ function bang() {
     liveSet = new LiveAPI("live_set");
 
     liveView.call("focus_view", "Session");
-
-    if (channelSequence[countBangs] == "Loop") {
-        createTTrack(channelSequence[countBangs]);
-    } else {
-        createTrack(channelSequence[countBangs]);
-        loadDefaults(channelSequence[countBangs]);
-    }
+   
+    createTrack(channelSequence[countBangs]);
+    loadDefaults(channelSequence[countBangs]);
 
     trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
 

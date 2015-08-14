@@ -307,3 +307,8 @@ function setNote(note) {
         noteTrack = this["scale" + note.slice(0, 1)];
     }
 }
+
+function setIntroKickBass (v) {
+    if(v=="Enable") { introKickBass = true; }
+    else { introKickBass = false; }
+}

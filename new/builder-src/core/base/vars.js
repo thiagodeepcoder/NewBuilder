@@ -61,3 +61,6 @@ var cgPads = "";
 var cgLeads = "";
 
 var totalDropDowns = 16;
+
+//new 2.0
+var introKickBass = false;
