@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-// Ver 1.3
-=======
 // Ver 2.0
->>>>>>> origin/master
 autowatch = 1;
 outlets = 1;
 setinletassist(0, "bang triggers action specified in args");
