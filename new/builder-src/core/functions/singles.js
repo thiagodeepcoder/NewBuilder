@@ -15,7 +15,10 @@ function singleMidi(s) {
         resetBang();
     }
 }
-
+api = new LiveAPI("this_device");
+        liveView = new LiveAPI("live_app view");
+        liveSetView = new LiveAPI("live_set view");
+        liveSet = new LiveAPI("live_set");	
 function singleChannel(s) {
     if (!sCreated) {
         api = new LiveAPI("this_device");
@@ -25,7 +28,7 @@ function singleChannel(s) {
 
         liveView.call("focus_view", "Session");
 
-        createStructure();
+        createStructure(); //---------------------------------------  retirar
         var nextTrack = getTotalChannels();
         setCustomTrack(nextTrack); // seta a selectedTrack
         createTrack(s); // cria um novo channel
@@ -51,7 +54,7 @@ function singleChannel(s) {
                     finalSteps = channelSlices[i].steps;
                 }
 
-                createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, channelSequence[nextTrack]);
+                createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, s);
 
                 if (channelSlices[i].seq != "blank") {
                     createNotes(nextTrack, nextFeeeMidi);

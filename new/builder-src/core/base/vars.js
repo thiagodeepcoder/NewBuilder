@@ -39,7 +39,7 @@ var cHats = 1;
 var cFXs = 1;
 var cPads = 1;
 var cLeads = 1;
-var cLoops = 1;
+var cVocals = 1;
 
 var breaks = [16, 1];
 var verses = [32, 1];
@@ -51,7 +51,7 @@ var numHats = 1;
 var numFXs = 1;
 var numPads = 1;
 var numLeads = 1;
-var numLoops = 1;
+var numVocals = 1;
 
 var cgBass = "Long";
 var cgSnares = "Short";
@@ -60,6 +60,7 @@ var cgHats = "Shortest";
 var cgFX = "Short";
 var cgPads = "Short";
 var cgLeads = "Short";
+var cgVocals = "Short";
 
 var totalDropDowns = 16;
 
@@ -77,7 +78,6 @@ var outroSize = 0;
 var outroPercent = 0;
 
 var verseMiniBreak = false;
-var verseLong = false;
 var verseSize = 0;
 var verseNum = 0;
 
@@ -118,3 +118,10 @@ var leadTone = false;
 var leadHuman = false;
 var leadSize = 0;
 var leadNotes = 0;
+
+var vocalTone = false;
+var vocalHuman = false;
+var vocalSize = 0;
+var vocalNotes = 0;
+
+var selectedTypeNewSynth = "";

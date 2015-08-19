@@ -48,6 +48,10 @@ function getColor(name) {
         case "Lead":
             fcolor = [200, 70, 30]
             break;
+
+        case "Vocals":
+            fcolor = [40, 70, 200]
+            break;
     }
     return fcolor;
 }

@@ -1,8 +1,9 @@
 // Ver 2.0
 autowatch = 1;
-outlets = 1;
+outlets = 2;
 setinletassist(0, "bang triggers action specified in args");
 setoutletassist(0, "unique exit of information");
+
 
 var api;
 var liveView;
@@ -45,7 +46,7 @@ var cHats = 1;
 var cFXs = 1;
 var cPads = 1;
 var cLeads = 1;
-var cLoops = 1;
+var cVocals = 1;
 
 var breaks = [16, 1];
 var verses = [32, 1];
@@ -57,7 +58,7 @@ var numHats = 1;
 var numFXs = 1;
 var numPads = 1;
 var numLeads = 1;
-var numLoops = 1;
+var numVocals = 1;
 
 var cgBass = "Long";
 var cgSnares = "Short";
@@ -66,6 +67,7 @@ var cgHats = "Shortest";
 var cgFX = "Short";
 var cgPads = "Short";
 var cgLeads = "Short";
+var cgVocals = "Short";
 
 var totalDropDowns = 16;
 
@@ -83,7 +85,6 @@ var outroSize = 0;
 var outroPercent = 0;
 
 var verseMiniBreak = false;
-var verseLong = false;
 var verseSize = 0;
 var verseNum = 0;
 
@@ -125,6 +126,12 @@ var leadHuman = false;
 var leadSize = 0;
 var leadNotes = 0;
 
+var vocalTone = false;
+var vocalHuman = false;
+var vocalSize = 0;
+var vocalNotes = 0;
+
+var selectedTypeNewSynth = "";
 
 var DEBUG = true;
 var testSingleChannel = [true,"SC"];
@@ -296,16 +303,17 @@ function createStructure() {
     var bCounter = 0;
     for (var i = 0; i < sSlices; i++) {
         //entra no Intro
-        if (i == 0) {
-            rand = 16 * (randomInt(1, 2));
+        log(vCounter,bCounter);
+        if (i == 0 && intro == true) {
+            rand = introSize;
             sSlicesArray.push({
                 slice: "intro",
-                steps: rand
+                steps: rand - 4
             });
             if (randomInt(0, 1) == 1) {
                 sSlicesArray.push({
                     slice: "break",
-                    steps: 8
+                    steps: 4
                 });
                 sSlicesArray.push({
                     slice: "drop",
@@ -317,19 +325,26 @@ function createStructure() {
         else if (i == 1) {
             chanceOfBreak();
         } else if (i > 1 && i < sSlices - 1) {
-            if (vCounter < verses[1] - 1 || bCounter < breaks[1]) {
+            if (vCounter < verseNum - 1 || bCounter < breakNum) {
                 var randin = randomInt(0, 1);
                 if (randin == 0) { // 0 escolhe break
-                    if (bCounter < breaks[1]) // check se tem breaks avaliable
+                    if (bCounter < breakNum) // check se tem breaks avaliable
                     {
                         sSlicesArray.push({
                             slice: "break",
-                            steps: breaks[0]
+                            steps: breakSize
                         });
+                        if(breakLong) {
+                            sSlicesArray.push({
+                                slice: "break",
+                                steps: breakSize
+                            });
+                            breakLong = false;
+                        }
                         sSlicesArray.push({
                             slice: "drop",
                             steps: 16
-                        });
+                        }); 
                         bCounter++;
                     } else {
                         chanceOfBreak();
@@ -337,14 +352,15 @@ function createStructure() {
                     }
 
                 } else if (randin == 1) { // 1 escolhe verso
-                    if (vCounter < verses[1] - 1) // check se tem verses avaliable
+                    if (vCounter < verseNum - 1) // check se tem verses avaliable
                     {
                         chanceOfBreak();
+                        
                         vCounter++;
                     } else {
                         sSlicesArray.push({
                             slice: "break",
-                            steps: breaks[0]
+                            steps: breakSize
                         });
                         sSlicesArray.push({
                             slice: "drop",
@@ -354,8 +370,8 @@ function createStructure() {
                     }
                 }
             }
-        } else if (i == sSlices - 1) { // último
-            rand = 16 + (16 * randomInt(1, 3));
+        } else if (i == sSlices - 1 && outro == true) { // último
+            rand = outroSize;
             sSlicesArray.push({
                 slice: "outro",
                 steps: rand
@@ -461,6 +477,14 @@ function createGroove(instrument) {
         for (var i = 0; i < numberNotes; i++) {
             randInit = randomInt(0, 256);
             newGroove.push({ note: randomInt(60, 72), init: randInit/4,size: 1});
+        }
+    }  else if (channelGroove == "Vocals") {
+        log(newGroove);
+        numberNotes = cgSelected;
+        var randInit;
+        for (var i = 0; i < numberNotes; i++) {
+            randInit = randomInt(0, 256);
+            newGroove.push({ note: 60, init: randInit/4,size: 1});
         }
     } else if (channelGroove == "Bass") {
 
@@ -616,11 +640,9 @@ function createCSequence(s) {
             }
         }
     } else if (s == "Snare") {
-        //var gnc = getNameC(s);
-        //var getSeq = gnc[randomInt(0, gnc.length - 1)];
         for (var i = 0; i < sSlicesArray.length; i++) {
             if (sSlicesArray[i].slice == "break" || sSlicesArray[i].slice == "minibreak") {
-                if (randomInt(0, 1) == 1) {
+                if (randomInt(0, 1000000) == 1) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -632,7 +654,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro"|| sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 2) == 1) {
+                if (randomInt(0, 1000000) == 1) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -722,7 +744,7 @@ function createCSequence(s) {
                 });
             }
         }
-    } else if (s == "Perc" || s == "FX" || s == "Lead") {
+    } else if (s == "Perc" || s == "FX" || s == "Lead" || s=="Vocals") {
        // var gnc = getNameC(s);
         //var getSeq = gnc[randomInt(0, gnc.length - 1)];
         for (var i = 0; i < sSlicesArray.length; i++) {
@@ -857,6 +879,10 @@ function getColor(name) {
         case "Lead":
             fcolor = [200, 70, 30]
             break;
+
+        case "Vocals":
+            fcolor = [40, 70, 200]
+            break;
     }
     return fcolor;
 }
@@ -959,7 +985,7 @@ function setCustomFX(v) {
     numFXs = cFXs;
 }
 
-function setCustomPads(v) {
+function setCustomPad(v) {
     cPads = notes2Channels(v);
     numPads = cPads;
 
@@ -968,6 +994,11 @@ function setCustomPads(v) {
 function setCustomLead(v) {
     cLeads = notes2Channels(v);
     numLeads = cLeads;
+}
+
+function setCustomVocals(v) {
+    cVocals = notes2Channels(v);
+    numLVocals = cVocals;
 }
 
 function setCBassG(v) {
@@ -990,7 +1021,7 @@ function setCFXG(v) {
     cgFX = v;
 }
 
-function setCPadsG(v) {
+function setCPadG(v) {
     cgPads = v;
 }
 
@@ -998,6 +1029,9 @@ function setCLeadsG(v) {
     cgLeads = v;
 }
 
+function setCVocalsG(v) {
+    cgVocals = v;
+}
 function setTempSelect(v) {
     if (v != "Select") {
         var sc;
@@ -1029,11 +1063,14 @@ function setCGroove(s) {
         case "FX":
             cgSelected = tGroove(cgFX);
             break;
-        case "Pads":
+        case "Pad":
             cgSelected = tGroove(cgPads);
             break;
         case "Lead":
             cgSelected = tGroove(cgLeads);
+            break;
+        case "Vocals":
+            cgSelected = tGroove(cgVocals);
             break;
     }
 }
@@ -1109,7 +1146,7 @@ function setIntro(v) {
     if (isNumber(v)) {
         introPercent = v * 100;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setOutro(v) {
@@ -1151,7 +1188,7 @@ function setOutro(v) {
     if (isNumber(v)) {
         outroPercent = v * 100;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setVerses(v) {
@@ -1184,7 +1221,7 @@ function setVerses(v) {
     if (isNumber(v)) {
         verseNum = v * 4;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setBreaks(v) {
@@ -1211,7 +1248,8 @@ function setBreaks(v) {
     if (isNumber(v)) {
         breakNum = v * 4;
     }
-    log(v);
+    log(breakNum);
+    setNumSlices();
 }
 
 function setKick(v) {
@@ -1456,6 +1494,58 @@ function setLead(v) {
     log(v);
 }
 
+function setVocal(v) {
+    switch (v) {
+        case "Atonal":
+            vocalTone = false;
+            break;
+        case "Tones":
+            vocalTone = true;
+            break;
+        case "Robotizer":
+            vocalHuman = false;
+            break;
+        case "Humanizer":
+            vocalHuman = true;
+            break;
+        case "2s":
+            vocalSize = 1;
+            break;
+        case "4s":
+            vocalSize = 2;
+            break;
+        case "8s":
+            vocalSize = 4;
+            break;
+        case "15s":
+            vocalSize = 8;
+            break;
+        case "30s":
+            vocalSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        vocalNotes = note2Num(v);
+    }
+    log(v);
+}
+
+function setChannelLoadSynth (s) {
+    selectedTypeNewSynth = s;
+    log(selectedTypeNewSynth);
+}
+
+function setNumSlices() {
+    var i = 0;
+    var o = 0;
+    if(intro) { i = 1; }
+    if(outro) { o = 1; }
+    sSlices = i + verseNum + breakNum + o;
+    log(breakNum,verseNum);
+}
+
+
+
 
 //--------------------------------------------------------------------
 // Note class
@@ -1510,7 +1600,6 @@ Note.prototype.getMuted = function() {
 
 function loadDefaults(s) {
 	outlet(0, "loaddev Simpler");
-	log("Simpler");
 	if(s=="Kick cut") {
 		loadDevice("EQ Eight", "LowCut");
 	}
@@ -1534,6 +1623,9 @@ function loadDeviceU(d) {
 function loadDevice(d, p) {
     outlet(0, "loaddev " + d);
     outlet(0, "swap " + p);
+}
+function loadNewSynth() {
+	loadDefaults(selectedTypeNewSynth);
 }
 
 
@@ -1614,9 +1706,9 @@ function randomInt(min, max) {
 }
 
 function chanceOfBreak() {
-    if (randomInt(1, 4) < 4) { //check se vai ter break
+    if (randomInt(0, 1)  == 1 && verseMiniBreak == true) { //check se vai ter break
         if (randomInt(0, 1) == 1) { // check se vai ser no meio ou no final
-            if (verses[0] < 32) // check tamanho do verso
+            if (verseSize == 16) // check tamanho do verso
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -1630,7 +1722,22 @@ function chanceOfBreak() {
                     slice: "verso",
                     steps: 8
                 });
-            } else // verso grande
+            } else if (verseSize == 24) // verso medio
+            {
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 12
+                });
+                sSlicesArray.push({
+                    slice: "minibreak",
+                    steps: 4
+                }); // meio
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 8
+                });
+            }
+            else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -1647,7 +1754,7 @@ function chanceOfBreak() {
             }
 
         } else { // final
-            if (verses[0] < 32) // check tamanho do verso
+            if (verseSize == 16) // check tamanho do verso
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -1657,7 +1764,22 @@ function chanceOfBreak() {
                     slice: "minibreak",
                     steps: 4
                 });
-            } else // verso grande
+            } else if (verseSize == 24) // verso grande
+            {
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 16
+                });
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 4
+                });
+                sSlicesArray.push({
+                    slice: "minibreak",
+                    steps: 4
+                });
+            }
+            else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -1752,10 +1874,16 @@ function notes2Channels(n) {
 function resetBang() {
     arrayOfNotes = [];
     channelSlices = [];
+    sSlicesArray = [];
+}
+
+function updateChannels() {
+
 }
 
 
 setNote("C");
+
 
 function singleMidi(s) {
     if (!sCreated) {
@@ -1774,7 +1902,10 @@ function singleMidi(s) {
         resetBang();
     }
 }
-
+api = new LiveAPI("this_device");
+        liveView = new LiveAPI("live_app view");
+        liveSetView = new LiveAPI("live_set view");
+        liveSet = new LiveAPI("live_set");	
 function singleChannel(s) {
     if (!sCreated) {
         api = new LiveAPI("this_device");
@@ -1784,7 +1915,7 @@ function singleChannel(s) {
 
         liveView.call("focus_view", "Session");
 
-        createStructure();
+        createStructure(); //---------------------------------------  retirar
         var nextTrack = getTotalChannels();
         setCustomTrack(nextTrack); // seta a selectedTrack
         createTrack(s); // cria um novo channel
@@ -1810,7 +1941,7 @@ function singleChannel(s) {
                     finalSteps = channelSlices[i].steps;
                 }
 
-                createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, channelSequence[nextTrack]);
+                createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, s);
 
                 if (channelSlices[i].seq != "blank") {
                     createNotes(nextTrack, nextFeeeMidi);

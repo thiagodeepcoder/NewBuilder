@@ -3,9 +3,9 @@ function randomInt(min, max) {
 }
 
 function chanceOfBreak() {
-    if (randomInt(1, 4) < 4) { //check se vai ter break
+    if (randomInt(0, 1)  == 1 && verseMiniBreak == true) { //check se vai ter break
         if (randomInt(0, 1) == 1) { // check se vai ser no meio ou no final
-            if (verses[0] < 32) // check tamanho do verso
+            if (verseSize == 16) // check tamanho do verso
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -19,7 +19,22 @@ function chanceOfBreak() {
                     slice: "verso",
                     steps: 8
                 });
-            } else // verso grande
+            } else if (verseSize == 24) // verso medio
+            {
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 12
+                });
+                sSlicesArray.push({
+                    slice: "minibreak",
+                    steps: 4
+                }); // meio
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 8
+                });
+            }
+            else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -36,7 +51,7 @@ function chanceOfBreak() {
             }
 
         } else { // final
-            if (verses[0] < 32) // check tamanho do verso
+            if (verseSize == 16) // check tamanho do verso
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -46,7 +61,22 @@ function chanceOfBreak() {
                     slice: "minibreak",
                     steps: 4
                 });
-            } else // verso grande
+            } else if (verseSize == 24) // verso grande
+            {
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 16
+                });
+                sSlicesArray.push({
+                    slice: "verso",
+                    steps: 4
+                });
+                sSlicesArray.push({
+                    slice: "minibreak",
+                    steps: 4
+                });
+            }
+            else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -141,4 +171,9 @@ function notes2Channels(n) {
 function resetBang() {
     arrayOfNotes = [];
     channelSlices = [];
+    sSlicesArray = [];
+}
+
+function updateChannels() {
+
 }

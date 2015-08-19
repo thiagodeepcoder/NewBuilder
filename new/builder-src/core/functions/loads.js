@@ -1,6 +1,5 @@
 function loadDefaults(s) {
 	outlet(0, "loaddev Simpler");
-	log("Simpler");
 	if(s=="Kick cut") {
 		loadDevice("EQ Eight", "LowCut");
 	}
@@ -24,4 +23,7 @@ function loadDeviceU(d) {
 function loadDevice(d, p) {
     outlet(0, "loaddev " + d);
     outlet(0, "swap " + p);
+}
+function loadNewSynth() {
+	loadDefaults(selectedTypeNewSynth);
 }

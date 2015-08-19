@@ -65,7 +65,7 @@ function setCustomFX(v) {
     numFXs = cFXs;
 }
 
-function setCustomPads(v) {
+function setCustomPad(v) {
     cPads = notes2Channels(v);
     numPads = cPads;
 
@@ -74,6 +74,11 @@ function setCustomPads(v) {
 function setCustomLead(v) {
     cLeads = notes2Channels(v);
     numLeads = cLeads;
+}
+
+function setCustomVocals(v) {
+    cVocals = notes2Channels(v);
+    numLVocals = cVocals;
 }
 
 function setCBassG(v) {
@@ -96,7 +101,7 @@ function setCFXG(v) {
     cgFX = v;
 }
 
-function setCPadsG(v) {
+function setCPadG(v) {
     cgPads = v;
 }
 
@@ -104,6 +109,9 @@ function setCLeadsG(v) {
     cgLeads = v;
 }
 
+function setCVocalsG(v) {
+    cgVocals = v;
+}
 function setTempSelect(v) {
     if (v != "Select") {
         var sc;
@@ -135,11 +143,14 @@ function setCGroove(s) {
         case "FX":
             cgSelected = tGroove(cgFX);
             break;
-        case "Pads":
+        case "Pad":
             cgSelected = tGroove(cgPads);
             break;
         case "Lead":
             cgSelected = tGroove(cgLeads);
+            break;
+        case "Vocals":
+            cgSelected = tGroove(cgVocals);
             break;
     }
 }
@@ -215,7 +226,7 @@ function setIntro(v) {
     if (isNumber(v)) {
         introPercent = v * 100;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setOutro(v) {
@@ -257,7 +268,7 @@ function setOutro(v) {
     if (isNumber(v)) {
         outroPercent = v * 100;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setVerses(v) {
@@ -290,7 +301,7 @@ function setVerses(v) {
     if (isNumber(v)) {
         verseNum = v * 4;
     }
-    log(v);
+    setNumSlices();
 }
 
 function setBreaks(v) {
@@ -317,7 +328,8 @@ function setBreaks(v) {
     if (isNumber(v)) {
         breakNum = v * 4;
     }
-    log(v);
+    log(breakNum);
+    setNumSlices();
 }
 
 function setKick(v) {
@@ -561,3 +573,55 @@ function setLead(v) {
     }
     log(v);
 }
+
+function setVocal(v) {
+    switch (v) {
+        case "Atonal":
+            vocalTone = false;
+            break;
+        case "Tones":
+            vocalTone = true;
+            break;
+        case "Robotizer":
+            vocalHuman = false;
+            break;
+        case "Humanizer":
+            vocalHuman = true;
+            break;
+        case "2s":
+            vocalSize = 1;
+            break;
+        case "4s":
+            vocalSize = 2;
+            break;
+        case "8s":
+            vocalSize = 4;
+            break;
+        case "15s":
+            vocalSize = 8;
+            break;
+        case "30s":
+            vocalSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        vocalNotes = note2Num(v);
+    }
+    log(v);
+}
+
+function setChannelLoadSynth (s) {
+    selectedTypeNewSynth = s;
+    log(selectedTypeNewSynth);
+}
+
+function setNumSlices() {
+    var i = 0;
+    var o = 0;
+    if(intro) { i = 1; }
+    if(outro) { o = 1; }
+    sSlices = i + verseNum + breakNum + o;
+    log(breakNum,verseNum);
+}
+
+
