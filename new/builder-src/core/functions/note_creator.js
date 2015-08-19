@@ -15,7 +15,6 @@ function createNotes(t, c, seq) {
     {
         setNoteSeq(this[templateSet[t-1].notes]);
     }*/
-    
     var notes = [];
     var args = newGroove;      //getNoteSeq();
     var clip = new Clip(t, c);

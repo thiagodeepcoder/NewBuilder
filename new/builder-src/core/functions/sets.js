@@ -42,168 +42,38 @@ function setCustomStructure(v) {
 
 function setCustomBass(v) {
     cBass = v;
-    switch (cBass) {
-        case 1:
-            numBass = 1;
-            break;
-        case 2:
-            numBass = 2;
-            break;
-        case 3:
-            numBass = 3;
-            break;
-        case 4:
-            numBass = 4;
-            break;
-        case 5:
-            numBass = 5;
-            break;
-    }
-
-    addToChannelStructure(numBass, "Bass");
-    
+    numBass = cBass;
 }
 
 function setCustomSnares(v) {
-    cSnares = v;
-    switch (cSnares) {
-        case 1:
-            numSnares = 1;
-            break;
-        case 2:
-            numSnares = 2;
-            break;
-        case 3:
-            numSnares = 3;
-            break;
-        case 4:
-            numSnares = 4;
-            break;
-        case 5:
-            numSnares = 5;
-            break;
-    }
-
-    addToChannelStructure(numSnares, "Snare");
+    cSnares = notes2Channels(v);
+    numSnares = cSnares;
 }
 
 function setCustomPercussion(v) {
     cPercs = v;
     numPercs = cPercs;
-
-    addToChannelStructure(numPercs, "Perc");
 }
 
-function setCustomTops(v) {
-    cTops = v;
-    switch (cTops) {
-        case 1:
-            numTops = 1;
-            break;
-        case 2:
-            numTops = 2;
-            break;
-        case 3:
-            numTops = 3;
-            break;
-        case 4:
-            numTops = 4;
-            break;
-        case 5:
-            numTops = 5;
-            break;
-    }
-    addToChannelStructure(numTops, "Tops");
-
+function setCustomHats(v) {
+    cHats = notes2Channels(v);
+    numHats = cHats;
 }
 
 function setCustomFX(v) {
-    cFXs = v;
-    switch (cFXs) {
-        case 1:
-            numFXs = 1;
-            break;
-        case 2:
-            numFXs = 2;
-            break;
-        case 3:
-            numFXs = 3;
-            break;
-        case 4:
-            numFXs = 4;
-            break;
-        case 5:
-            numFXs = 5;
-            break;
-    }
-    addToChannelStructure(numFXs, "FX");
+    cFXs = notes2Channels(v);
+    numFXs = cFXs;
 }
 
 function setCustomPads(v) {
-    cPads = v;
-    switch (cPads) {
-        case 1:
-            numPads = 1;
-            break;
-        case 2:
-            numPads = 2;
-            break;
-        case 3:
-            numPads = 3;
-            break;
-        case 4:
-            numPads = 4;
-            break;
-        case 5:
-            numPads = 5;
-            break;
-    }
-    addToChannelStructure(numPads, "Pad");
+    cPads = notes2Channels(v);
+    numPads = cPads;
 
 }
 
-function setCustomLeads(v) {
-    cLeads = v;
-    switch (cLeads) {
-        case 1:
-            numLeads = 1;
-            break;
-        case 2:
-            numLeads = 2;
-            break;
-        case 3:
-            numLeads = 3;
-            break;
-        case 4:
-            numLeads = 4;
-            break;
-        case 5:
-            numLeads = 5;
-            break;
-    }
-    addToChannelStructure(numLeads, "Lead");
-}
-
-function setCustomLoops(v) {
-    cLoops = v;
-    switch (cLoops) {
-        case 1:
-            numLoops = 1;
-            break;
-        case 2:
-            numLoops = 2;
-            break;
-        case 3:
-            numLoops = 3;
-            break;
-        case 4:
-            numLoops = 4;
-            break;
-        case 5:
-            numLoops = 5;
-            break;
-    }
-    addToChannelStructure(numLoops, "Loop");
+function setCustomLead(v) {
+    cLeads = notes2Channels(v);
+    numLeads = cLeads;
 }
 
 function setCBassG(v) {
@@ -218,8 +88,8 @@ function setCPercG(v) {
     cgPerc = v;
 }
 
-function setCTopsG(v) {
-    cgTops = v;
+function setCHatsG(v) {
+    cgHats = v;
 }
 
 function setCFXG(v) {
@@ -235,7 +105,7 @@ function setCLeadsG(v) {
 }
 
 function setTempSelect(v) {
-    if (v!="Select") {
+    if (v != "Select") {
         var sc;
         var lastChar = v.substr(v.length - 1); // => 1
         for (var i = 0; i < totalDropDowns; i++) {
@@ -247,6 +117,8 @@ function setTempSelect(v) {
 }
 
 function setCGroove(s) {
+
+
     switch (s) {
         case "Bass":
             cgSelected = tGroove(cgBass);
@@ -256,10 +128,9 @@ function setCGroove(s) {
             break;
         case "Perc":
             cgSelected = tGroove(cgPerc);
-            log("cgperc",tGroove(cgPerc));
             break;
-        case "Tops":
-            cgSelected = tGroove(cgTops);
+        case "Hats":
+            cgSelected = tGroove(cgHats);
             break;
         case "FX":
             cgSelected = tGroove(cgFX);
@@ -267,7 +138,7 @@ function setCGroove(s) {
         case "Pads":
             cgSelected = tGroove(cgPads);
             break;
-        case "Leads":
+        case "Lead":
             cgSelected = tGroove(cgLeads);
             break;
     }
@@ -308,7 +179,385 @@ function setNote(note) {
     }
 }
 
-function setIntroKickBass (v) {
-    if(v=="Enable") { introKickBass = true; }
-    else { introKickBass = false; }
+function setIntro(v) {
+    switch (v) {
+        case "Enable":
+            intro = true;
+            break;
+        case "Disable":
+            intro = false;
+            break;
+        case "No Minibreak":
+            introKickBass = false;
+            break;
+        case "With Minibreak":
+            introKickBass = true;
+            break;
+        case "No Kick/Bass":
+            introKickBass = false;
+            break;
+        case "With Kick/Bass":
+            introKickBass = true;
+            break;
+        case "15s":
+            introSize = 8;
+            break;
+        case "30s":
+            introSize = 16;
+            break;
+        case "45s":
+            introSize = 24;
+            break;
+        case "60s":
+            introSize = 32;
+            break;
+    }
+    if (isNumber(v)) {
+        introPercent = v * 100;
+    }
+    log(v);
+}
+
+function setOutro(v) {
+    switch (v) {
+        case "Enable":
+            outro = true;
+            break;
+        case "Disable":
+            outro = false;
+            break;
+        case "No Smooth":
+            outroSmooth = false;
+            break;
+        case "With Smooth":
+            outroSmooth = true;
+            break;
+        case "No Bass":
+            outroBass = false;
+            break;
+        case "With Bass":
+            outroBass = true;
+            break;
+        case "30s":
+            outroSize = 16;
+            break;
+        case "45s":
+            outroSize = 24;
+            break;
+        case "60s":
+            outroSize = 32;
+            break;
+        case "90s":
+            outroSize = 48;
+            break;
+        case "120s":
+            outroSize = 64;
+            break;
+    }
+    if (isNumber(v)) {
+        outroPercent = v * 100;
+    }
+    log(v);
+}
+
+function setVerses(v) {
+    switch (v) {
+        case "No Mini Break":
+            verseMinibreak = false;
+            break;
+        case "With Mini Break":
+            verseMiniBreak = true;
+            break;
+        case "No Long":
+            verseLong = false;
+            break;
+        case "1 Long":
+            verseLong = true;
+            break;
+        case "15s":
+            verseSize = 8;
+            break;
+        case "30s":
+            verseSize = 16;
+            break;
+        case "45s":
+            verseSize = 24;
+            break;
+        case "60s":
+            verseSize = 32;
+            break;
+    }
+    if (isNumber(v)) {
+        verseNum = v * 4;
+    }
+    log(v);
+}
+
+function setBreaks(v) {
+    switch (v) {
+        case "No Long":
+            breakLong = false;
+            break;
+        case "1 Long":
+            breakLong = true;
+            break;
+        case "15s":
+            breakSize = 8;
+            break;
+        case "30s":
+            breakSize = 16;
+            break;
+        case "45s":
+            breakSize = 24;
+            break;
+        case "60s":
+            breakSize = 32;
+            break;
+    }
+    if (isNumber(v)) {
+        breakNum = v * 4;
+    }
+    log(v);
+}
+
+function setKick(v) {
+    switch (v) {
+        case "No Kick cut":
+            kickCut = false;
+            break;
+        case "With Kick cut":
+            kickCut = true;
+            break;
+        case "2s":
+            kickSize = 1;
+            break;
+        case "4s":
+            kickSize = 2;
+            break;
+        case "8s":
+            kickSize = 4;
+            break;
+        case "15s":
+            kickSize = 8;
+            break;
+        case "30s":
+            kickSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        kickNotes = v * 4;
+    }
+    log(v);
+}
+
+function setBass(v) {
+    switch (v) {
+        case "No Low End":
+            bassLowEnd = false;
+            break;
+        case "With Low End":
+            bassLowEnd = true;
+            break;
+        case "Robotizer":
+            bassHuman = false;
+            break;
+        case "Humanizer":
+            bassHuman = true;
+            break;
+        case "Atonal":
+            bassTone = false;
+            break;
+        case "Tones":
+            bassTone = true;
+        case "2s":
+            bassSize = 1;
+            break;
+        case "4s":
+            bassSize = 2;
+            break;
+        case "8s":
+            bassSize = 4;
+            break;
+        case "15s":
+            bassSize = 8;
+            break;
+        case "30s":
+            bassSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        bassNotes = note2Num(v);
+    }
+}
+
+function setSnare(v) {
+    switch (v) {
+        case "No Steady":
+            snareSteady = false;
+            break;
+        case "With Steady":
+            snareSteady = true;
+            break;
+        case "Robotizer":
+            snareHuman = false;
+            break;
+        case "Humanizer":
+            snareHuman = true;
+            break;
+        case "2s":
+            snareSize = 1;
+            break;
+        case "4s":
+            snareSize = 2;
+            break;
+        case "8s":
+            snareSize = 4;
+            break;
+        case "15s":
+            snareSize = 8;
+            break;
+        case "30s":
+            snareSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        snareNotes = note2Num(v);
+    }
+}
+
+function setHats(v) {
+    switch (v) {
+        case "No Steady":
+            hatsSteady = false;
+            break;
+        case "With Steady":
+            hatsSteady = true;
+            break;
+        case "Robotizer":
+            hatsHuman = false;
+            break;
+        case "Humanizer":
+            hatsHuman = true;
+            break;
+        case "2s":
+            hatsSize = 1;
+            break;
+        case "4s":
+            hatsSize = 2;
+            break;
+        case "8s":
+            hatsSize = 4;
+            break;
+        case "15s":
+            hatsSize = 8;
+            break;
+        case "30s":
+            hatsSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        hatsNotes = note2Num(v);
+    }
+}
+
+function setFX(v) {
+    switch (v) {
+        case "Atonal":
+            fxTone = false;
+            break;
+        case "Tones":
+            fxTone = true;
+            break;
+        case "Robotizer":
+            fxHuman = false;
+            break;
+        case "Humanizer":
+            fxHuman = true;
+            break;
+        case "2s":
+            fxSize = 1;
+            break;
+        case "4s":
+            fxSize = 2;
+            break;
+        case "8s":
+            fxSize = 4;
+            break;
+        case "15s":
+            fxSize = 8;
+            break;
+        case "30s":
+            fxSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        fxNotes = note2Num(v);
+    }
+    log(v);
+}
+
+function setPerc(v) {
+    switch (v) {
+        case "Robotizer":
+            percHuman = false;
+            break;
+        case "Humanizer":
+            percHuman = true;
+            break;
+        case "2s":
+            percSize = 1;
+            break;
+        case "4s":
+            percSize = 2;
+            break;
+        case "8s":
+            percSize = 4;
+            break;
+        case "15s":
+            percSize = 8;
+            break;
+        case "30s":
+            percSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        percNotes = note2Num(v);
+    }
+    log(v);
+}
+
+function setLead(v) {
+    switch (v) {
+        case "Atonal":
+            leadTone = false;
+            break;
+        case "Tones":
+            leadTone = true;
+            break;
+        case "Robotizer":
+            leadHuman = false;
+            break;
+        case "Humanizer":
+            leadHuman = true;
+            break;
+        case "2s":
+            leadSize = 1;
+            break;
+        case "4s":
+            leadSize = 2;
+            break;
+        case "8s":
+            leadSize = 4;
+            break;
+        case "15s":
+            leadSize = 8;
+            break;
+        case "30s":
+            leadSize = 16;
+            break;
+    }
+    if (isNumber(v)) {
+        leadNotes = note2Num(v);
+    }
+    log(v);
 }

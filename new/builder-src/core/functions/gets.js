@@ -25,7 +25,7 @@ function getColor(name) {
             fcolor = [255, 190, 0];
             break;
 
-        case "Tops":
+        case "Hats":
             fcolor = [255, 255, 0];
             break;
 
@@ -69,4 +69,15 @@ function getNextFreeSlot(t) {
     }
 
     return clipCounter;
+}
+
+function getTotalChannels() {
+    var a = new LiveAPI("live_set");
+    var t = a.get("tracks");
+    return t.length / 2;
+}
+
+function getTrackName(n) {
+    var a = new LiveAPI("live_set tracks " + n);
+    return a.get("name");
 }

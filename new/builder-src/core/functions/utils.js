@@ -73,39 +73,72 @@ function chanceOfBreak() {
 }
 
 function addToChannelStructure(n, s) {
-    if(!isInArray(s,channelSequence)) {
+    if (!isInArray(s, channelSequence)) {
         for (var i = 0; i < n; i++) {
             channelSequence.push(s);
         }
-        log(channelSequence);
     }
 }
 
 function isInArray(value, array) {
-  return array.indexOf(value) > -1;
+    return array.indexOf(value) > -1;
 }
 
-function tGroove(s){
+function tGroove(s) {
     var n;
-    switch(s) {
+    switch (s) {
         case "Shortest":
-            n = 1;
+            n = 16;
             break
         case "Short":
-            n = 2;
+            n = 8;
             break
         case "Long":
             n = 4;
             break
         case "Longest":
-            n = 8;
+            n = 2;
             break
         case "Sparse":
-            n = 16;
+            n = 1;
             break
         case "Broken":
             n = 5;
             break
     }
     return n;
+}
+
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function note2Num(min,max,percentage) {
+    var v = ((max - min) * percentage) + min
+    return v;
+}
+
+function notes2Channels(n) {
+    switch (n) {
+        case 0:
+            return 1;
+            break
+        case 0.5:
+            return 2;
+            break
+        case 1:
+            return 3;
+            break
+        case 1.5:
+            return 4;
+            break
+        case 2:
+            return 5;
+            break
+    }
+}
+
+function resetBang() {
+    arrayOfNotes = [];
+    channelSlices = [];
 }

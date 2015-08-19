@@ -156,28 +156,6 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 0
 		},
-	"\/builder-src\/core\/functions\/min\/inits-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/inits-min.js",
-		"outputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/min\/inits-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
-	"\/builder-src\/core\/functions\/min\/utils-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/utils-min.js",
-		"outputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/min\/utils-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 1,
-		"syntaxCheckerStyle": 1
-		},
 	"\/builder-src\/core\/functions\/note_creator.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -200,12 +178,12 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 0
 		},
-	"\/builder-src\/core\/functions\/single.js": {
+	"\/builder-src\/core\/functions\/singles.js": {
 		"fileType": 64,
 		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/builder-src\/core\/functions\/single.js",
-		"outputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/single-min.js",
+		"ignoreWasSetByUser": 1,
+		"inputAbbreviatedPath": "\/builder-src\/core\/functions\/singles.js",
+		"outputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/singles-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -375,28 +353,6 @@
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 0
-		},
-	"\/builder.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/builder.js",
-		"outputAbbreviatedPath": "\/min\/builder-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
-		},
-	"\/GetClyphXID.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/GetClyphXID.js",
-		"outputAbbreviatedPath": "\/min\/GetClyphXID-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"syntaxCheckerStyle": 0
 		}
 	},
 "hooks": [
@@ -454,43 +410,43 @@
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/single.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/classes\/note.js",
 			"position": 8,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/classes\/note.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/loads.js",
 			"position": 9,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/loads.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/classes\/clip.js",
 			"position": 10,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/classes\/clip.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/deletes.js",
 			"position": 11,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/deletes.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/utils.js",
 			"position": 12,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/utils.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/inits.js",
 			"position": 13,
 			"type": 0
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/inits.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/singles.js",
 			"position": 14,
 			"type": 0
 			},

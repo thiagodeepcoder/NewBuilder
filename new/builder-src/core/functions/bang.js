@@ -26,8 +26,8 @@ function bang() {
         muteT.set("mute", "1");
     }
     
-    createCSequence(channelSequence[countBangs]);
-    createGroove(channelSequence[countBangs]);
+    createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
+    createGroove(channelSequence[countBangs]); //cria groove
 
     var nextFeeeMidi;
 

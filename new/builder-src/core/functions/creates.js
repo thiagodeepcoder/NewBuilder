@@ -96,7 +96,6 @@ function createGroove(instrument) {
 
     setCGroove(channelGroove);
 
-
     if (channelGroove == "Kick" || channelGroove == "Kick cut" || channelGroove == "SC") {
         numberNotes = 64;
         for (var i = 0; i < numberNotes; i++) {
@@ -131,7 +130,6 @@ function createGroove(instrument) {
         for (var i = 0; i < numberNotes; i++) {
             randInit = randomInt(0, 256);
             newGroove.push({ note: 60, init: randInit/4,size: 1});
-            log(newGroove);
         }
     } else if (channelGroove == "Snare") {
         
@@ -142,7 +140,7 @@ function createGroove(instrument) {
 
             newGroove.push({ note: 60, init: randInit/4,size: 1});
         }
-    } else if (channelGroove == "Tops fixo") {
+    } else if (channelGroove == "Hats fixo") {
         numberNotes = 64;
         for (var i = 0; i < numberNotes; i++) {
             newGroove.push({
@@ -151,7 +149,7 @@ function createGroove(instrument) {
                 size: 1
             });
         }
-    } else if (channelGroove == "Tops") {
+    } else if (channelGroove == "Hats") {
 
         numberNotes = cgSelected;
         var randInit;
@@ -182,7 +180,7 @@ function createGroove(instrument) {
             newGroove.push({ note: randomInt(60, 72), init: randInit/4,size: 4});
         }
     } else if (channelGroove == "Lead") {
-
+        log(cgSelected);
         numberNotes = cgSelected;
         var randInit;
         for (var i = 0; i < numberNotes; i++) {
@@ -220,15 +218,15 @@ function createGroove(instrument) {
             quanNotes = 16;
             break;
         case 4:
-            nnNotes = 8;
+            nnNotes = 12;
             quanNotes = 32;
             break;
         case 8:
-            nnNotes = 6;
+            nnNotes = 10;
             quanNotes = 32;
             break;
         case 16:
-            nnNotes = 5;
+            nnNotes = 8;
             quanNotes = 32;
             break;
         case 5:
@@ -256,6 +254,7 @@ function createGroove(instrument) {
                 }
             }
         };
+
     }
 }
 function createCSequence(s) {
@@ -399,7 +398,7 @@ function createCSequence(s) {
                 });
             }
         }
-    } else if (s == "Tops" || s=="Tops fixo") {
+    } else if (s == "Hats" || s=="Hats fixo") {
         //var gnc = getNameC(s);
         //var getSeq = gnc[randomInt(0, gnc.length - 1)];
 
@@ -515,9 +514,11 @@ function createCSequence(s) {
     }
 }
 
-function createClipCustom(t, c, s, fill,name) {
+function createClipCustom(t, c, s, fill, name, plus) {
     setTrackClip(t, c);
     sceneSlot.call("create_clip", "" + s * 4);
+    setSceneClip(t,c);
+    if(plus) { sceneSlotClip.set("name","New " + name); }
     var getcolor = getColor(name);
     if(fill == "blank")
     {
