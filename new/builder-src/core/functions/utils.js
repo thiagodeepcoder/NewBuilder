@@ -97,7 +97,7 @@ function chanceOfBreak() {
 
         sSlicesArray.push({
             slice: "verso",
-            steps: verses[0]
+            steps: verseSize
         });
     }
 }
@@ -142,6 +142,8 @@ function tGroove(s) {
 function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+function isOdd(num) { return num % 2;}
 
 function note2Num(min,max,percentage) {
     var v = ((max - min) * percentage) + min

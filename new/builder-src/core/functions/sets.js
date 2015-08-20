@@ -328,7 +328,6 @@ function setBreaks(v) {
     if (isNumber(v)) {
         breakNum = v * 4;
     }
-    log(breakNum);
     setNumSlices();
 }
 
@@ -339,6 +338,12 @@ function setKick(v) {
             break;
         case "With Kick cut":
             kickCut = true;
+            break;
+        case "No SC":
+            kickSC = false;
+            break;
+        case "With SC":
+            kickSC = true;
             break;
         case "2s":
             kickSize = 1;
@@ -357,7 +362,7 @@ function setKick(v) {
             break;
     }
     if (isNumber(v)) {
-        kickNotes = v * 4;
+        kickNotes = v * 8;
     }
     log(v);
 }
@@ -621,7 +626,7 @@ function setNumSlices() {
     if(intro) { i = 1; }
     if(outro) { o = 1; }
     sSlices = i + verseNum + breakNum + o;
-    log(breakNum,verseNum);
+    log(i, verseNum, breakNum,o, sSlices);
 }
 
 

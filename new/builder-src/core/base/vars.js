@@ -27,7 +27,7 @@ var sSlicesArray = [];
 var channelSlices = [];
 var arrayOfNotes = [];
 
-var sSlices = 9;
+var sSlices = 0;
 
 var cgSelected = 0;
 
@@ -67,26 +67,27 @@ var totalDropDowns = 16;
 //new 2.0
 var introKickBass = false;
 var introMiniBreak = false;
-var intro = false;
-var introSize = 0;
+var intro = true;
+var introSize = 32;
 var introPercent = 0;
 
 var outroBass = false;
 var outroSmooth = false;
-var outro = false;
-var outroSize = 0;
+var outro = true;
+var outroSize = 32;			
 var outroPercent = 0;
 
 var verseMiniBreak = false;
-var verseSize = 0;
+var verseSize = 16;
 var verseNum = 0;
 
 var breakLong = false;
-var breakSize = 0;
+var breakSize = 16;
 var breakNum = 0;
 
-var kickcut = false;
-var kicksize = 0;
+var kickCut = false;
+var kickSC = false;
+var kickSize = 0;
 var kickNotes = 0;
 
 var bassLowEnd = false;
@@ -125,3 +126,4 @@ var vocalSize = 0;
 var vocalNotes = 0;
 
 var selectedTypeNewSynth = "";
+var kickGrooveNotes = [];
