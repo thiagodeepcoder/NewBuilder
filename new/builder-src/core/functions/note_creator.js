@@ -53,7 +53,9 @@ function changeNotes(t, c, seq) {
 
 function convertNote(n)
 {
-    var fNote = n-59;
+    var c = 55;
+    var fNote = n-c;
+
 
     for(var nn=0;nn<noteTrack.length;nn++)
     {
@@ -61,30 +63,30 @@ function convertNote(n)
         {
             if(noteTrack[nn] == fNote)
             {
-                return fNote + 59;
+                return fNote + c;
             }
             else if(noteTrack[nn] == fNote+1)
             {
-                return fNote + 59 +1;
+                return fNote + c +1;
             }
             else if(noteTrack[nn] == fNote+2)
             {
-                return fNote + 59 +2;
+                return fNote + c +2;
             }
         }
         else
         {
             if(noteTrack[nn] == fNote)
             {
-                return fNote + 59;
+                return fNote + c;
             }
             else if(noteTrack[nn] == fNote-1)
             {
-                return fNote + 59 -1;
+                return fNote + c -1;
             }
             else if(noteTrack[nn] == fNote-2)
             {
-                return fNote + 59 -2;
+                return fNote + c -2;
             }
         } 
     }

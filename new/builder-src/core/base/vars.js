@@ -88,42 +88,42 @@ var breakNum = 0;
 var kickCut = false;
 var kickSC = false;
 var kickSize = 0;
-var kickNotes = 0;
+var kickNotes = 1;
 
 var bassLowEnd = false;
 var bassHuman = false;
 var bassTone = false;
 var bassSize = 0;
-var bassNotes = 0;
+var bassNotes = 1;
 
 var snareSteady = false;
 var snareHuman = false;
 var snareSize = 0;
-var snareNotes = 0;
+var snareNotes = 1;
 
 var hatsSteady = false;
 var hatsHuman = false;
 var hatsSize = 0;
-var hatsNotes = 0;
+var hatsNotes = 1;
 
 var fxTone = false;
 var fxHuman = false;
 var fxSize = 0;
-var fxNotes = 0;
+var fxNotes = 1;
 
 var percHuman = false;
 var percSize = 0;
-var percNotes = 0;
+var percNotes = 1;
 
 var leadTone = false;
 var leadHuman = false;
 var leadSize = 0;
-var leadNotes = 0;
+var leadNotes = 1;
 
 var vocalTone = false;
 var vocalHuman = false;
 var vocalSize = 0;
-var vocalNotes = 0;
+var vocalNotes = 1;
 
 var selectedTypeNewSynth = "";
-var kickGrooveNotes = [];
+var kickGrooveNotes = []; 

@@ -401,9 +401,13 @@ function setBass(v) {
         case "30s":
             bassSize = 16;
             break;
+        case "60s":
+            bassSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        bassNotes = note2Num(v);
+        bassNotes = note2Num(1,16,v);
+        log(bassNotes);
     }
 }
 

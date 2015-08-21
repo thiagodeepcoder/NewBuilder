@@ -146,7 +146,7 @@ function isNumber(n) {
 function isOdd(num) { return num % 2;}
 
 function note2Num(min,max,percentage) {
-    var v = ((max - min) * percentage) + min
+    var v = Math.floor(((max - min) * percentage) + min);
     return v;
 }
 

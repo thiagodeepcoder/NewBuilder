@@ -268,7 +268,7 @@ function createGroove(instrument) {
         for (var i = 0; i < randInit; i++) {
             newGroove.push({
                 note: 60,
-                init: i*4,
+                init: i * 4,
                 size: 4
             });
         }
@@ -291,9 +291,9 @@ function createGroove(instrument) {
 
         //numberNotes = cgSelected;
 
-        var nnNotes;
-        var quanNotes;
-        switch (cgSelected) {
+        var nnNotes = 7;
+        var quanNotes = 16;
+        /*switch (cgSelected) {
             case 1:
                 nnNotes = 7;
                 quanNotes = 16;
@@ -318,31 +318,46 @@ function createGroove(instrument) {
                 nnNotes = 6;
                 quanNotes = 16;
                 break;
-        }
-
+        }*/
+        nnNotes = bassNotes;
+        quanNotes = bassSize;
         var randInit;
-        var customNotes = [];
         var toneBass = 0;
+        var toneArray = [];
+        var human = 0;
         for (var j = 0; j < 256 / quanNotes; j++) { // 256/quanNotes
-            if (j == 0) {
+            if (j == 0) { // cria sequencia base a ser duplicada
                 for (var i = 0; i < nnNotes; i++) {
-                    randInit = randomInt(1, quanNotes * (1 + j));
-                    while (isInArray(randInit, arrayOfNotes) || randInit % 4 == 0) {
-                        randInit = randomInt(1, quanNotes * (1 + j));
+                    if (bassHuman) {
+                        human = randomInt(1, 4)/8;
+                    } else {
+                        human = 0;
                     }
+                    randInit = randomInt(1, quanNotes * (1 + j)) + human;
+                    while (isInArray(randInit-human, arrayOfNotes) || (randInit-human) % 4 == 0) {
+                        randInit = randomInt(1, quanNotes * (1 + j)) + human;
+                    }
+
                     arrayOfNotes.push(randInit);
-                    toneBass = Number(randomInt(57, 63)); ///-----------------Rever
+
+                    if (bassTone) {
+                        toneBass = randomInt(57, 63);
+                    } else {
+                        toneBass = 60;
+                    }
+
+                    toneArray.push(toneBass);
                     log(toneBass);
                     newGroove.push({
-                        note: 60,
+                        note: toneBass,
                         init: randInit / 4,
                         size: 0.5
                     });
                 }
-            } else {
+            } else { // duplica sequencia até atingir 64
                 for (var i = 0; i < nnNotes; i++) {
                     newGroove.push({
-                        note: 60,
+                        note: toneArray[i],
                         init: (arrayOfNotes[i] / 4) + ((j * quanNotes) / 4),
                         size: 0.5
                     });
@@ -480,7 +495,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else {
+            } else {
                 channelSlices.push({
                     seq: "filled",
                     steps: sSlicesArray[i].steps
@@ -506,7 +521,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else {
+            } else {
                 channelSlices.push({
                     seq: "filled",
                     steps: sSlicesArray[i].steps

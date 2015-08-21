@@ -1,4 +1,4 @@
-// Ver 2.0
+// Ver 2.2
 autowatch = 1;
 outlets = 2;
 setinletassist(0, "bang triggers action specified in args");
@@ -95,45 +95,45 @@ var breakNum = 0;
 var kickCut = false;
 var kickSC = false;
 var kickSize = 0;
-var kickNotes = 0;
+var kickNotes = 1;
 
 var bassLowEnd = false;
 var bassHuman = false;
 var bassTone = false;
 var bassSize = 0;
-var bassNotes = 0;
+var bassNotes = 1;
 
 var snareSteady = false;
 var snareHuman = false;
 var snareSize = 0;
-var snareNotes = 0;
+var snareNotes = 1;
 
 var hatsSteady = false;
 var hatsHuman = false;
 var hatsSize = 0;
-var hatsNotes = 0;
+var hatsNotes = 1;
 
 var fxTone = false;
 var fxHuman = false;
 var fxSize = 0;
-var fxNotes = 0;
+var fxNotes = 1;
 
 var percHuman = false;
 var percSize = 0;
-var percNotes = 0;
+var percNotes = 1;
 
 var leadTone = false;
 var leadHuman = false;
 var leadSize = 0;
-var leadNotes = 0;
+var leadNotes = 1;
 
 var vocalTone = false;
 var vocalHuman = false;
 var vocalSize = 0;
-var vocalNotes = 0;
+var vocalNotes = 1;
 
 var selectedTypeNewSynth = "";
-var kickGrooveNotes = [];
+var kickGrooveNotes = []; 
 
 var DEBUG = true;
 var testSingleChannel = [true,"SC"];
@@ -159,128 +159,127 @@ function log() {
   post("\n");
 }
 
-// ==================================================
-// ======================== Note Creator
-// ==================================================
-
-//---------------
-// Create Note 60-72
-//---------------
-
-function createNotes(t, c, seq) {
-    /*if(seq != null)
-    {
-        setNoteSeq(seq);
-    }
-    else
-    {
-        setNoteSeq(this[templateSet[t-1].notes]);
-    }*/
-    var notes = [];
-    var args = newGroove;      //getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
-
-    for (var ni = 0; ni < args.length; ni++) {
-
-        var changedNote = convertNote(args[ni].note);
-
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
-        }
-    }
-    
-    clip.setNotes(notes);
+//--------------------------------------------------------------------
+// Note class
+  
+function Note(pitch, start, duration, velocity, muted) {
+  this.pitch = pitch;
+  this.start = start;
+  this.duration = duration;
+  this.velocity = velocity;
+  this.muted = muted;
 }
-
-function changeNotes(t, c, seq) {
-    setNoteSeq(this[seq]);
-    var notes = [];
-    var args = getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
-
-    
-    for (var ni = 0; ni < args.length; ni++) {
-
-        var changedNote = convertNote(args[ni].note);
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
-        }
-    }
-    
-    return notes;
+  
+Note.prototype.toString = function() {
+  return '{pitch:' + this.pitch +
+         ', start:' + this.start +
+         ', duration:' + this.duration +
+         ', velocity:' + this.velocity +
+         ', muted:' + this.muted + '}';
 }
-
-function convertNote(n)
-{
-    var fNote = n-59;
-
-    for(var nn=0;nn<noteTrack.length;nn++)
-    {
-        if(fNote<7)
-        {
-            if(noteTrack[nn] == fNote)
-            {
-                return fNote + 59;
-            }
-            else if(noteTrack[nn] == fNote+1)
-            {
-                return fNote + 59 +1;
-            }
-            else if(noteTrack[nn] == fNote+2)
-            {
-                return fNote + 59 +2;
-            }
-        }
-        else
-        {
-            if(noteTrack[nn] == fNote)
-            {
-                return fNote + 59;
-            }
-            else if(noteTrack[nn] == fNote-1)
-            {
-                return fNote + 59 -1;
-            }
-            else if(noteTrack[nn] == fNote-2)
-            {
-                return fNote + 59 -2;
-            }
-        } 
-    }
-    
+ 
+Note.MIN_DURATION = 1/128;
+  
+Note.prototype.getPitch = function() {
+  if(this.pitch < 0) return 0;
+  if(this.pitch > 127) return 127;
+  return this.pitch;
 }
+  
+Note.prototype.getStart = function() {
+  // we convert to strings with decimals to work around a bug in Max
+  // otherwise we get an invalid syntax error when trying to set notes
+  if(this.start <= 0) return "0.0";
+  return this.start.toFixed(4);
+}
+  
+Note.prototype.getDuration = function() {
+  if(this.duration <= Note.MIN_DURATION) return Note.MIN_DURATION;
+  return this.duration.toFixed(4); // workaround similar bug as with getStart()
+}
+  
+Note.prototype.getVelocity = function() {
+  if(this.velocity < 0) return 0;
+  if(this.velocity > 127) return 127;
+  return this.velocity;
+}
+  
+Note.prototype.getMuted = function() {
+  if(this.muted) return 1;
+  return 0;
+}
+ 
 
-/*
 
-c = 1
-c# = 2
-d = 3
-d# = 4
-e = 5
-f = 6
-f# = 7
-g = 8
-g# = 9
-a = 10
-a# = 11
-b = 12
 
-*/
-
-var scaleC =        [1,3,5,6,8,10,12];
-var scaleCsharp =   [1,2,4,6,7,9,11];
-var scaleD =        [2,3,5,7,8,10,12];
-var scaleDsharp =   [1,3,4,6,8,9,11];
-var scaleE =        [2,4,5,7,9,10,12];
-var scaleF =        [1,3,4,6,8,10,11];
-var scaleFsharp =   [2,4,6,7,9,11,12];
-var scaleG =        [1,3,5,7,8,10,12];
-var scaleGsharp =   [1,2,4,6,8,9,11];
-var scaleA =        [2,3,5,7,9,10,12];
-var scaleAsharp =   [1,3,4,6,8,10,11];
-var scaleB =        [2,4,5,7,9,11,12];
+//--------------------------------------------------------------------
+// Clip class
+ 
+function Clip(t,m) {
+  var path = "live_set tracks " + t + " clip_slots " + m + " clip";
+  this.liveObject = new LiveAPI(path);
+}
+  
+Clip.prototype.getLength = function() {
+  return this.liveObject.get('length');
+}
+  
+Clip.prototype._parseNoteData = function(data) {
+  var notes = [];
+  // data starts with "notes"/count and ends with "done" (which we ignore)
+  for(var i=2,len=data.length-1; i<len; i+=6) {
+    // and each note starts with "note" (which we ignore) and is 6 items in the list
+    var note = new Note(data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]);
+    notes.push(note);
+  }
+  return notes;
+}
+  
+Clip.prototype.getSelectedNotes = function() {
+  var data = this.liveObject.call('get_selected_notes');
+  return this._parseNoteData(data);
+}
+  
+   
+Clip.prototype.getNotes = function(startTime, timeRange, startPitch, pitchRange) {
+  if(!startTime) startTime = 0;
+  if(!timeRange) timeRange = this.getLength();
+  if(!startPitch) startPitch = 0;
+  if(!pitchRange) pitchRange = 128;
+   
+  var data = this.liveObject.call("get_notes", startTime, startPitch, timeRange, pitchRange);
+  return this._parseNoteData(data);
+}
+ 
+Clip.prototype._sendNotes = function(notes) {
+  var liveObject = this.liveObject;
+  liveObject.call("notes", notes.length);
+  notes.forEach(function(note) {
+    liveObject.call("note", note.getPitch(),
+                    note.getStart(), note.getDuration(),
+                    note.getVelocity(), note.getMuted());
+  });
+  liveObject.call('done');
+}
+  
+Clip.prototype.replaceSelectedNotes = function(notes) {
+  this.liveObject.call("replace_selected_notes");
+  this._sendNotes(notes);
+}
+  
+Clip.prototype.setNotes = function(notes) {
+  this.liveObject.call("set_notes");
+  this._sendNotes(notes);
+}
+ 
+Clip.prototype.selectAllNotes = function() {
+  this.liveObject.call("select_all_notes");
+}
+ 
+Clip.prototype.replaceAllNotes = function(notes) {
+  this.selectAllNotes();
+  this.replaceSelectedNotes(notes);
+}
 
 function createScene(ns) {
     var n = ns - ((liveSet.get("scenes").length) / 2);
@@ -552,7 +551,7 @@ function createGroove(instrument) {
         for (var i = 0; i < randInit; i++) {
             newGroove.push({
                 note: 60,
-                init: i*4,
+                init: i * 4,
                 size: 4
             });
         }
@@ -575,9 +574,9 @@ function createGroove(instrument) {
 
         //numberNotes = cgSelected;
 
-        var nnNotes;
-        var quanNotes;
-        switch (cgSelected) {
+        var nnNotes = 7;
+        var quanNotes = 16;
+        /*switch (cgSelected) {
             case 1:
                 nnNotes = 7;
                 quanNotes = 16;
@@ -602,31 +601,46 @@ function createGroove(instrument) {
                 nnNotes = 6;
                 quanNotes = 16;
                 break;
-        }
-
+        }*/
+        nnNotes = bassNotes;
+        quanNotes = bassSize;
         var randInit;
-        var customNotes = [];
         var toneBass = 0;
+        var toneArray = [];
+        var human = 0;
         for (var j = 0; j < 256 / quanNotes; j++) { // 256/quanNotes
-            if (j == 0) {
+            if (j == 0) { // cria sequencia base a ser duplicada
                 for (var i = 0; i < nnNotes; i++) {
-                    randInit = randomInt(1, quanNotes * (1 + j));
-                    while (isInArray(randInit, arrayOfNotes) || randInit % 4 == 0) {
-                        randInit = randomInt(1, quanNotes * (1 + j));
+                    if (bassHuman) {
+                        human = randomInt(1, 4)/8;
+                    } else {
+                        human = 0;
                     }
+                    randInit = randomInt(1, quanNotes * (1 + j)) + human;
+                    while (isInArray(randInit-human, arrayOfNotes) || (randInit-human) % 4 == 0) {
+                        randInit = randomInt(1, quanNotes * (1 + j)) + human;
+                    }
+
                     arrayOfNotes.push(randInit);
-                    toneBass = Number(randomInt(57, 63)); ///-----------------Rever
+
+                    if (bassTone) {
+                        toneBass = randomInt(57, 63);
+                    } else {
+                        toneBass = 60;
+                    }
+
+                    toneArray.push(toneBass);
                     log(toneBass);
                     newGroove.push({
-                        note: 60,
+                        note: toneBass,
                         init: randInit / 4,
                         size: 0.5
                     });
                 }
-            } else {
+            } else { // duplica sequencia até atingir 64
                 for (var i = 0; i < nnNotes; i++) {
                     newGroove.push({
-                        note: 60,
+                        note: toneArray[i],
                         init: (arrayOfNotes[i] / 4) + ((j * quanNotes) / 4),
                         size: 0.5
                     });
@@ -764,7 +778,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else {
+            } else {
                 channelSlices.push({
                     seq: "filled",
                     steps: sSlicesArray[i].steps
@@ -790,7 +804,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else {
+            } else {
                 channelSlices.push({
                     seq: "filled",
                     steps: sSlicesArray[i].steps
@@ -998,6 +1012,8 @@ function createClipCustom(t, c, s, fill, name, plus) {
 }
 
 
+
+
 function getColor(name) {
     var fcolor;
     switch (name) {
@@ -1086,6 +1102,161 @@ function getTrackName(n) {
     return a.get("name");
 }
 
+
+// ==================================================
+// ======================== Note Creator
+// ==================================================
+
+//---------------
+// Create Note 60-72
+//---------------
+
+function createNotes(t, c, seq) {
+    /*if(seq != null)
+    {
+        setNoteSeq(seq);
+    }
+    else
+    {
+        setNoteSeq(this[templateSet[t-1].notes]);
+    }*/
+    var notes = [];
+    var args = newGroove;      //getNoteSeq();
+    var clip = new Clip(t, c);
+    var noteBlock = args.length/2;
+
+    for (var ni = 0; ni < args.length; ni++) {
+
+        var changedNote = convertNote(args[ni].note);
+
+        if (args[ni].size != 0) {
+            notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
+        }
+    }
+    
+    clip.setNotes(notes);
+}
+
+function changeNotes(t, c, seq) {
+    setNoteSeq(this[seq]);
+    var notes = [];
+    var args = getNoteSeq();
+    var clip = new Clip(t, c);
+    var noteBlock = args.length/2;
+
+    
+    for (var ni = 0; ni < args.length; ni++) {
+
+        var changedNote = convertNote(args[ni].note);
+        if (args[ni].size != 0) {
+            notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
+        }
+    }
+    
+    return notes;
+}
+
+function convertNote(n)
+{
+    var c = 55;
+    var fNote = n-c;
+
+
+    for(var nn=0;nn<noteTrack.length;nn++)
+    {
+        if(fNote<7)
+        {
+            if(noteTrack[nn] == fNote)
+            {
+                return fNote + c;
+            }
+            else if(noteTrack[nn] == fNote+1)
+            {
+                return fNote + c +1;
+            }
+            else if(noteTrack[nn] == fNote+2)
+            {
+                return fNote + c +2;
+            }
+        }
+        else
+        {
+            if(noteTrack[nn] == fNote)
+            {
+                return fNote + c;
+            }
+            else if(noteTrack[nn] == fNote-1)
+            {
+                return fNote + c -1;
+            }
+            else if(noteTrack[nn] == fNote-2)
+            {
+                return fNote + c -2;
+            }
+        } 
+    }
+    
+}
+
+/*
+
+c = 1
+c# = 2
+d = 3
+d# = 4
+e = 5
+f = 6
+f# = 7
+g = 8
+g# = 9
+a = 10
+a# = 11
+b = 12
+
+*/
+
+var scaleC =        [1,3,5,6,8,10,12];
+var scaleCsharp =   [1,2,4,6,7,9,11];
+var scaleD =        [2,3,5,7,8,10,12];
+var scaleDsharp =   [1,3,4,6,8,9,11];
+var scaleE =        [2,4,5,7,9,10,12];
+var scaleF =        [1,3,4,6,8,10,11];
+var scaleFsharp =   [2,4,6,7,9,11,12];
+var scaleG =        [1,3,5,7,8,10,12];
+var scaleGsharp =   [1,2,4,6,8,9,11];
+var scaleA =        [2,3,5,7,9,10,12];
+var scaleAsharp =   [1,3,4,6,8,10,11];
+var scaleB =        [2,4,5,7,9,11,12];
+
+function loadDefaults(s) {
+	outlet(0, "loaddev Simpler");
+	if(s=="Kick cut") {
+		loadDevice("EQ Eight", "LowCut");
+	}
+	else if(s=="FX" || s=="Perc") {
+		loadDeviceU("Reverb");
+	}
+	else if(s=="Snare fixo" || s=="Tops fixo" || s=="Snare" || s=="Tops")
+	{
+		loadDeviceU("Reverb");
+		loadDevice("EQ Eight", "LowCut");
+	}
+	else if(s=="Bass") {
+		loadDeviceU("Compressor");
+	}
+}
+
+function loadDeviceU(d) {
+    outlet(0, "loaddev " + d);
+}
+
+function loadDevice(d, p) {
+    outlet(0, "loaddev " + d);
+    outlet(0, "swap " + p);
+}
+function loadNewSynth() {
+	loadDefaults(selectedTypeNewSynth);
+}
 
 function setTrackName(trackNumber, trackName) {
     var tracks = new LiveAPI("live_set tracks " + trackNumber);
@@ -1490,9 +1661,13 @@ function setBass(v) {
         case "30s":
             bassSize = 16;
             break;
+        case "60s":
+            bassSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        bassNotes = note2Num(v);
+        bassNotes = note2Num(1,16,v);
+        log(bassNotes);
     }
 }
 
@@ -1721,160 +1896,6 @@ function setNumSlices() {
 
 
 
-//--------------------------------------------------------------------
-// Note class
-  
-function Note(pitch, start, duration, velocity, muted) {
-  this.pitch = pitch;
-  this.start = start;
-  this.duration = duration;
-  this.velocity = velocity;
-  this.muted = muted;
-}
-  
-Note.prototype.toString = function() {
-  return '{pitch:' + this.pitch +
-         ', start:' + this.start +
-         ', duration:' + this.duration +
-         ', velocity:' + this.velocity +
-         ', muted:' + this.muted + '}';
-}
- 
-Note.MIN_DURATION = 1/128;
-  
-Note.prototype.getPitch = function() {
-  if(this.pitch < 0) return 0;
-  if(this.pitch > 127) return 127;
-  return this.pitch;
-}
-  
-Note.prototype.getStart = function() {
-  // we convert to strings with decimals to work around a bug in Max
-  // otherwise we get an invalid syntax error when trying to set notes
-  if(this.start <= 0) return "0.0";
-  return this.start.toFixed(4);
-}
-  
-Note.prototype.getDuration = function() {
-  if(this.duration <= Note.MIN_DURATION) return Note.MIN_DURATION;
-  return this.duration.toFixed(4); // workaround similar bug as with getStart()
-}
-  
-Note.prototype.getVelocity = function() {
-  if(this.velocity < 0) return 0;
-  if(this.velocity > 127) return 127;
-  return this.velocity;
-}
-  
-Note.prototype.getMuted = function() {
-  if(this.muted) return 1;
-  return 0;
-}
- 
-
-function loadDefaults(s) {
-	outlet(0, "loaddev Simpler");
-	if(s=="Kick cut") {
-		loadDevice("EQ Eight", "LowCut");
-	}
-	else if(s=="FX" || s=="Perc") {
-		loadDeviceU("Reverb");
-	}
-	else if(s=="Snare fixo" || s=="Tops fixo" || s=="Snare" || s=="Tops")
-	{
-		loadDeviceU("Reverb");
-		loadDevice("EQ Eight", "LowCut");
-	}
-	else if(s=="Bass") {
-		loadDeviceU("Compressor");
-	}
-}
-
-function loadDeviceU(d) {
-    outlet(0, "loaddev " + d);
-}
-
-function loadDevice(d, p) {
-    outlet(0, "loaddev " + d);
-    outlet(0, "swap " + p);
-}
-function loadNewSynth() {
-	loadDefaults(selectedTypeNewSynth);
-}
-
-
-
-//--------------------------------------------------------------------
-// Clip class
- 
-function Clip(t,m) {
-  var path = "live_set tracks " + t + " clip_slots " + m + " clip";
-  this.liveObject = new LiveAPI(path);
-}
-  
-Clip.prototype.getLength = function() {
-  return this.liveObject.get('length');
-}
-  
-Clip.prototype._parseNoteData = function(data) {
-  var notes = [];
-  // data starts with "notes"/count and ends with "done" (which we ignore)
-  for(var i=2,len=data.length-1; i<len; i+=6) {
-    // and each note starts with "note" (which we ignore) and is 6 items in the list
-    var note = new Note(data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]);
-    notes.push(note);
-  }
-  return notes;
-}
-  
-Clip.prototype.getSelectedNotes = function() {
-  var data = this.liveObject.call('get_selected_notes');
-  return this._parseNoteData(data);
-}
-  
-   
-Clip.prototype.getNotes = function(startTime, timeRange, startPitch, pitchRange) {
-  if(!startTime) startTime = 0;
-  if(!timeRange) timeRange = this.getLength();
-  if(!startPitch) startPitch = 0;
-  if(!pitchRange) pitchRange = 128;
-   
-  var data = this.liveObject.call("get_notes", startTime, startPitch, timeRange, pitchRange);
-  return this._parseNoteData(data);
-}
- 
-Clip.prototype._sendNotes = function(notes) {
-  var liveObject = this.liveObject;
-  liveObject.call("notes", notes.length);
-  notes.forEach(function(note) {
-    liveObject.call("note", note.getPitch(),
-                    note.getStart(), note.getDuration(),
-                    note.getVelocity(), note.getMuted());
-  });
-  liveObject.call('done');
-}
-  
-Clip.prototype.replaceSelectedNotes = function(notes) {
-  this.liveObject.call("replace_selected_notes");
-  this._sendNotes(notes);
-}
-  
-Clip.prototype.setNotes = function(notes) {
-  this.liveObject.call("set_notes");
-  this._sendNotes(notes);
-}
- 
-Clip.prototype.selectAllNotes = function() {
-  this.liveObject.call("select_all_notes");
-}
- 
-Clip.prototype.replaceAllNotes = function(notes) {
-  this.selectAllNotes();
-  this.replaceSelectedNotes(notes);
-}
-
-
-
 function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -2023,7 +2044,7 @@ function isNumber(n) {
 function isOdd(num) { return num % 2;}
 
 function note2Num(min,max,percentage) {
-    var v = ((max - min) * percentage) + min
+    var v = Math.floor(((max - min) * percentage) + min);
     return v;
 }
 
@@ -2058,7 +2079,76 @@ function updateChannels() {
 }
 
 
-setNote("C");
+function bang() {
+    api = new LiveAPI("this_device");
+    liveView = new LiveAPI("live_app view");
+    liveSetView = new LiveAPI("live_set view");
+    liveSet = new LiveAPI("live_set");
+
+    liveView.call("focus_view", "Session");
+   
+    createTrack(channelSequence[countBangs]);
+    loadDefaults(channelSequence[countBangs]);
+
+    trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
+
+    trackView.set("is_collapsed", "1");
+    setCustomTrack(countBangs);
+
+    createScene(25);
+    //cria slices da estrutura
+    if (!sCreated) {
+        createStructure();
+        sCreated = true;
+    }
+
+    if (channelSequence[countBangs] == "SC") {
+        var muteT = new LiveAPI("live_set tracks 1");
+        muteT.set("mute", "1");
+    }
+    
+    createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
+    createGroove(channelSequence[countBangs]); //cria groove
+
+    var nextFeeeMidi;
+
+    for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
+        for (var j = 0; j < channelSlices[i].steps / 16; j++) {
+            nextFeeeMidi = getNextFreeSlot(countBangs + 1);
+            if (channelSlices[i].steps % 16 == 0) {
+                finalSteps = 16;
+            } else if (channelSequence[countBangs] == "SC") {
+                if (j == (channelSlices[i].steps / 16) - 1) {
+                    finalSteps = channelSlices[i].steps % 16;
+                } else {
+                    finalSteps = 16;
+                }
+            } else {
+                finalSteps = channelSlices[i].steps;
+            }
+
+            createClipCustom(countBangs + 1, nextFeeeMidi, finalSteps, channelSlices[i].seq, channelSequence[countBangs]);
+
+            if (channelSlices[i].seq != "blank") {
+                createNotes(countBangs + 1, nextFeeeMidi);
+            }
+        }
+    }
+
+    channelSlices = [];
+    
+    if (countBangs < channelSequence.length - 1) {
+        //if (countBangs < 0) {
+        countBangs++;
+        bang();
+    } else {
+        sCreated = false;
+        sSlicesArray = [];
+    }
+
+    setBuilderChannel();
+    arrayOfNotes = []; 
+}
 
 
 function singleMidi(s) {
@@ -2145,76 +2235,7 @@ function channelBang(s) {
 }
 
 
-function bang() {
-    api = new LiveAPI("this_device");
-    liveView = new LiveAPI("live_app view");
-    liveSetView = new LiveAPI("live_set view");
-    liveSet = new LiveAPI("live_set");
-
-    liveView.call("focus_view", "Session");
-   
-    createTrack(channelSequence[countBangs]);
-    loadDefaults(channelSequence[countBangs]);
-
-    trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
-
-    trackView.set("is_collapsed", "1");
-    setCustomTrack(countBangs);
-
-    createScene(25);
-    //cria slices da estrutura
-    if (!sCreated) {
-        createStructure();
-        sCreated = true;
-    }
-
-    if (channelSequence[countBangs] == "SC") {
-        var muteT = new LiveAPI("live_set tracks 1");
-        muteT.set("mute", "1");
-    }
-    
-    createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
-    createGroove(channelSequence[countBangs]); //cria groove
-
-    var nextFeeeMidi;
-
-    for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
-        for (var j = 0; j < channelSlices[i].steps / 16; j++) {
-            nextFeeeMidi = getNextFreeSlot(countBangs + 1);
-            if (channelSlices[i].steps % 16 == 0) {
-                finalSteps = 16;
-            } else if (channelSequence[countBangs] == "SC") {
-                if (j == (channelSlices[i].steps / 16) - 1) {
-                    finalSteps = channelSlices[i].steps % 16;
-                } else {
-                    finalSteps = 16;
-                }
-            } else {
-                finalSteps = channelSlices[i].steps;
-            }
-
-            createClipCustom(countBangs + 1, nextFeeeMidi, finalSteps, channelSlices[i].seq, channelSequence[countBangs]);
-
-            if (channelSlices[i].seq != "blank") {
-                createNotes(countBangs + 1, nextFeeeMidi);
-            }
-        }
-    }
-
-    channelSlices = [];
-    
-    if (countBangs < channelSequence.length - 1) {
-        //if (countBangs < 0) {
-        countBangs++;
-        bang();
-    } else {
-        sCreated = false;
-        sSlicesArray = [];
-    }
-
-    setBuilderChannel();
-    arrayOfNotes = []; 
-}
+setNote("C");
 
 
 
