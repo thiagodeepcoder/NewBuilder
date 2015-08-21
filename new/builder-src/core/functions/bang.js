@@ -1,10 +1,10 @@
 function bang() {
-    api = new LiveAPI("this_device");
+   /* api = new LiveAPI("this_device");
     liveView = new LiveAPI("live_app view");
     liveSetView = new LiveAPI("live_set view");
     liveSet = new LiveAPI("live_set");
 
-    liveView.call("focus_view", "Session");
+    liveView.call("focus_view", "Session");*/
    
     createTrack(channelSequence[countBangs]);
     loadDefaults(channelSequence[countBangs]);
@@ -12,7 +12,7 @@ function bang() {
     trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
 
     trackView.set("is_collapsed", "1");
-    setCustomTrack(countBangs);
+    //setCustomTrack(countBangs);
 
     createScene(25);
     //cria slices da estrutura
@@ -26,7 +26,7 @@ function bang() {
         muteT.set("mute", "1");
     }
     
-    createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
+    /*createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
     createGroove(channelSequence[countBangs]); //cria groove
 
     var nextFeeeMidi;
@@ -53,9 +53,11 @@ function bang() {
             }
         }
     }
-
-    channelSlices = [];
+*/
+    //channelSlices = [];
     
+    singleChannel(channelSequence[countBangs]);
+
     if (countBangs < channelSequence.length - 1) {
         //if (countBangs < 0) {
         countBangs++;
@@ -65,6 +67,6 @@ function bang() {
         sSlicesArray = [];
     }
 
-    setBuilderChannel();
-    arrayOfNotes = []; 
+    //setBuilderChannel();
+    //arrayOfNotes = []; 
 }

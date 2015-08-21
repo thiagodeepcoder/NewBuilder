@@ -13,6 +13,7 @@ function singleMidi(s) {
         createNotes(0, nextFeeeMidi);
 
         resetBang();
+        log("bom dias");
     }
 }
 api = new LiveAPI("this_device");
@@ -30,11 +31,17 @@ function singleChannel(s) {
             channelBang("Kick cut");
         }
 
+        if (s == "Snare" && snareSteady) {
+        	channelBang("Snare fixo");
+        }
+
         channelBang(s);
 
         if (s == "Bass" && bassLowEnd) {
         	channelBang("Lowend");
         }
+
+        
     }
 }
 
@@ -78,5 +85,5 @@ function channelBang(s) {
 
     setBuilderChannel();
     resetBang();
-
+	
 }

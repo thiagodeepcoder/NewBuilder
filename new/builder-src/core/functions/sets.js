@@ -440,9 +440,12 @@ function setSnare(v) {
         case "30s":
             snareSize = 16;
             break;
+        case "60s":
+            snareSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        snareNotes = note2Num(v);
+        snareNotes = note2Num(1,8,v);
     }
 }
 
@@ -477,7 +480,7 @@ function setHats(v) {
             break;
     }
     if (isNumber(v)) {
-        hatsNotes = note2Num(v);
+        hatsNotes = note2Num(1,16,v);
     }
 }
 
@@ -512,7 +515,7 @@ function setFX(v) {
             break;
     }
     if (isNumber(v)) {
-        fxNotes = note2Num(v);
+        fxNotes = note2Num(1,16,v);
     }
     log(v);
 }
@@ -542,7 +545,7 @@ function setPerc(v) {
             break;
     }
     if (isNumber(v)) {
-        percNotes = note2Num(v);
+        percNotes = note2Num(1,16,v);
     }
     log(v);
 }
@@ -578,7 +581,7 @@ function setLead(v) {
             break;
     }
     if (isNumber(v)) {
-        leadNotes = note2Num(v);
+        leadNotes = note2Num(1,16,v);
     }
     log(v);
 }
@@ -614,7 +617,7 @@ function setVocal(v) {
             break;
     }
     if (isNumber(v)) {
-        vocalNotes = note2Num(v);
+        vocalNotes = note2Num(1,16,v);
     }
     log(v);
 }
@@ -633,4 +636,42 @@ function setNumSlices() {
     log(i, verseNum, breakNum,o, sSlices);
 }
 
+function setChannelSequence() {
+    var i;
+    if(kickSC) { channelSequence.push("SC"); }
+    channelSequence.push("Kick");
+    if(kickCut) { channelSequence.push("Kick cut"); }
+    channelSequence.push("Bass");
+    if(bassLowEnd) { channelSequence.push("Lowend"); }
+    if(snareSteady) { channelSequence.push("Snare fixo"); }
+    for(i=0;i<numSnares;i++)
+    {
+        channelSequence.push("Snare");
+    }
+    if(hatsSteady) { channelSequence.push("Hats fixo"); }
+    for(i=0;i<numHats;i++)
+    {
+        channelSequence.push("Hats");
+    }
+    for(i=0;i<numPercs;i++)
+    {
+        channelSequence.push("Perc");
+    }
+    for(i=0;i<numFX;i++)
+    {
+        channelSequence.push("FX");
+    }
+    for(i=0;i<numLead;i++)
+    {
+        channelSequence.push("Lead");
+    }
+    for(i=0;i<numVocal;i++)
+    {
+        channelSequence.push("Vocals");
+    }
+    for(i=0;i<numPads;i++)
+    {
+        channelSequence.push("Pad");
+    }
+}
 

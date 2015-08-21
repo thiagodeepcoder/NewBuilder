@@ -1,8 +1,8 @@
 var api;
 var liveView;
 var liveSetView;
-var liveSet; 
-var trackView; 
+var liveSet;
+var trackView;
 
 var sceneSlot;
 var sceneSlotClip;
@@ -15,12 +15,9 @@ var countBangs = 0;
 
 var newGroove = [];
 var channelSequence = [
-    "SC",
-    "Kick",
-    "Kick cut",
-    "Snare fixo",
-    "Tops fixo",
-    "Bass"
+    "Snare",
+    "Snare",
+    "Snare"
 ];
 
 var sSlicesArray = [];
@@ -74,7 +71,7 @@ var introPercent = 0;
 var outroBass = false;
 var outroSmooth = false;
 var outro = true;
-var outroSize = 32;			
+var outroSize = 32;
 var outroPercent = 0;
 
 var verseMiniBreak = false;
@@ -126,4 +123,4 @@ var vocalSize = 0;
 var vocalNotes = 1;
 
 var selectedTypeNewSynth = "";
-var kickGrooveNotes = []; 
+var kickGrooveNotes = [];
