@@ -1362,7 +1362,18 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Pad") {
 
-        numberNotes = cgSelected;
+        var randInit;
+        for (var i = 0; i < 16; i++) {
+            newGroove.push({
+                note: 60,
+                init: i*4,
+                size: 4
+            });
+        }
+        
+        // código para pad com variação de notas
+
+        /*numberNotes = cgSelected;
         var randInit;
         for (var i = 0; i < numberNotes; i++) {
             randInit = randomInt(0, 256);
@@ -1371,7 +1382,7 @@ function createGroove(instrument) {
                 init: randInit / 4,
                 size: 4
             });
-        }
+        }*/
     } else if (channelGroove == "Lead") {
         var randInit;
         var human = 0;
@@ -1468,53 +1479,60 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Bass") {
 
-        // máximo é 4 tempos da midi
-        // maximo de notas é 16 por tempo
+        var randInit;
+        var tone = 0;
+        var toneArray = [];
+        var variation = 0;
 
-        /*
-
-            Shortest = 7 notas || 1 Tempo
-            Short = 5 notas || 1 Tempo
-            Long = 8 notas || 2 tempos
-            Longest = 6 notas || 2 tempos
-            Sparce = 5  notas || 2 tempos 
-            Broken = 6 notes || 1 tempo
-    
-        */
+        var size = bassSize;
+        var human = bassHuman;
+        var notes = bassNotes
+        var iTone = bassTone
 
 
-        //numberNotes = cgSelected;
+        for (var j = 0; j < 256 / size; j++) { // 256/quanNotes
+            if (j == 0) { // cria sequencia base a ser duplicada
+                for (var i = 0; i < notes; i++) {
+                    if (human == 1) {
+                        variation = randomInt(1, 4) / 8;
+                    } else {
+                        variation = 0;
+                    }
 
-        var nnNotes = 7;
-        var quanNotes = 16;
-        /*switch (cgSelected) {
-            case 1:
-                nnNotes = 7;
-                quanNotes = 16;
-                break;
-            case 2:
-                nnNotes = 5;
-                quanNotes = 16;
-                break;
-            case 4:
-                nnNotes = 12;
-                quanNotes = 32;
-                break;
-            case 8:
-                nnNotes = 10;
-                quanNotes = 32;
-                break;
-            case 16:
-                nnNotes = 8;
-                quanNotes = 32;
-                break;
-            case 5:
-                nnNotes = 6;
-                quanNotes = 16;
-                break;
-        }*/
+                    do {
+                        randInit = randomInt(1, size * 4);
+                    }
+                    while (isInArray(randInit, arrayOfNotes));
 
-        populateMidi("bass");
+
+                    if (randInit % 4 == 0 && s == "bass" && s == "snare" && s == "perc" && s == "hats") {
+                        randInit++;
+                    }
+                    arrayOfNotes.push(randInit);
+
+                    if (iTone) {
+                        tone = randomInt(58, 62);
+                    } else {
+                        tone = 60;
+                    }
+                    log(randInit);
+                    toneArray.push(tone);
+                    newGroove.push({
+                        note: tone,
+                        init: (randInit + variation) / 4,
+                        size: 0.5
+                    });
+                }
+            } else { // duplica sequencia até atingir 64
+                for (var i = 0; i < notes; i++) {
+                    newGroove.push({
+                        note: toneArray[i],
+                        init: ((arrayOfNotes[i] + variation) / 4) + ((j * size * 4) / 4),
+                        size: 0.5
+                    });
+                }
+            }
+        };
         /*nnNotes = bassNotes;
         quanNotes = bassSize;
         var randInit;
@@ -1561,70 +1579,6 @@ function createGroove(instrument) {
         };*/
 
     }
-}
-
-function populateMidi(s) {
-    var randInit;
-    var tone = 0;
-    var toneArray = [];
-    var variation = 0;
-
-    var size = eval(s + "Size");
-    var human;
-    var notes = eval(s + "Notes");
-    var iTone;
-
-    if (s == "bass" || s == "lead" || s == "vocal" || s == "fx") {
-        human = eval(s + "Human");
-    }
-    if (s == "bass" || s == "lead" || s == "vocal" || s == "fx") {
-        iTone = eval(s + "Tone");
-    }
-
-
-    for (var j = 0; j < 256 / size; j++) { // 256/quanNotes
-        if (j == 0) { // cria sequencia base a ser duplicada
-            for (var i = 0; i < notes; i++) {
-                if (human == 1) {
-                    variation = randomInt(1, 4) / 8;
-                } else {
-                    variation = 0;
-                }
-
-                do {
-                    randInit = randomInt(1, size * 4);
-                }
-                while (isInArray(randInit, arrayOfNotes));
-
-
-                if (randInit % 4 == 0 && s == "bass" && s == "snare" && s == "perc" && s == "hats") {
-                    randInit++;
-                }
-                arrayOfNotes.push(randInit);
-
-                if (iTone) {
-                    tone = randomInt(58, 62);
-                } else {
-                    tone = 60;
-                }
-                log(randInit);
-                toneArray.push(tone);
-                newGroove.push({
-                    note: tone,
-                    init: (randInit + variation) / 4,
-                    size: 0.5
-                });
-            }
-        } else { // duplica sequencia até atingir 64
-            for (var i = 0; i < notes; i++) {
-                newGroove.push({
-                    note: toneArray[i],
-                    init: ((arrayOfNotes[i] + variation) / 4) + ((j * size * 4) / 4),
-                    size: 0.5
-                });
-            }
-        }
-    };
 }
 
 function createCSequence(s) {
