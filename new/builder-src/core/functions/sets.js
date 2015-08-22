@@ -50,7 +50,7 @@ function setCustomSnares(v) {
     numSnares = cSnares;
 }
 
-function setCustomPercussion(v) {
+function setCustomPerc(v) {
     cPercs = v;
     numPercs = cPercs;
 }
@@ -551,7 +551,7 @@ function setPerc(v) {
             break;
     }
     if (isNumber(v)) {
-        percNotes = note2Num(1,16,v);
+        percNotes = note2Num(1,8,v);
     }
     log(v);
 }

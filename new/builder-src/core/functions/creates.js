@@ -162,10 +162,17 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Perc") {
 
-        numberNotes = cgSelected;
+       numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
+        var human = 0;
+        for (var i = 0; i < percNotes; i++) {
+            if (percHuman) {
+                human = randomInt(1, 4) / 8;
+            } else {
+                human = 0;
+            }
+            randInit = randomInt(0, percSize * 16) + human;
+
             newGroove.push({
                 note: 60,
                 init: randInit / 4,

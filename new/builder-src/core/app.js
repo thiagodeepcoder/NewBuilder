@@ -117,7 +117,7 @@ var fxNotes = 1;
 
 var percHuman = false;
 var percSize = 0;
-var percNotes = 1;
+var percNotes = 2;
 
 var leadTone = false;
 var leadHuman = false;
@@ -423,7 +423,7 @@ function setCustomSnares(v) {
     numSnares = cSnares;
 }
 
-function setCustomPercussion(v) {
+function setCustomPerc(v) {
     cPercs = v;
     numPercs = cPercs;
 }
@@ -924,7 +924,7 @@ function setPerc(v) {
             break;
     }
     if (isNumber(v)) {
-        percNotes = note2Num(1,16,v);
+        percNotes = note2Num(1,8,v);
     }
     log(v);
 }
@@ -1220,10 +1220,17 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Perc") {
 
-        numberNotes = cgSelected;
+       numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
+        var human = 0;
+        for (var i = 0; i < percNotes; i++) {
+            if (percHuman) {
+                human = randomInt(1, 4) / 8;
+            } else {
+                human = 0;
+            }
+            randInit = randomInt(0, percSize * 16) + human;
+
             newGroove.push({
                 note: 60,
                 init: randInit / 4,

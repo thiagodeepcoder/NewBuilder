@@ -110,7 +110,7 @@ var fxNotes = 1;
 
 var percHuman = false;
 var percSize = 0;
-var percNotes = 1;
+var percNotes = 2;
 
 var leadTone = false;
 var leadHuman = false;
