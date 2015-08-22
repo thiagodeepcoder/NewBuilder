@@ -889,9 +889,12 @@ function setFX(v) {
         case "30s":
             fxSize = 16;
             break;
+        case "60s":
+            fxSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        fxNotes = note2Num(1,16,v);
+        fxNotes = note2Num(1,8,v);
     }
     log(v);
 }
@@ -1278,10 +1281,24 @@ function createGroove(instrument) {
 
         numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
+        var human = 0;
+        var toneFX = 0;
+        for (var i = 0; i < fxNotes; i++) {
+            if (fxHuman) {
+                human = randomInt(1, 4) / 8;
+            } else {
+                human = 0;
+            }
+            randInit = randomInt(0, fxSize * 16) + human;
+
+            if (fxTone) {
+                toneFX = randomInt(57, 63);
+            } else {
+                toneFX = 60;
+            }
+
             newGroove.push({
-                note: 60,
+                note: toneFX,
                 init: randInit / 4,
                 size: 1
             });
@@ -1764,18 +1781,6 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "verso") {
-                if (randomInt(0, 1) == 1) {
-                    channelSlices.push({
-                        seq: "filled",
-                        steps: sSlicesArray[i].steps
-                    });
-                } else {
-                    channelSlices.push({
-                        seq: "blank",
-                        steps: sSlicesArray[i].steps
-                    });
-                }
             } else // todos os drops
             {
                 channelSlices.push({
@@ -2002,6 +2007,10 @@ function singleMidi(s) {
 
         if (s == "Bass") {
             sizeSelected = bassSize;
+        }   
+
+         if (s == "FX") {
+            sizeSelected = fxSize;
         }
 
         createGroove(s);

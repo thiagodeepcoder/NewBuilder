@@ -223,10 +223,24 @@ function createGroove(instrument) {
 
         numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
+        var human = 0;
+        var toneFX = 0;
+        for (var i = 0; i < fxNotes; i++) {
+            if (fxHuman) {
+                human = randomInt(1, 4) / 8;
+            } else {
+                human = 0;
+            }
+            randInit = randomInt(0, fxSize * 16) + human;
+
+            if (fxTone) {
+                toneFX = randomInt(57, 63);
+            } else {
+                toneFX = 60;
+            }
+
             newGroove.push({
-                note: 60,
+                note: toneFX,
                 init: randInit / 4,
                 size: 1
             });
@@ -699,18 +713,6 @@ function createCSequence(s) {
                 }
             } else if (sSlicesArray[i].slice == "intro" || sSlicesArray[i].slice == "outro") {
                 if (randomInt(0, 2) == 1) {
-                    channelSlices.push({
-                        seq: "filled",
-                        steps: sSlicesArray[i].steps
-                    });
-                } else {
-                    channelSlices.push({
-                        seq: "blank",
-                        steps: sSlicesArray[i].steps
-                    });
-                }
-            } else if (sSlicesArray[i].slice == "verso") {
-                if (randomInt(0, 1) == 1) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps

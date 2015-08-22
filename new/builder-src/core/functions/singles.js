@@ -23,6 +23,10 @@ function singleMidi(s) {
 
         if (s == "Bass") {
             sizeSelected = bassSize;
+        }   
+
+         if (s == "FX") {
+            sizeSelected = fxSize;
         }
 
         createGroove(s);

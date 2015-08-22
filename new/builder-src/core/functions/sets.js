@@ -516,9 +516,12 @@ function setFX(v) {
         case "30s":
             fxSize = 16;
             break;
+        case "60s":
+            fxSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        fxNotes = note2Num(1,16,v);
+        fxNotes = note2Num(1,8,v);
     }
     log(v);
 }
