@@ -1,41 +1,39 @@
 function singleMidi(s) {
-    if (!sCreated) {
-        api = new LiveAPI("this_device");
-        liveView = new LiveAPI("live_app view");
-        liveSetView = new LiveAPI("live_set view");
-        liveSet = new LiveAPI("live_set");
+    api = new LiveAPI("this_device");
+    liveView = new LiveAPI("live_app view");
+    liveSetView = new LiveAPI("live_set view");
+    liveSet = new LiveAPI("live_set");
 
-        liveView.call("focus_view", "Session");
+    liveView.call("focus_view", "Session");
 
-        var nextFeeeMidi = getNextFreeSlot(0);
-        var sizeSelected = 16;
-        if (s == "Kick") {
-            sizeSelected = kickSize;
-        }
-
-        if (s == "Snare") {
-            sizeSelected = snareSize;
-        }
-
-        if (s == "Hats") {
-            sizeSelected = hatsSize;
-        }
-
-        if (s == "Bass") {
-            sizeSelected = bassSize;
-        }   
-
-         if (s == "FX") {
-            sizeSelected = fxSize;
-        }
-
-        createGroove(s);
-        createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
-        createNotes(0, nextFeeeMidi);
-
-        resetBang();
-        log("bom dias");
+    var nextFeeeMidi = getNextFreeSlot(0);
+    var sizeSelected = 16;
+    if (s == "Kick") {
+        sizeSelected = kickSize;
     }
+
+    if (s == "Snare") {
+        sizeSelected = snareSize;
+    }
+
+    if (s == "Hats") {
+        sizeSelected = hatsSize;
+    }
+
+    if (s == "Bass") {
+        sizeSelected = bassSize;
+    }
+
+    if (s == "FX") {
+        sizeSelected = fxSize;
+    }
+
+    createGroove(s);
+    createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
+    createNotes(0, nextFeeeMidi);
+
+    resetBang();
+    log("bom dias");
 }
 api = new LiveAPI("this_device");
 liveView = new LiveAPI("live_app view");
@@ -43,30 +41,32 @@ liveSetView = new LiveAPI("live_set view");
 liveSet = new LiveAPI("live_set");
 
 function singleChannel(s) {
-    if (!sCreated) {
+    if (sCreated) {
         if (s == "Kick" && kickSC) {
             channelBang("SC");
         }
+
+        if (s == "Snare" && snareSteady && !snareSteadyReady) {
+            channelBang("Snare fixo");
+            snareSteadyReady = true;
+        }
+
+        if (s == "Hats" && hatsSteady && !hatsSteadyReady) {
+            channelBang("Hats fixo");
+            hatsSteadyReady = true;
+        }
+
+        channelBang(s);
 
         if (s == "Kick" && kickCut) {
             channelBang("Kick cut");
         }
 
-        if (s == "Snare" && snareSteady) {
-        	channelBang("Snare fixo");
-        }
-
-        if (s == "Hats" && hatsSteady) {
-            channelBang("Hats fixo");
-        }
-
-        channelBang(s);
-
         if (s == "Bass" && bassLowEnd) {
-        	channelBang("Lowend");
+            channelBang("Lowend");
         }
 
-        
+
     }
 }
 
@@ -74,15 +74,17 @@ function channelBang(s) {
 
     liveView.call("focus_view", "Session");
 
-    createStructure(); //---------------------------------------  retirar
     var nextTrack = getTotalChannels();
     setCustomTrack(nextTrack); // seta a selectedTrack
     createTrack(s); // cria um novo channel
 
+    trackView = new LiveAPI("live_set tracks " + Number(nextTrack) + " view");
+    trackView.set("is_collapsed", "1");
+
     createCSequence(s); // cria sequencia do canal de midi timeline
     createGroove(s); //cria groove
 
-    //loadDefaults(nextTrack);
+    loadDefaults(nextTrack);
     var nextFeeeMidi;
 
     for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
@@ -110,5 +112,5 @@ function channelBang(s) {
 
     setBuilderChannel();
     resetBang();
-	
+
 }

@@ -119,29 +119,41 @@ function createGroove(instrument) {
                     size: 1
                 });
             }
-            if (kickC < kickNotes) {
-                var randInit;
-                for (var i = 0; i < kickNotes; i++) {
+            var randInit;
+            for (var j = 0; j < 16 / kickSize; j++) {
+                if (j == 0) {
+                    for (var i = 0; i < kickNotes; i++) {
 
-                    randInit = randomInt(0, kickSize * 8);
-
-                    while (isInArray(randInit, arrayOfNotes) || isOdd(randInit) == 0) {
                         randInit = randomInt(0, kickSize * 8);
+
+                        while (isInArray(randInit, arrayOfNotes)) {
+                            randInit = randomInt(0, kickSize * 8);
+                        }
+                        if(isOdd(randInit) == 0) {
+                            randInit += 1;
+                        }
+                        arrayOfNotes.push(randInit);
+                        newGroove.push({
+                            note: 60,
+                            init: randInit / 2,
+                            size: 0.5
+                        });
                     }
-                    arrayOfNotes.push(randInit);
-                    newGroove.push({
-                        note: 60,
-                        init: randInit / 2,
-                        size: 0.25
-                    });
+                } else {
+                    for (var i = 0; i < kickNotes; i++) {
+                        newGroove.push({
+                            note: 60,
+                            init: ((arrayOfNotes[i]) / 2) + ((j * kickSize * 4)),
+                            size: 0.5
+                        });
+                    }
                 }
-                kickC++;
             }
             kickGrooveNotes = newGroove;
         } else {
             newGroove = kickGrooveNotes;
         }
-        kickGrooveNotes = [];
+        //kickGrooveNotes = [];
     } else if (channelGroove == "Snare fixo") {
         numberNotes = 32;
         for (var i = 0; i < numberNotes; i++) {
@@ -307,11 +319,11 @@ function createGroove(instrument) {
         for (var i = 0; i < 16; i++) {
             newGroove.push({
                 note: 60,
-                init: i*4,
+                init: i * 4,
                 size: 4
             });
         }
-        
+
         // código para pad com variação de notas
 
         /*numberNotes = cgSelected;

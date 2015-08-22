@@ -21,11 +21,7 @@ var noteTrack;
 var countBangs = 0;
 
 var newGroove = [];
-var channelSequence = [
-    "Snare",
-    "Snare",
-    "Snare"
-];
+var channelSequence = [];
 
 var sSlicesArray = [];
 var channelSlices = [];
@@ -66,7 +62,6 @@ var cgPads = "Short";
 var cgLeads = "Short";
 var cgVocals = "Short";
 
-var totalDropDowns = 16;
 
 //new 2.0
 var introKickBass = false;
@@ -91,7 +86,7 @@ var breakNum = 0;
 
 var kickCut = false;
 var kickSC = false;
-var kickSize = 0;
+var kickSize = 16;
 var kickNotes = 1;
 
 var bassLowEnd = false;
@@ -102,13 +97,15 @@ var bassNotes = 1;
 
 var snareSteady = false;
 var snareHuman = false;
-var snareSize = 0;
+var snareSize = 16;
 var snareNotes = 1;
+var snareSteadyReady = false;
 
 var hatsSteady = false;
 var hatsHuman = false;
 var hatsSize = 0;
 var hatsNotes = 1;
+var hatsSteadyReady = false;
 
 var fxTone = false;
 var fxHuman = false;
@@ -116,7 +113,7 @@ var fxSize = 0;
 var fxNotes = 1;
 
 var percHuman = false;
-var percSize = 0;
+var percSize = 16;
 var percNotes = 2;
 
 var leadTone = false;
@@ -131,6 +128,8 @@ var vocalNotes = 1;
 
 var selectedTypeNewSynth = "";
 var kickGrooveNotes = [];
+
+var buildFinish = false;
 
 
 var DEBUG = true;
@@ -485,6 +484,7 @@ function setCLeadsG(v) {
 function setCVocalsG(v) {
     cgVocals = v;
 }
+
 function setTempSelect(v) {
     if (v != "Select") {
         var sc;
@@ -780,7 +780,7 @@ function setBass(v) {
             break;
     }
     if (isNumber(v)) {
-        bassNotes = note2Num(1,16,v);
+        bassNotes = note2Num(1, 16, v);
         log(bassNotes);
     }
 }
@@ -819,7 +819,7 @@ function setSnare(v) {
             break;
     }
     if (isNumber(v)) {
-        snareNotes = note2Num(1,8,v);
+        snareNotes = note2Num(1, 8, v);
     }
 }
 
@@ -857,7 +857,7 @@ function setHats(v) {
             break;
     }
     if (isNumber(v)) {
-        hatsNotes = note2Num(1,8,v);
+        hatsNotes = note2Num(1, 8, v);
     }
 }
 
@@ -895,7 +895,7 @@ function setFX(v) {
             break;
     }
     if (isNumber(v)) {
-        fxNotes = note2Num(1,8,v);
+        fxNotes = note2Num(1, 8, v);
     }
     log(v);
 }
@@ -925,7 +925,7 @@ function setPerc(v) {
             break;
     }
     if (isNumber(v)) {
-        percNotes = note2Num(1,8,v);
+        percNotes = note2Num(1, 8, v);
     }
     log(v);
 }
@@ -961,7 +961,7 @@ function setLead(v) {
             break;
     }
     if (isNumber(v)) {
-        leadNotes = note2Num(1,16,v);
+        leadNotes = note2Num(1, 16, v);
     }
     log(v);
 }
@@ -997,12 +997,12 @@ function setVocals(v) {
             break;
     }
     if (isNumber(v)) {
-        vocalNotes = note2Num(1,8,v);
+        vocalNotes = note2Num(1, 8, v);
     }
     log(v);
 }
 
-function setChannelLoadSynth (s) {
+function setChannelLoadSynth(s) {
     selectedTypeNewSynth = s;
     log(selectedTypeNewSynth);
 }
@@ -1010,51 +1010,43 @@ function setChannelLoadSynth (s) {
 function setNumSlices() {
     var i = 0;
     var o = 0;
-    if(intro) { i = 1; }
-    if(outro) { o = 1; }
+    if (intro) {
+        i = 1;
+    }
+    if (outro) {
+        o = 1;
+    }
     sSlices = i + verseNum + breakNum + o;
-    log(i, verseNum, breakNum,o, sSlices);
+    log(i, verseNum, breakNum, o, sSlices);
 }
 
 function setChannelSequence() {
     var i;
-    if(kickSC) { channelSequence.push("SC"); }
     channelSequence.push("Kick");
-    if(kickCut) { channelSequence.push("Kick cut"); }
+    
     channelSequence.push("Bass");
-    if(bassLowEnd) { channelSequence.push("Lowend"); }
-    if(snareSteady) { channelSequence.push("Snare fixo"); }
-    for(i=0;i<numSnares;i++)
-    {
+    for (i = 0; i < numSnares; i++) {
         channelSequence.push("Snare");
     }
-    if(hatsSteady) { channelSequence.push("Hats fixo"); }
-    for(i=0;i<numHats;i++)
-    {
+    for (i = 0; i < numHats; i++) {
         channelSequence.push("Hats");
     }
-    for(i=0;i<numPercs;i++)
-    {
+    for (i = 0; i < numPercs; i++) {
         channelSequence.push("Perc");
     }
-    for(i=0;i<numFX;i++)
-    {
+    for (i = 0; i < numFX; i++) {
         channelSequence.push("FX");
     }
-    for(i=0;i<numLead;i++)
-    {
+    for (i = 0; i < numLead; i++) {
         channelSequence.push("Lead");
     }
-    for(i=0;i<numVocal;i++)
-    {
+    for (i = 0; i < numVocal; i++) {
         channelSequence.push("Vocals");
     }
-    for(i=0;i<numPads;i++)
-    {
+    for (i = 0; i < numPads; i++) {
         channelSequence.push("Pad");
     }
 }
-
 
 
 function createScene(ns) {
@@ -1178,29 +1170,41 @@ function createGroove(instrument) {
                     size: 1
                 });
             }
-            if (kickC < kickNotes) {
-                var randInit;
-                for (var i = 0; i < kickNotes; i++) {
+            var randInit;
+            for (var j = 0; j < 16 / kickSize; j++) {
+                if (j == 0) {
+                    for (var i = 0; i < kickNotes; i++) {
 
-                    randInit = randomInt(0, kickSize * 8);
-
-                    while (isInArray(randInit, arrayOfNotes) || isOdd(randInit) == 0) {
                         randInit = randomInt(0, kickSize * 8);
+
+                        while (isInArray(randInit, arrayOfNotes)) {
+                            randInit = randomInt(0, kickSize * 8);
+                        }
+                        if(isOdd(randInit) == 0) {
+                            randInit += 1;
+                        }
+                        arrayOfNotes.push(randInit);
+                        newGroove.push({
+                            note: 60,
+                            init: randInit / 2,
+                            size: 0.5
+                        });
                     }
-                    arrayOfNotes.push(randInit);
-                    newGroove.push({
-                        note: 60,
-                        init: randInit / 2,
-                        size: 0.25
-                    });
+                } else {
+                    for (var i = 0; i < kickNotes; i++) {
+                        newGroove.push({
+                            note: 60,
+                            init: ((arrayOfNotes[i]) / 2) + ((j * kickSize * 4)),
+                            size: 0.5
+                        });
+                    }
                 }
-                kickC++;
             }
             kickGrooveNotes = newGroove;
         } else {
             newGroove = kickGrooveNotes;
         }
-        kickGrooveNotes = [];
+        //kickGrooveNotes = [];
     } else if (channelGroove == "Snare fixo") {
         numberNotes = 32;
         for (var i = 0; i < numberNotes; i++) {
@@ -1366,11 +1370,11 @@ function createGroove(instrument) {
         for (var i = 0; i < 16; i++) {
             newGroove.push({
                 note: 60,
-                init: i*4,
+                init: i * 4,
                 size: 4
             });
         }
-        
+
         // código para pad com variação de notas
 
         /*numberNotes = cgSelected;
@@ -2119,43 +2123,41 @@ setNote("C");
 
 
 function singleMidi(s) {
-    if (!sCreated) {
-        api = new LiveAPI("this_device");
-        liveView = new LiveAPI("live_app view");
-        liveSetView = new LiveAPI("live_set view");
-        liveSet = new LiveAPI("live_set");
+    api = new LiveAPI("this_device");
+    liveView = new LiveAPI("live_app view");
+    liveSetView = new LiveAPI("live_set view");
+    liveSet = new LiveAPI("live_set");
 
-        liveView.call("focus_view", "Session");
+    liveView.call("focus_view", "Session");
 
-        var nextFeeeMidi = getNextFreeSlot(0);
-        var sizeSelected = 16;
-        if (s == "Kick") {
-            sizeSelected = kickSize;
-        }
-
-        if (s == "Snare") {
-            sizeSelected = snareSize;
-        }
-
-        if (s == "Hats") {
-            sizeSelected = hatsSize;
-        }
-
-        if (s == "Bass") {
-            sizeSelected = bassSize;
-        }   
-
-         if (s == "FX") {
-            sizeSelected = fxSize;
-        }
-
-        createGroove(s);
-        createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
-        createNotes(0, nextFeeeMidi);
-
-        resetBang();
-        log("bom dias");
+    var nextFeeeMidi = getNextFreeSlot(0);
+    var sizeSelected = 16;
+    if (s == "Kick") {
+        sizeSelected = kickSize;
     }
+
+    if (s == "Snare") {
+        sizeSelected = snareSize;
+    }
+
+    if (s == "Hats") {
+        sizeSelected = hatsSize;
+    }
+
+    if (s == "Bass") {
+        sizeSelected = bassSize;
+    }
+
+    if (s == "FX") {
+        sizeSelected = fxSize;
+    }
+
+    createGroove(s);
+    createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
+    createNotes(0, nextFeeeMidi);
+
+    resetBang();
+    log("bom dias");
 }
 api = new LiveAPI("this_device");
 liveView = new LiveAPI("live_app view");
@@ -2163,30 +2165,32 @@ liveSetView = new LiveAPI("live_set view");
 liveSet = new LiveAPI("live_set");
 
 function singleChannel(s) {
-    if (!sCreated) {
+    if (sCreated) {
         if (s == "Kick" && kickSC) {
             channelBang("SC");
         }
+
+        if (s == "Snare" && snareSteady && !snareSteadyReady) {
+            channelBang("Snare fixo");
+            snareSteadyReady = true;
+        }
+
+        if (s == "Hats" && hatsSteady && !hatsSteadyReady) {
+            channelBang("Hats fixo");
+            hatsSteadyReady = true;
+        }
+
+        channelBang(s);
 
         if (s == "Kick" && kickCut) {
             channelBang("Kick cut");
         }
 
-        if (s == "Snare" && snareSteady) {
-        	channelBang("Snare fixo");
-        }
-
-        if (s == "Hats" && hatsSteady) {
-            channelBang("Hats fixo");
-        }
-
-        channelBang(s);
-
         if (s == "Bass" && bassLowEnd) {
-        	channelBang("Lowend");
+            channelBang("Lowend");
         }
 
-        
+
     }
 }
 
@@ -2194,15 +2198,17 @@ function channelBang(s) {
 
     liveView.call("focus_view", "Session");
 
-    createStructure(); //---------------------------------------  retirar
     var nextTrack = getTotalChannels();
     setCustomTrack(nextTrack); // seta a selectedTrack
     createTrack(s); // cria um novo channel
 
+    trackView = new LiveAPI("live_set tracks " + Number(nextTrack) + " view");
+    trackView.set("is_collapsed", "1");
+
     createCSequence(s); // cria sequencia do canal de midi timeline
     createGroove(s); //cria groove
 
-    //loadDefaults(nextTrack);
+    loadDefaults(nextTrack);
     var nextFeeeMidi;
 
     for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
@@ -2230,7 +2236,7 @@ function channelBang(s) {
 
     setBuilderChannel();
     resetBang();
-	
+
 }
 
 
@@ -2409,85 +2415,41 @@ function notes2Channels(n) {
 function resetBang() {
     arrayOfNotes = [];
     channelSlices = [];
-    sSlicesArray = [];
+    
 }
-
-function updateChannels() {
-
-}
-
 
 function bang() {
-   /* api = new LiveAPI("this_device");
-    liveView = new LiveAPI("live_app view");
-    liveSetView = new LiveAPI("live_set view");
-    liveSet = new LiveAPI("live_set");
+    if (!buildFinish) {
+        createScene(25);
+        //cria slices da estrutura
+        if (!sCreated) {
+            createStructure();
+            sCreated = true;
+            setChannelSequence();
+        }
 
-    liveView.call("focus_view", "Session");*/
-   
-    createTrack(channelSequence[countBangs]);
-    loadDefaults(channelSequence[countBangs]);
+        if (channelSequence[countBangs] == "SC") {
+            var muteT = new LiveAPI("live_set tracks 1");
+            muteT.set("mute", "1");
+        }
 
-    trackView = new LiveAPI("live_set tracks " + Number(countBangs + 1) + " view");
+        createMusic(channelSequence[countBangs]);
 
-    trackView.set("is_collapsed", "1");
-    //setCustomTrack(countBangs);
-
-    createScene(25);
-    //cria slices da estrutura
-    if (!sCreated) {
-        createStructure();
-        sCreated = true;
-    }
-
-    if (channelSequence[countBangs] == "SC") {
-        var muteT = new LiveAPI("live_set tracks 1");
-        muteT.set("mute", "1");
-    }
-    
-    /*createCSequence(channelSequence[countBangs]); // cria sequencia do canal de midi timeline
-    createGroove(channelSequence[countBangs]); //cria groove
-
-    var nextFeeeMidi;
-
-    for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
-        for (var j = 0; j < channelSlices[i].steps / 16; j++) {
-            nextFeeeMidi = getNextFreeSlot(countBangs + 1);
-            if (channelSlices[i].steps % 16 == 0) {
-                finalSteps = 16;
-            } else if (channelSequence[countBangs] == "SC") {
-                if (j == (channelSlices[i].steps / 16) - 1) {
-                    finalSteps = channelSlices[i].steps % 16;
-                } else {
-                    finalSteps = 16;
-                }
-            } else {
-                finalSteps = channelSlices[i].steps;
-            }
-
-            createClipCustom(countBangs + 1, nextFeeeMidi, finalSteps, channelSlices[i].seq, channelSequence[countBangs]);
-
-            if (channelSlices[i].seq != "blank") {
-                createNotes(countBangs + 1, nextFeeeMidi);
-            }
+        if (countBangs < channelSequence.length - 1) {
+            //if (countBangs < 1) {
+            countBangs++;
+            bang();
+        } else {
+            //sCreated = false;
+            buildFinish = true;
+            //sSlicesArray = [];
         }
     }
-*/
-    //channelSlices = [];
-    
-    singleChannel(channelSequence[countBangs]);
+}
 
-    if (countBangs < channelSequence.length - 1) {
-        //if (countBangs < 0) {
-        countBangs++;
-        bang();
-    } else {
-        sCreated = false;
-        sSlicesArray = [];
-    }
-
-    //setBuilderChannel();
-    //arrayOfNotes = []; 
+function createMusic(s) {
+    // cria cada canal    
+    singleChannel(s);
 }
 
 

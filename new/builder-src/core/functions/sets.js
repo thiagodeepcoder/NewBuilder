@@ -112,6 +112,7 @@ function setCLeadsG(v) {
 function setCVocalsG(v) {
     cgVocals = v;
 }
+
 function setTempSelect(v) {
     if (v != "Select") {
         var sc;
@@ -407,7 +408,7 @@ function setBass(v) {
             break;
     }
     if (isNumber(v)) {
-        bassNotes = note2Num(1,16,v);
+        bassNotes = note2Num(1, 16, v);
         log(bassNotes);
     }
 }
@@ -446,7 +447,7 @@ function setSnare(v) {
             break;
     }
     if (isNumber(v)) {
-        snareNotes = note2Num(1,8,v);
+        snareNotes = note2Num(1, 8, v);
     }
 }
 
@@ -484,7 +485,7 @@ function setHats(v) {
             break;
     }
     if (isNumber(v)) {
-        hatsNotes = note2Num(1,8,v);
+        hatsNotes = note2Num(1, 8, v);
     }
 }
 
@@ -522,7 +523,7 @@ function setFX(v) {
             break;
     }
     if (isNumber(v)) {
-        fxNotes = note2Num(1,8,v);
+        fxNotes = note2Num(1, 8, v);
     }
     log(v);
 }
@@ -552,7 +553,7 @@ function setPerc(v) {
             break;
     }
     if (isNumber(v)) {
-        percNotes = note2Num(1,8,v);
+        percNotes = note2Num(1, 8, v);
     }
     log(v);
 }
@@ -588,7 +589,7 @@ function setLead(v) {
             break;
     }
     if (isNumber(v)) {
-        leadNotes = note2Num(1,16,v);
+        leadNotes = note2Num(1, 16, v);
     }
     log(v);
 }
@@ -624,12 +625,12 @@ function setVocals(v) {
             break;
     }
     if (isNumber(v)) {
-        vocalNotes = note2Num(1,8,v);
+        vocalNotes = note2Num(1, 8, v);
     }
     log(v);
 }
 
-function setChannelLoadSynth (s) {
+function setChannelLoadSynth(s) {
     selectedTypeNewSynth = s;
     log(selectedTypeNewSynth);
 }
@@ -637,48 +638,40 @@ function setChannelLoadSynth (s) {
 function setNumSlices() {
     var i = 0;
     var o = 0;
-    if(intro) { i = 1; }
-    if(outro) { o = 1; }
+    if (intro) {
+        i = 1;
+    }
+    if (outro) {
+        o = 1;
+    }
     sSlices = i + verseNum + breakNum + o;
-    log(i, verseNum, breakNum,o, sSlices);
+    log(i, verseNum, breakNum, o, sSlices);
 }
 
 function setChannelSequence() {
     var i;
-    if(kickSC) { channelSequence.push("SC"); }
     channelSequence.push("Kick");
-    if(kickCut) { channelSequence.push("Kick cut"); }
+    
     channelSequence.push("Bass");
-    if(bassLowEnd) { channelSequence.push("Lowend"); }
-    if(snareSteady) { channelSequence.push("Snare fixo"); }
-    for(i=0;i<numSnares;i++)
-    {
+    for (i = 0; i < numSnares; i++) {
         channelSequence.push("Snare");
     }
-    if(hatsSteady) { channelSequence.push("Hats fixo"); }
-    for(i=0;i<numHats;i++)
-    {
+    for (i = 0; i < numHats; i++) {
         channelSequence.push("Hats");
     }
-    for(i=0;i<numPercs;i++)
-    {
+    for (i = 0; i < numPercs; i++) {
         channelSequence.push("Perc");
     }
-    for(i=0;i<numFX;i++)
-    {
+    for (i = 0; i < numFX; i++) {
         channelSequence.push("FX");
     }
-    for(i=0;i<numLead;i++)
-    {
+    for (i = 0; i < numLead; i++) {
         channelSequence.push("Lead");
     }
-    for(i=0;i<numVocal;i++)
-    {
+    for (i = 0; i < numVocal; i++) {
         channelSequence.push("Vocals");
     }
-    for(i=0;i<numPads;i++)
-    {
+    for (i = 0; i < numPads; i++) {
         channelSequence.push("Pad");
     }
 }
-

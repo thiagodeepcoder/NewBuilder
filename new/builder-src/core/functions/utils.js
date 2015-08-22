@@ -173,9 +173,5 @@ function notes2Channels(n) {
 function resetBang() {
     arrayOfNotes = [];
     channelSlices = [];
-    sSlicesArray = [];
-}
-
-function updateChannels() {
-
+    
 }

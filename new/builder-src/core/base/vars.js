@@ -14,11 +14,7 @@ var noteTrack;
 var countBangs = 0;
 
 var newGroove = [];
-var channelSequence = [
-    "Snare",
-    "Snare",
-    "Snare"
-];
+var channelSequence = [];
 
 var sSlicesArray = [];
 var channelSlices = [];
@@ -59,7 +55,6 @@ var cgPads = "Short";
 var cgLeads = "Short";
 var cgVocals = "Short";
 
-var totalDropDowns = 16;
 
 //new 2.0
 var introKickBass = false;
@@ -84,7 +79,7 @@ var breakNum = 0;
 
 var kickCut = false;
 var kickSC = false;
-var kickSize = 0;
+var kickSize = 16;
 var kickNotes = 1;
 
 var bassLowEnd = false;
@@ -95,13 +90,15 @@ var bassNotes = 1;
 
 var snareSteady = false;
 var snareHuman = false;
-var snareSize = 0;
+var snareSize = 16;
 var snareNotes = 1;
+var snareSteadyReady = false;
 
 var hatsSteady = false;
 var hatsHuman = false;
 var hatsSize = 0;
 var hatsNotes = 1;
+var hatsSteadyReady = false;
 
 var fxTone = false;
 var fxHuman = false;
@@ -109,7 +106,7 @@ var fxSize = 0;
 var fxNotes = 1;
 
 var percHuman = false;
-var percSize = 0;
+var percSize = 16;
 var percNotes = 2;
 
 var leadTone = false;
@@ -124,3 +121,5 @@ var vocalNotes = 1;
 
 var selectedTypeNewSynth = "";
 var kickGrooveNotes = [];
+
+var buildFinish = false;
