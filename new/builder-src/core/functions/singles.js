@@ -30,7 +30,7 @@ function singleMidi(s) {
         }
 
         createGroove(s);
-        createClipCustom(0, nextFeeeMidi, sizeSelected, "filled", s, true);
+        createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
         createNotes(0, nextFeeeMidi);
 
         resetBang();

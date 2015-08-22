@@ -53,7 +53,7 @@ function changeNotes(t, c, seq) {
 
 function convertNote(n)
 {
-    var c = 55;
+    var c = 57;
     var fNote = n-c;
 
 

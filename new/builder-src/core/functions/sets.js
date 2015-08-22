@@ -386,6 +386,7 @@ function setBass(v) {
             break;
         case "Tones":
             bassTone = true;
+            break;
         case "2s":
             bassSize = 1;
             break;
@@ -592,7 +593,7 @@ function setLead(v) {
     log(v);
 }
 
-function setVocal(v) {
+function setVocals(v) {
     switch (v) {
         case "Atonal":
             vocalTone = false;
@@ -623,7 +624,7 @@ function setVocal(v) {
             break;
     }
     if (isNumber(v)) {
-        vocalNotes = note2Num(1,16,v);
+        vocalNotes = note2Num(1,8,v);
     }
     log(v);
 }

@@ -192,7 +192,7 @@ function changeNotes(t, c, seq) {
 
 function convertNote(n)
 {
-    var c = 55;
+    var c = 57;
     var fNote = n-c;
 
 
@@ -759,6 +759,7 @@ function setBass(v) {
             break;
         case "Tones":
             bassTone = true;
+            break;
         case "2s":
             bassSize = 1;
             break;
@@ -965,7 +966,7 @@ function setLead(v) {
     log(v);
 }
 
-function setVocal(v) {
+function setVocals(v) {
     switch (v) {
         case "Atonal":
             vocalTone = false;
@@ -996,7 +997,7 @@ function setVocal(v) {
             break;
     }
     if (isNumber(v)) {
-        vocalNotes = note2Num(1,16,v);
+        vocalNotes = note2Num(1,8,v);
     }
     log(v);
 }
@@ -1220,41 +1221,64 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Perc") {
 
-       numberNotes = cgSelected;
         var randInit;
         var human = 0;
-        for (var i = 0; i < percNotes; i++) {
-            if (percHuman) {
-                human = randomInt(1, 4) / 8;
+        for (var j = 0; j < 16 / percSize; j++) {
+            if (j == 0) {
+                for (var i = 0; i < percNotes; i++) {
+                    if (percHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(0, percSize * 16) + human;
+                    arrayOfNotes.push(randInit);
+                    newGroove.push({
+                        note: 60,
+                        init: randInit / 4,
+                        size: 1
+                    });
+                }
             } else {
-                human = 0;
+                for (var i = 0; i < percNotes; i++) {
+                    newGroove.push({
+                        note: 60,
+                        init: ((arrayOfNotes[i]) / 4) + ((j * percSize * 4)),
+                        size: 1
+                    });
+                }
+                log((j * hatsSize));
             }
-            randInit = randomInt(0, percSize * 16) + human;
-
-            newGroove.push({
-                note: 60,
-                init: randInit / 4,
-                size: 1
-            });
         }
     } else if (channelGroove == "Snare") {
-
-        numberNotes = cgSelected;
         var randInit;
         var human = 0;
-        for (var i = 0; i < snareNotes; i++) {
-            if (snareHuman) {
-                human = randomInt(1, 4) / 8;
+        for (var j = 0; j < 16 / snareSize; j++) {
+            if (j == 0) {
+                for (var i = 0; i < snareNotes; i++) {
+                    if (snareHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(0, snareSize * 16) + human;
+                    arrayOfNotes.push(randInit);
+                    newGroove.push({
+                        note: 60,
+                        init: randInit / 4,
+                        size: 1
+                    });
+                }
             } else {
-                human = 0;
+                for (var i = 0; i < snareNotes; i++) {
+                    newGroove.push({
+                        note: 60,
+                        init: ((arrayOfNotes[i]) / 4) + ((j * snareSize * 4)),
+                        size: 1
+                    });
+                }
+                log((j * snareSize));
             }
-            randInit = randomInt(0, snareSize * 16) + human;
-
-            newGroove.push({
-                note: 60,
-                init: randInit / 4,
-                size: 1
-            });
         }
     } else if (channelGroove == "Hats fixo") {
         numberNotes = 64;
@@ -1267,22 +1291,34 @@ function createGroove(instrument) {
         }
     } else if (channelGroove == "Hats") {
 
-        numberNotes = cgSelected;
         var randInit;
         var human = 0;
-        for (var i = 0; i < hatsNotes; i++) {
-            if (hatsHuman) {
-                human = randomInt(1, 4) / 8;
+        for (var j = 0; j < 16 / hatsSize; j++) {
+            if (j == 0) {
+                for (var i = 0; i < hatsNotes; i++) {
+                    if (hatsHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(0, hatsSize * 16) + human;
+                    arrayOfNotes.push(randInit);
+                    newGroove.push({
+                        note: 60,
+                        init: randInit / 4,
+                        size: 1
+                    });
+                }
             } else {
-                human = 0;
+                for (var i = 0; i < hatsNotes; i++) {
+                    newGroove.push({
+                        note: 60,
+                        init: ((arrayOfNotes[i]) / 4) + ((j * hatsSize * 4)),
+                        size: 1
+                    });
+                }
+                log((j * hatsSize));
             }
-            randInit = randomInt(0, hatsSize * 16) + human;
-
-            newGroove.push({
-                note: 60,
-                init: randInit / 4,
-                size: 1
-            });
         }
     } else if (channelGroove == "FX") {
 
@@ -1290,25 +1326,39 @@ function createGroove(instrument) {
         var randInit;
         var human = 0;
         var toneFX = 0;
-        for (var i = 0; i < fxNotes; i++) {
-            if (fxHuman) {
-                human = randomInt(1, 4) / 8;
-            } else {
-                human = 0;
-            }
-            randInit = randomInt(0, fxSize * 16) + human;
+        var toneArray = [];
+        for (var j = 0; j < 16 / fxSize; j++) {
+            if (j == 0) {
+                for (var i = 0; i < fxNotes; i++) {
+                    if (fxHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(0, fxSize * 16) + human;
 
-            if (fxTone) {
-                toneFX = randomInt(57, 63);
+                    if (fxTone) {
+                        toneFX = randomInt(57, 63);
+                    } else {
+                        toneFX = 60;
+                    }
+                    toneArray.push(toneFX);
+                    arrayOfNotes.push(randInit);
+                    newGroove.push({
+                        note: toneFX,
+                        init: randInit / 4,
+                        size: 1
+                    });
+                }
             } else {
-                toneFX = 60;
+                for (var i = 0; i < fxNotes; i++) {
+                    newGroove.push({
+                        note: toneArray[i],
+                        init: ((arrayOfNotes[i]) / 4) + ((j * fxSize * 4)),
+                        size: 1
+                    });
+                }
             }
-
-            newGroove.push({
-                note: toneFX,
-                init: randInit / 4,
-                size: 1
-            });
         }
     } else if (channelGroove == "Pad") {
 
@@ -1323,13 +1373,12 @@ function createGroove(instrument) {
             });
         }
     } else if (channelGroove == "Lead") {
-        numberNotes = cgSelected;
         var randInit;
         var human = 0;
         var toneLead = 0;
         var toneArray = [];
         var human = 0;
-        for (var j = 0; j < 256 / leadSize; j++) { // 256/quanNotes
+        for (var j = 0; j < 16 / leadSize; j++) { // 256/quanNotes
             if (j == 0) { // cria sequencia base a ser duplicada
                 for (var i = 0; i < leadNotes; i++) {
                     if (leadHuman) {
@@ -1337,9 +1386,9 @@ function createGroove(instrument) {
                     } else {
                         human = 0;
                     }
-                    randInit = randomInt(1, leadSize * (1 + j)) + human;
+                    randInit = randomInt(0, leadSize * 16) + human;
                     while (isInArray(randInit, arrayOfNotes)) {
-                        randInit = randomInt(1, leadSize * (1 + j)) + human;
+                        randInit = randomInt(0, leadSize * 16) + human;
                     }
 
                     arrayOfNotes.push(randInit);
@@ -1361,23 +1410,50 @@ function createGroove(instrument) {
                 for (var i = 0; i < leadNotes; i++) {
                     newGroove.push({
                         note: toneArray[i],
-                        init: (arrayOfNotes[i] / 4) + ((j * leadSize) / 4),
+                        init: (arrayOfNotes[i] / 4) + ((j * leadSize) * 4),
                         size: 0.5
                     });
                 }
             }
         }
     } else if (channelGroove == "Vocals") {
-        log(newGroove);
-        numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
-            newGroove.push({
-                note: 60,
-                init: randInit / 4,
-                size: 1
-            });
+        var human = 0;
+        var toneVocal = 0;
+        var toneArray = [];
+        for (var j = 0; j < 16 / vocalSize; j++) {
+            if (j == 0) { // cria sequencia base a ser duplicada
+                for (var i = 0; i < vocalNotes; i++) {
+                    if (vocalHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(0, vocalSize * 16) + human;
+
+                    if (vocalTone) {
+                        toneVocal = randomInt(57, 67);
+                    } else {
+                        toneVocal = 60;
+                    }
+                    log(toneVocal);
+                    toneArray.push(toneVocal);
+                    arrayOfNotes.push(randInit);
+                    newGroove.push({
+                        note: toneVocal,
+                        init: randInit / 4,
+                        size: 1
+                    });
+                }
+            } else { // duplica sequencia até atingir 64
+                for (var i = 0; i < vocalNotes; i++) {
+                    newGroove.push({
+                        note: toneArray[i],
+                        init: (arrayOfNotes[i] / 4) + ((j * vocalSize) * 4),
+                        size: 1
+                    });
+                }
+            }
         }
     } else if (channelGroove == "Lowend") {
         log(newGroove);
@@ -1437,7 +1513,9 @@ function createGroove(instrument) {
                 quanNotes = 16;
                 break;
         }*/
-        nnNotes = bassNotes;
+
+        populateMidi("bass");
+        /*nnNotes = bassNotes;
         quanNotes = bassSize;
         var randInit;
         var toneBass = 0;
@@ -1480,9 +1558,73 @@ function createGroove(instrument) {
                     });
                 }
             }
-        };
+        };*/
 
     }
+}
+
+function populateMidi(s) {
+    var randInit;
+    var tone = 0;
+    var toneArray = [];
+    var variation = 0;
+
+    var size = eval(s + "Size");
+    var human;
+    var notes = eval(s + "Notes");
+    var iTone;
+
+    if (s == "bass" || s == "lead" || s == "vocal" || s == "fx") {
+        human = eval(s + "Human");
+    }
+    if (s == "bass" || s == "lead" || s == "vocal" || s == "fx") {
+        iTone = eval(s + "Tone");
+    }
+
+
+    for (var j = 0; j < 256 / size; j++) { // 256/quanNotes
+        if (j == 0) { // cria sequencia base a ser duplicada
+            for (var i = 0; i < notes; i++) {
+                if (human == 1) {
+                    variation = randomInt(1, 4) / 8;
+                } else {
+                    variation = 0;
+                }
+
+                do {
+                    randInit = randomInt(1, size * 4);
+                }
+                while (isInArray(randInit, arrayOfNotes));
+
+
+                if (randInit % 4 == 0 && s == "bass" && s == "snare" && s == "perc" && s == "hats") {
+                    randInit++;
+                }
+                arrayOfNotes.push(randInit);
+
+                if (iTone) {
+                    tone = randomInt(58, 62);
+                } else {
+                    tone = 60;
+                }
+                log(randInit);
+                toneArray.push(tone);
+                newGroove.push({
+                    note: tone,
+                    init: (randInit + variation) / 4,
+                    size: 0.5
+                });
+            }
+        } else { // duplica sequencia até atingir 64
+            for (var i = 0; i < notes; i++) {
+                newGroove.push({
+                    note: toneArray[i],
+                    init: ((arrayOfNotes[i] + variation) / 4) + ((j * size * 4) / 4),
+                    size: 0.5
+                });
+            }
+        }
+    };
 }
 
 function createCSequence(s) {
@@ -2054,7 +2196,7 @@ function singleMidi(s) {
         }
 
         createGroove(s);
-        createClipCustom(0, nextFeeeMidi, sizeSelected, "filled", s, true);
+        createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
         createNotes(0, nextFeeeMidi);
 
         resetBang();
