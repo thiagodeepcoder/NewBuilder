@@ -8,8 +8,25 @@ function singleMidi(s) {
         liveView.call("focus_view", "Session");
 
         var nextFeeeMidi = getNextFreeSlot(0);
+        var sizeSelected = 16;
+        if (s == "Kick") {
+            sizeSelected = kickSize;
+        }
+
+        if (s == "Snare") {
+            sizeSelected = snareSize;
+        }
+
+        if (s == "Hats") {
+            sizeSelected = hatsSize;
+        }
+
+        if (s == "Bass") {
+            sizeSelected = bassSize;
+        }
+
         createGroove(s);
-        createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
+        createClipCustom(0, nextFeeeMidi, sizeSelected, "filled", s, true);
         createNotes(0, nextFeeeMidi);
 
         resetBang();
@@ -33,6 +50,10 @@ function singleChannel(s) {
 
         if (s == "Snare" && snareSteady) {
         	channelBang("Snare fixo");
+        }
+
+        if (s == "Hats" && hatsSteady) {
+            channelBang("Hats fixo");
         }
 
         channelBang(s);

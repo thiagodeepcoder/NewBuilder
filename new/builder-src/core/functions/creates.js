@@ -101,8 +101,6 @@ function createStructure() {
     }
 }
 
-
-
 function createGroove(instrument) {
     newGroove = [];
     var channelGroove = instrument;
@@ -185,7 +183,7 @@ function createGroove(instrument) {
             } else {
                 human = 0;
             }
-            randInit = randomInt(0, 256) + human;
+            randInit = randomInt(0, snareSize * 16) + human;
 
             newGroove.push({
                 note: 60,
@@ -206,16 +204,18 @@ function createGroove(instrument) {
 
         numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 246);
-            if ((randInit / 4) % 1 != 0) {
-                randInit = (randInit / 4) + 0.25;
+        var human = 0;
+        for (var i = 0; i < hatsNotes; i++) {
+            if (hatsHuman) {
+                human = randomInt(1, 4) / 8;
             } else {
-                randInit = (randInit / 4);
+                human = 0;
             }
+            randInit = randomInt(0, hatsSize * 16) + human;
+
             newGroove.push({
                 note: 60,
-                init: randInit,
+                init: randInit / 4,
                 size: 1
             });
         }
@@ -601,10 +601,7 @@ function createCSequence(s) {
                 });
             }
         }
-    } else if (s == "Hats" || s == "Hats fixo") {
-        //var gnc = getNameC(s);
-        //var getSeq = gnc[randomInt(0, gnc.length - 1)];
-
+    } else if (s == "Hats") {
         for (var i = 0; i < sSlicesArray.length; i++) {
             if (sSlicesArray[i].slice == "break" || sSlicesArray[i].slice == "minibreak") {
                 if (randomInt(0, 1) == 1) {
@@ -639,6 +636,40 @@ function createCSequence(s) {
                 } else {
                     channelSlices.push({
                         seq: "blank",
+                        steps: sSlicesArray[i].steps
+                    });
+                }
+            } else // todos os drops
+            {
+                channelSlices.push({
+                    seq: "filled",
+                    steps: sSlicesArray[i].steps
+                });
+            }
+        }
+    } else if (s == "Hats fixo") {
+        for (var i = 0; i < sSlicesArray.length; i++) {
+            if (sSlicesArray[i].slice == "break") {
+                if (randomInt(0, 2) == 1) {
+                    channelSlices.push({
+                        seq: "filled",
+                        steps: sSlicesArray[i].steps
+                    });
+                } else {
+                    channelSlices.push({
+                        seq: "blank",
+                        steps: sSlicesArray[i].steps
+                    });
+                }
+            } else if (sSlicesArray[i].slice == "intro" || sSlicesArray[i].slice == "outro") {
+                if (randomInt(0, 3) == 1) {
+                    channelSlices.push({
+                        seq: "blank",
+                        steps: sSlicesArray[i].steps
+                    });
+                } else {
+                    channelSlices.push({
+                        seq: "filled",
                         steps: sSlicesArray[i].steps
                     });
                 }

@@ -478,9 +478,12 @@ function setHats(v) {
         case "30s":
             hatsSize = 16;
             break;
+        case "60s":
+            hatsSize = 32;
+            break;
     }
     if (isNumber(v)) {
-        hatsNotes = note2Num(1,16,v);
+        hatsNotes = note2Num(1,8,v);
     }
 }
 
