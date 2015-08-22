@@ -265,16 +265,49 @@ function createGroove(instrument) {
             });
         }
     } else if (channelGroove == "Lead") {
-        log(cgSelected);
         numberNotes = cgSelected;
         var randInit;
-        for (var i = 0; i < numberNotes; i++) {
-            randInit = randomInt(0, 256);
-            newGroove.push({
-                note: randomInt(60, 72),
-                init: randInit / 4,
-                size: 1
-            });
+        var human = 0;
+        var toneLead = 0;
+        var toneArray = [];
+        var human = 0;
+        for (var j = 0; j < 256 / leadSize; j++) { // 256/quanNotes
+            if (j == 0) { // cria sequencia base a ser duplicada
+                for (var i = 0; i < leadNotes; i++) {
+                    if (leadHuman) {
+                        human = randomInt(1, 4) / 8;
+                    } else {
+                        human = 0;
+                    }
+                    randInit = randomInt(1, leadSize * (1 + j)) + human;
+                    while (isInArray(randInit, arrayOfNotes)) {
+                        randInit = randomInt(1, leadSize * (1 + j)) + human;
+                    }
+
+                    arrayOfNotes.push(randInit);
+
+                    if (leadTone) {
+                        toneLead = randomInt(57, 67);
+                    } else {
+                        toneLead = 60;
+                    }
+
+                    toneArray.push(toneLead);
+                    newGroove.push({
+                        note: toneLead,
+                        init: randInit / 4,
+                        size: 0.5
+                    });
+                }
+            } else { // duplica sequencia até atingir 64
+                for (var i = 0; i < leadNotes; i++) {
+                    newGroove.push({
+                        note: toneArray[i],
+                        init: (arrayOfNotes[i] / 4) + ((j * leadSize) / 4),
+                        size: 0.5
+                    });
+                }
+            }
         }
     } else if (channelGroove == "Vocals") {
         log(newGroove);
