@@ -38,7 +38,7 @@ function createStructure() {
                 });
                 sSlicesArray.push({
                     slice: "drop",
-                    steps: 16
+                    steps: dropSize
                 });
             }
         }
@@ -65,7 +65,7 @@ function createStructure() {
                         }
                         sSlicesArray.push({
                             slice: "drop",
-                            steps: 16
+                            steps: dropSize
                         });
                         bCounter++;
                     } else {
@@ -85,7 +85,7 @@ function createStructure() {
                         });
                         sSlicesArray.push({
                             slice: "drop",
-                            steps: 16
+                            steps: dropSize
                         });
                         bCounter++;
                     }
@@ -106,7 +106,7 @@ function createGroove(instrument) {
     var channelGroove = instrument;
     var numberNotes;
 
-    setCGroove(channelGroove);
+    //setCGroove(channelGroove);
 
     if (channelGroove == "Kick" || channelGroove == "Kick cut" || channelGroove == "SC") {
         if (kickGrooveNotes == '') {
@@ -458,7 +458,7 @@ function createGroove(instrument) {
                     while (isInArray(randInit, arrayOfNotes));
 
 
-                    if (randInit % 4 == 0 && s == "bass" && s == "snare" && s == "perc" && s == "hats") {
+                    if (randInit % 4 == 0) {
                         randInit++;
                     }
                     arrayOfNotes.push(randInit);
@@ -709,7 +709,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 3) == 1) {
+                if (randomInt(0, 100) >= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -721,7 +721,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro") {
-                if (randomInt(0, 1) == 1) {
+                if (randomInt(0, 100) >= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -776,8 +776,8 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "intro" || sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 2) == 1) {
+            } else if (sSlicesArray[i].slice == "outro") {
+                if (randomInt(0, 100) >= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -788,7 +788,19 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "verso") {
+            } else if (sSlicesArray[i].slice == "intro") {
+                if (randomInt(0, 100) >= introPercent) {
+                    channelSlices.push({
+                        seq: "filled",
+                        steps: sSlicesArray[i].steps
+                    });
+                } else {
+                    channelSlices.push({
+                        seq: "blank",
+                        steps: sSlicesArray[i].steps
+                    });
+                }
+            }else if (sSlicesArray[i].slice == "verso") {
                 if (randomInt(0, 1) == 1) {
                     channelSlices.push({
                         seq: "filled",
@@ -858,8 +870,8 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "intro" || sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 2) == 1) {
+            } else if (sSlicesArray[i].slice == "intro" ) {
+                if (randomInt(0, 100) >= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -870,7 +882,19 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else // todos os drops
+            } else if (sSlicesArray[i].slice == "outro") {
+                if (randomInt(0, 100) >= outroPercent) {
+                    channelSlices.push({
+                        seq: "filled",
+                        steps: sSlicesArray[i].steps
+                    });
+                } else {
+                    channelSlices.push({
+                        seq: "blank",
+                        steps: sSlicesArray[i].steps
+                    });
+                }
+            }else // todos os drops
             {
                 channelSlices.push({
                     seq: "filled",
@@ -904,11 +928,11 @@ function createClipCustom(t, c, s, fill, name, plus) {
     if (plus) {
         sceneSlotClip.set("name", "New " + name);
     }
-    /*var getcolor = getColor(name);
+    var getcolor = getColor(name);
     if (fill == "blank") {
         setClipColor(t, c, [50, 50, 50]);
     } else {
         setClipColor(t, c, getcolor);
-    }*/
+    }
 
 }

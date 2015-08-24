@@ -1,1 +1,5 @@
 setNote("C");
+
+setMeter();
+
+setTotalTime();

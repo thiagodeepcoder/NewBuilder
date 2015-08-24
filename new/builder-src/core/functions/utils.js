@@ -3,7 +3,7 @@ function randomInt(min, max) {
 }
 
 function chanceOfBreak() {
-    if (randomInt(0, 1)  == 1 && verseMiniBreak == true) { //check se vai ter break
+    if (randomInt(0, 1) == 1 && verseMiniBreak == true) { //check se vai ter break
         if (randomInt(0, 1) == 1) { // check se vai ser no meio ou no final
             if (verseSize == 16) // check tamanho do verso
             {
@@ -33,8 +33,7 @@ function chanceOfBreak() {
                     slice: "verso",
                     steps: 8
                 });
-            }
-            else if (verseSize == 32) // verso grande
+            } else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -75,8 +74,7 @@ function chanceOfBreak() {
                     slice: "minibreak",
                     steps: 4
                 });
-            }
-            else if (verseSize == 32) // verso grande
+            } else if (verseSize == 32) // verso grande
             {
                 sSlicesArray.push({
                     slice: "verso",
@@ -143,28 +141,30 @@ function isNumber(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function isOdd(num) { return num % 2;}
+function isOdd(num) {
+    return num % 2;
+}
 
-function note2Num(min,max,percentage) {
+function note2Num(min, max, percentage) {
     var v = Math.floor(((max - min) * percentage) + min);
     return v;
 }
 
 function notes2Channels(n) {
     switch (n) {
-        case 0:
+        case 0.2:
             return 1;
             break
-        case 0.5:
+        case 0.4:
             return 2;
             break
-        case 1:
+        case 0.6:
             return 3;
             break
-        case 1.5:
+        case 0.8:
             return 4;
             break
-        case 2:
+        case 1:
             return 5;
             break
     }
@@ -173,5 +173,23 @@ function notes2Channels(n) {
 function resetBang() {
     arrayOfNotes = [];
     channelSlices = [];
-    
+
+}
+function toHHMMSS(n) {
+    var sec_num = parseInt(n, 10); // don't forget the second param
+    var hours = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) {
+        hours = "0" + hours;
+    }
+    if (minutes < 10) {
+        minutes = "0" + minutes;
+    }
+    if (seconds < 10) {
+        seconds = "0" + seconds;
+    }
+    var time = minutes + ':' + seconds;
+    return time;
 }

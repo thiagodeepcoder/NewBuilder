@@ -3,43 +3,6 @@ function setTrackName(trackNumber, trackName) {
     tracks.set("name", trackName);
 }
 
-function setCustomStructure(v) {
-    cStructure = v;
-
-    switch (cStructure) {
-        case "Agressive":
-            breaks = [8, 2];
-            verses = [32, 3];
-            sSlices = 9;
-            break;
-        case "Rhythmic":
-            breaks = [8, 5];
-            verses = [16, 5];
-            sSlices = 17;
-            break;
-        case "Progressivo":
-            breaks = [32, 2];
-            verses = [32, 2];
-            sSlices = 8;
-            break;
-        case "Linear":
-            breaks = [16, 1];
-            verses = [64, 3];
-            sSlices = 6;
-            break;
-        case "Commun":
-            breaks = [16, 3];
-            verses = [32, 3];
-            sSlices = 11;
-            break;
-        case "Experimental":
-            breaks = [32, 2];
-            verses = [32, 3];
-            sSlices = 9;
-            break;
-    }
-}
-
 function setCustomBass(v) {
     cBass = v;
     numBass = cBass;
@@ -47,70 +10,37 @@ function setCustomBass(v) {
 
 function setCustomSnares(v) {
     cSnares = notes2Channels(v);
-    numSnares = cSnares;
+    numSnares = Math.floor(v * 5);
 }
 
 function setCustomPerc(v) {
     cPercs = v;
-    numPercs = cPercs;
+    numPercs = Math.floor(v * 5);
 }
 
 function setCustomHats(v) {
     cHats = notes2Channels(v);
-    numHats = cHats;
+    numHats = Math.floor(v * 5);
 }
 
 function setCustomFX(v) {
     cFXs = notes2Channels(v);
-    numFXs = cFXs;
+    numFXs = Math.floor(v * 5);
 }
 
 function setCustomPad(v) {
     cPads = notes2Channels(v);
-    numPads = cPads;
-
+    numPads = Math.floor(v * 5);
 }
 
 function setCustomLead(v) {
     cLeads = notes2Channels(v);
-    numLeads = cLeads;
+    numLeads = Math.floor(v * 5);
 }
 
 function setCustomVocals(v) {
     cVocals = notes2Channels(v);
-    numLVocals = cVocals;
-}
-
-function setCBassG(v) {
-    cgBass = v;
-}
-
-function setCSnaresG(v) {
-    cgSnares = v;
-}
-
-function setCPercG(v) {
-    cgPerc = v;
-}
-
-function setCHatsG(v) {
-    cgHats = v;
-}
-
-function setCFXG(v) {
-    cgFX = v;
-}
-
-function setCPadG(v) {
-    cgPads = v;
-}
-
-function setCLeadsG(v) {
-    cgLeads = v;
-}
-
-function setCVocalsG(v) {
-    cgVocals = v;
+    numVocals = Math.floor(v * 5);
 }
 
 function setTempSelect(v) {
@@ -122,37 +52,6 @@ function setTempSelect(v) {
             outlet(4, sc);
             outlet(3, i);
         }
-    }
-}
-
-function setCGroove(s) {
-
-
-    switch (s) {
-        case "Bass":
-            cgSelected = tGroove(cgBass);
-            break;
-        case "Snare":
-            cgSelected = tGroove(cgSnares);
-            break;
-        case "Perc":
-            cgSelected = tGroove(cgPerc);
-            break;
-        case "Hats":
-            cgSelected = tGroove(cgHats);
-            break;
-        case "FX":
-            cgSelected = tGroove(cgFX);
-            break;
-        case "Pad":
-            cgSelected = tGroove(cgPads);
-            break;
-        case "Lead":
-            cgSelected = tGroove(cgLeads);
-            break;
-        case "Vocals":
-            cgSelected = tGroove(cgVocals);
-            break;
     }
 }
 
@@ -228,6 +127,7 @@ function setIntro(v) {
         introPercent = v * 100;
     }
     setNumSlices();
+    setTotalTime()
 }
 
 function setOutro(v) {
@@ -270,6 +170,7 @@ function setOutro(v) {
         outroPercent = v * 100;
     }
     setNumSlices();
+    setTotalTime()
 }
 
 function setVerses(v) {
@@ -303,6 +204,7 @@ function setVerses(v) {
         verseNum = v * 4;
     }
     setNumSlices();
+    setTotalTime()
 }
 
 function setBreaks(v) {
@@ -325,11 +227,18 @@ function setBreaks(v) {
         case "60s":
             breakSize = 32;
             break;
+        case "16s":
+            dropSize = 8;
+            break;
+        case "32s":
+            dropSize = 16;
+            break;
     }
     if (isNumber(v)) {
         breakNum = v * 4;
     }
     setNumSlices();
+    setTotalTime()
 }
 
 function setKick(v) {
@@ -365,7 +274,7 @@ function setKick(v) {
     if (isNumber(v)) {
         kickNotes = v * 8;
     }
-    log(v);
+    setMeter();
 }
 
 function setBass(v) {
@@ -411,6 +320,7 @@ function setBass(v) {
         bassNotes = note2Num(1, 16, v);
         log(bassNotes);
     }
+    setMeter();
 }
 
 function setSnare(v) {
@@ -449,6 +359,7 @@ function setSnare(v) {
     if (isNumber(v)) {
         snareNotes = note2Num(1, 8, v);
     }
+    setMeter();
 }
 
 function setHats(v) {
@@ -487,6 +398,7 @@ function setHats(v) {
     if (isNumber(v)) {
         hatsNotes = note2Num(1, 8, v);
     }
+    setMeter();
 }
 
 function setFX(v) {
@@ -525,7 +437,7 @@ function setFX(v) {
     if (isNumber(v)) {
         fxNotes = note2Num(1, 8, v);
     }
-    log(v);
+    setMeter();
 }
 
 function setPerc(v) {
@@ -555,7 +467,7 @@ function setPerc(v) {
     if (isNumber(v)) {
         percNotes = note2Num(1, 8, v);
     }
-    log(v);
+    setMeter();
 }
 
 function setLead(v) {
@@ -591,7 +503,7 @@ function setLead(v) {
     if (isNumber(v)) {
         leadNotes = note2Num(1, 16, v);
     }
-    log(v);
+    setMeter();
 }
 
 function setVocals(v) {
@@ -627,7 +539,7 @@ function setVocals(v) {
     if (isNumber(v)) {
         vocalNotes = note2Num(1, 8, v);
     }
-    log(v);
+    setMeter();
 }
 
 function setChannelLoadSynth(s) {
@@ -651,27 +563,97 @@ function setNumSlices() {
 function setChannelSequence() {
     var i;
     channelSequence.push("Kick");
-    
+
     channelSequence.push("Bass");
-    for (i = 0; i < numSnares; i++) {
-        channelSequence.push("Snare");
+    if (numSnares != 0 || snareSteady) {
+        for (i = 0; i < numSnares; i++) {
+            channelSequence.push("Snare");
+        }
     }
-    for (i = 0; i < numHats; i++) {
-        channelSequence.push("Hats");
+    if (numHats != 0 || hatsSteady) {
+        for (i = 0; i < numHats; i++) {
+            channelSequence.push("Hats");
+        }
     }
     for (i = 0; i < numPercs; i++) {
         channelSequence.push("Perc");
     }
-    for (i = 0; i < numFX; i++) {
+    for (i = 0; i < numFXs; i++) {
         channelSequence.push("FX");
     }
-    for (i = 0; i < numLead; i++) {
+    for (i = 0; i < numLeads; i++) {
         channelSequence.push("Lead");
     }
-    for (i = 0; i < numVocal; i++) {
+    for (i = 0; i < numVocals; i++) {
         channelSequence.push("Vocals");
     }
     for (i = 0; i < numPads; i++) {
         channelSequence.push("Pad");
     }
+}
+
+function setMeter() {
+
+    var meter = 0;
+    if (kickCut) {
+        meter += 0.05;
+    }
+    if (kickNotes > 0) {
+        meter += (getLevel(kickSize) / 1000) * kickNotes;
+    }
+    if (bassNotes > 0) {
+        meter += (getLevel(bassSize) / 1000) * bassNotes;
+    }
+    if (bassLowEnd) {
+        meter += 0.05;
+    }
+    if (snareSteady) {
+        meter += 0.05;
+    }
+    if (hatsSteady) {
+        meter += 0.05;
+    }
+    if (snareNotes > 0) {
+        log(numSnares);
+        meter += ((getLevel(snareSize) / 1000) * snareNotes) * numSnares * 3;
+    }
+    if (hatsNotes > 0) {
+        meter += ((getLevel(hatsSize) / 1000) * hatsNotes) * numHats * 3;
+    }
+    if (fxNotes > 0) {
+        meter += ((getLevel(fxSize) / 1000) * fxNotes) * numFXs * 3;
+    }
+    if (percNotes > 0) {
+        meter += ((getLevel(percSize) / 1000) * percNotes) * numPercs * 3;
+    }
+    if (leadNotes > 0) {
+        meter += ((getLevel(leadSize) / 1000) * leadNotes) * numLeads * 3;
+    }
+    if (vocalNotes > 0) {
+        meter += ((getLevel(vocalSize) / 1000) * vocalNotes) * numVocals * 3;
+    }
+    outlet(1, meter);
+}
+
+function setTotalTime() {
+    var totalTime = 0;
+    if (intro) {
+        totalTime += introSize;
+    }
+    if (outro) {
+        totalTime += outroSize;
+    }
+    if (verseNum > 0) {
+        totalTime += verseSize * verseNum;
+    }
+    if (breakNum > 0) {
+        totalTime += breakSize * breakNum;
+    }
+    if (breakLong) {
+        totalTime += breakSize;
+    }
+    if (dropSize) {
+        totalTime += dropSize * breakNum;
+    }
+    outlet(2, toHHMMSS(totalTime * 1.8));
 }

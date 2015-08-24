@@ -17,6 +17,10 @@ function getColor(name) {
             fcolor = [255, 0, 0];
             break;
 
+        case "Lowend":
+            fcolor = [255, 0, 0];
+            break;
+
         case "Snare":
             fcolor = [255, 190, 0];
             break;
@@ -29,7 +33,7 @@ function getColor(name) {
             fcolor = [255, 255, 0];
             break;
 
-        case "Tops fixo":
+        case "Hats fixo":
             fcolor = [255, 255, 0];
             break;
 
@@ -84,4 +88,24 @@ function getTotalChannels() {
 function getTrackName(n) {
     var a = new LiveAPI("live_set tracks " + n);
     return a.get("name");
+}
+
+function getLevel(n) {
+    switch (n) {
+        case 1:
+            return 5;
+            break;
+        case 2:
+            return 4;
+            break;
+        case 4:
+            return 3;
+            break;
+        case 8:
+            return 2;
+            break;
+        case 16:
+            return 1;
+            break;
+    }
 }

@@ -35,12 +35,13 @@ function singleMidi(s) {
     resetBang();
     log("bom dias");
 }
-api = new LiveAPI("this_device");
-liveView = new LiveAPI("live_app view");
-liveSetView = new LiveAPI("live_set view");
-liveSet = new LiveAPI("live_set");
+
 
 function singleChannel(s) {
+    api = new LiveAPI("this_device");
+    liveView = new LiveAPI("live_app view");
+    liveSetView = new LiveAPI("live_set view");
+    liveSet = new LiveAPI("live_set");
     if (sCreated) {
         if (s == "Kick" && kickSC) {
             channelBang("SC");
@@ -56,7 +57,10 @@ function singleChannel(s) {
             hatsSteadyReady = true;
         }
 
-        channelBang(s);
+        if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
+            channelBang(s);
+        }
+
 
         if (s == "Kick" && kickCut) {
             channelBang("Kick cut");
@@ -85,6 +89,7 @@ function channelBang(s) {
     createGroove(s); //cria groove
 
     loadDefaults(nextTrack);
+    //loadDevice(s);
     var nextFeeeMidi;
 
     for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
@@ -102,7 +107,7 @@ function channelBang(s) {
                 finalSteps = channelSlices[i].steps;
             }
 
-            createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, sSlicesArray[i].slice, true); //sSlicesArray[i].slice
+            createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, s, false); //sSlicesArray[i].slice
 
             if (channelSlices[i].seq != "blank") {
                 createNotes(nextTrack, nextFeeeMidi);
