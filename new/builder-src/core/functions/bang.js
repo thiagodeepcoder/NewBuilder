@@ -35,4 +35,3 @@ function createMusic(s) {
     // cria cada canal    
     singleChannel(s);
 }
-

@@ -33,7 +33,6 @@ function singleMidi(s) {
     createNotes(0, nextFeeeMidi);
 
     resetBang();
-    log("bom dias");
 }
 
 

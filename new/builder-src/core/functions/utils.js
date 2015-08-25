@@ -175,6 +175,7 @@ function resetBang() {
     channelSlices = [];
 
 }
+
 function toHHMMSS(n) {
     var sec_num = parseInt(n, 10); // don't forget the second param
     var hours = Math.floor(sec_num / 3600);

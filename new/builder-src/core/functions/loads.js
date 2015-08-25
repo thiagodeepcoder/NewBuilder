@@ -42,7 +42,7 @@ function loadDevice(p) {
     var synth = style + basenmae + randomInt(array[0],array[1]);
     log(synth);
 
-    outlet(0, "swap " + synth)
+    outlet(0, "swap " + synth);
 }
 function loadNewSynth() {
 	loadDefaults(selectedTypeNewSynth);

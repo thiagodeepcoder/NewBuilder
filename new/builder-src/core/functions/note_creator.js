@@ -16,9 +16,9 @@ function createNotes(t, c, seq) {
         setNoteSeq(this[templateSet[t-1].notes]);
     }*/
     var notes = [];
-    var args = newGroove;      //getNoteSeq();
+    var args = newGroove; //getNoteSeq();
     var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
+    var noteBlock = args.length / 2;
 
     for (var ni = 0; ni < args.length; ni++) {
 
@@ -28,7 +28,7 @@ function createNotes(t, c, seq) {
             notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
         }
     }
-    
+
     clip.setNotes(notes);
 }
 
@@ -37,9 +37,9 @@ function changeNotes(t, c, seq) {
     var notes = [];
     var args = getNoteSeq();
     var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
+    var noteBlock = args.length / 2;
 
-    
+
     for (var ni = 0; ni < args.length; ni++) {
 
         var changedNote = convertNote(args[ni].note);
@@ -47,50 +47,35 @@ function changeNotes(t, c, seq) {
             notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
         }
     }
-    
+
     return notes;
 }
 
-function convertNote(n)
-{
+function convertNote(n) {
     var c = 57;
-    var fNote = n-c;
+    var fNote = n - c;
 
 
-    for(var nn=0;nn<noteTrack.length;nn++)
-    {
-        if(fNote<7)
-        {
-            if(noteTrack[nn] == fNote)
-            {
+    for (var nn = 0; nn < noteTrack.length; nn++) {
+        if (fNote < 7) {
+            if (noteTrack[nn] == fNote) {
                 return fNote + c;
+            } else if (noteTrack[nn] == fNote + 1) {
+                return fNote + c + 1;
+            } else if (noteTrack[nn] == fNote + 2) {
+                return fNote + c + 2;
             }
-            else if(noteTrack[nn] == fNote+1)
-            {
-                return fNote + c +1;
-            }
-            else if(noteTrack[nn] == fNote+2)
-            {
-                return fNote + c +2;
+        } else {
+            if (noteTrack[nn] == fNote) {
+                return fNote + c;
+            } else if (noteTrack[nn] == fNote - 1) {
+                return fNote + c - 1;
+            } else if (noteTrack[nn] == fNote - 2) {
+                return fNote + c - 2;
             }
         }
-        else
-        {
-            if(noteTrack[nn] == fNote)
-            {
-                return fNote + c;
-            }
-            else if(noteTrack[nn] == fNote-1)
-            {
-                return fNote + c -1;
-            }
-            else if(noteTrack[nn] == fNote-2)
-            {
-                return fNote + c -2;
-            }
-        } 
     }
-    
+
 }
 
 /*
@@ -110,15 +95,15 @@ b = 12
 
 */
 
-var scaleC =        [1,3,5,6,8,10,12];
-var scaleCsharp =   [1,2,4,6,7,9,11];
-var scaleD =        [2,3,5,7,8,10,12];
-var scaleDsharp =   [1,3,4,6,8,9,11];
-var scaleE =        [2,4,5,7,9,10,12];
-var scaleF =        [1,3,4,6,8,10,11];
-var scaleFsharp =   [2,4,6,7,9,11,12];
-var scaleG =        [1,3,5,7,8,10,12];
-var scaleGsharp =   [1,2,4,6,8,9,11];
-var scaleA =        [2,3,5,7,9,10,12];
-var scaleAsharp =   [1,3,4,6,8,10,11];
-var scaleB =        [2,4,5,7,9,11,12];
+var scaleC = [1, 3, 5, 6, 8, 10, 12];
+var scaleCsharp = [1, 2, 4, 6, 7, 9, 11];
+var scaleD = [2, 3, 5, 7, 8, 10, 12];
+var scaleDsharp = [1, 3, 4, 6, 8, 9, 11];
+var scaleE = [2, 4, 5, 7, 9, 10, 12];
+var scaleF = [1, 3, 4, 6, 8, 10, 11];
+var scaleFsharp = [2, 4, 6, 7, 9, 11, 12];
+var scaleG = [1, 3, 5, 7, 8, 10, 12];
+var scaleGsharp = [1, 2, 4, 6, 8, 9, 11];
+var scaleA = [2, 3, 5, 7, 9, 10, 12];
+var scaleAsharp = [1, 3, 4, 6, 8, 10, 11];
+var scaleB = [2, 4, 5, 7, 9, 11, 12];

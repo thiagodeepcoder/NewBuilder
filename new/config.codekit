@@ -167,6 +167,17 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 0
 		},
+	"\/builder-src\/core\/functions\/selectors.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/builder-src\/core\/functions\/selectors.js",
+		"outputAbbreviatedPath": "\/builder-src\/core\/functions\/min\/selectors-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/builder-src\/core\/functions\/sets.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -464,8 +475,14 @@
 			},
 		{
 			"followForSyntaxChecking": 1,
-			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/bang.js",
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/selectors.js",
 			"position": 17,
+			"type": 0
+			},
+		{
+			"followForSyntaxChecking": 1,
+			"linkedFileAbbreviatedPath": "\/builder-src\/core\/functions\/bang.js",
+			"position": 18,
 			"type": 0
 			}
 		]

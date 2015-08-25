@@ -129,7 +129,7 @@ function createGroove(instrument) {
                         while (isInArray(randInit, arrayOfNotes)) {
                             randInit = randomInt(0, kickSize * 8);
                         }
-                        if(isOdd(randInit) == 0) {
+                        if (isOdd(randInit) == 0) {
                             randInit += 1;
                         }
                         arrayOfNotes.push(randInit);
@@ -800,7 +800,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else if (sSlicesArray[i].slice == "verso") {
+            } else if (sSlicesArray[i].slice == "verso") {
                 if (randomInt(0, 1) == 1) {
                     channelSlices.push({
                         seq: "filled",
@@ -870,7 +870,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "intro" ) {
+            } else if (sSlicesArray[i].slice == "intro") {
                 if (randomInt(0, 100) >= introPercent) {
                     channelSlices.push({
                         seq: "filled",
@@ -894,7 +894,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else // todos os drops
+            } else // todos os drops
             {
                 channelSlices.push({
                     seq: "filled",

@@ -1,6 +1,6 @@
 // Ver 2.1
 autowatch = 1;
-outlets = 3;
+outlets = 4;
 setinletassist(0, "bang triggers action specified in args");
 setoutletassist(0, "unique exit of information");
 
@@ -147,9 +147,9 @@ function createNotes(t, c, seq) {
         setNoteSeq(this[templateSet[t-1].notes]);
     }*/
     var notes = [];
-    var args = newGroove;      //getNoteSeq();
+    var args = newGroove; //getNoteSeq();
     var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
+    var noteBlock = args.length / 2;
 
     for (var ni = 0; ni < args.length; ni++) {
 
@@ -159,7 +159,7 @@ function createNotes(t, c, seq) {
             notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
         }
     }
-    
+
     clip.setNotes(notes);
 }
 
@@ -168,9 +168,9 @@ function changeNotes(t, c, seq) {
     var notes = [];
     var args = getNoteSeq();
     var clip = new Clip(t, c);
-    var noteBlock = args.length/2;
+    var noteBlock = args.length / 2;
 
-    
+
     for (var ni = 0; ni < args.length; ni++) {
 
         var changedNote = convertNote(args[ni].note);
@@ -178,50 +178,35 @@ function changeNotes(t, c, seq) {
             notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
         }
     }
-    
+
     return notes;
 }
 
-function convertNote(n)
-{
+function convertNote(n) {
     var c = 57;
-    var fNote = n-c;
+    var fNote = n - c;
 
 
-    for(var nn=0;nn<noteTrack.length;nn++)
-    {
-        if(fNote<7)
-        {
-            if(noteTrack[nn] == fNote)
-            {
+    for (var nn = 0; nn < noteTrack.length; nn++) {
+        if (fNote < 7) {
+            if (noteTrack[nn] == fNote) {
                 return fNote + c;
+            } else if (noteTrack[nn] == fNote + 1) {
+                return fNote + c + 1;
+            } else if (noteTrack[nn] == fNote + 2) {
+                return fNote + c + 2;
             }
-            else if(noteTrack[nn] == fNote+1)
-            {
-                return fNote + c +1;
-            }
-            else if(noteTrack[nn] == fNote+2)
-            {
-                return fNote + c +2;
+        } else {
+            if (noteTrack[nn] == fNote) {
+                return fNote + c;
+            } else if (noteTrack[nn] == fNote - 1) {
+                return fNote + c - 1;
+            } else if (noteTrack[nn] == fNote - 2) {
+                return fNote + c - 2;
             }
         }
-        else
-        {
-            if(noteTrack[nn] == fNote)
-            {
-                return fNote + c;
-            }
-            else if(noteTrack[nn] == fNote-1)
-            {
-                return fNote + c -1;
-            }
-            else if(noteTrack[nn] == fNote-2)
-            {
-                return fNote + c -2;
-            }
-        } 
     }
-    
+
 }
 
 /*
@@ -241,38 +226,38 @@ b = 12
 
 */
 
-var scaleC =        [1,3,5,6,8,10,12];
-var scaleCsharp =   [1,2,4,6,7,9,11];
-var scaleD =        [2,3,5,7,8,10,12];
-var scaleDsharp =   [1,3,4,6,8,9,11];
-var scaleE =        [2,4,5,7,9,10,12];
-var scaleF =        [1,3,4,6,8,10,11];
-var scaleFsharp =   [2,4,6,7,9,11,12];
-var scaleG =        [1,3,5,7,8,10,12];
-var scaleGsharp =   [1,2,4,6,8,9,11];
-var scaleA =        [2,3,5,7,9,10,12];
-var scaleAsharp =   [1,3,4,6,8,10,11];
-var scaleB =        [2,4,5,7,9,11,12];
+var scaleC = [1, 3, 5, 6, 8, 10, 12];
+var scaleCsharp = [1, 2, 4, 6, 7, 9, 11];
+var scaleD = [2, 3, 5, 7, 8, 10, 12];
+var scaleDsharp = [1, 3, 4, 6, 8, 9, 11];
+var scaleE = [2, 4, 5, 7, 9, 10, 12];
+var scaleF = [1, 3, 4, 6, 8, 10, 11];
+var scaleFsharp = [2, 4, 6, 7, 9, 11, 12];
+var scaleG = [1, 3, 5, 7, 8, 10, 12];
+var scaleGsharp = [1, 2, 4, 6, 8, 9, 11];
+var scaleA = [2, 3, 5, 7, 9, 10, 12];
+var scaleAsharp = [1, 3, 4, 6, 8, 10, 11];
+var scaleB = [2, 4, 5, 7, 9, 11, 12];
+
 
 function log() {
-  for(var i=0,len=arguments.length; i<len; i++) {
-    var message = arguments[i];
-    if(message && message.toString) {
-      var s = message.toString();
-      if(s.indexOf("[object ") >= 0) {
-        s = JSON.stringify(message);
-      }
-      post(s);
+    for (var i = 0, len = arguments.length; i < len; i++) {
+        var message = arguments[i];
+        if (message && message.toString) {
+            var s = message.toString();
+            if (s.indexOf("[object ") >= 0) {
+                s = JSON.stringify(message);
+            }
+            post(s);
+        } else if (message === null) {
+            post("<null>");
+        } else {
+            post(message);
+        }
     }
-    else if(message === null) {
-      post("<null>");
-    }
-    else {
-      post(message);
-    }
-  }
-  post("\n");
+    post("\n");
 }
+
 
 function getColor(name) {
     var fcolor;
@@ -954,15 +939,20 @@ function setChannelSequence() {
     channelSequence.push("Kick");
 
     channelSequence.push("Bass");
-    if (numSnares != 0 || snareSteady) {
+
+    if (numSnares != 0) {
         for (i = 0; i < numSnares; i++) {
             channelSequence.push("Snare");
         }
+    } else if (snareSteady && numSnares == 0) {
+        channelSequence.push("Snare");
     }
-    if (numHats != 0 || hatsSteady) {
+    if (numHats != 0) {
         for (i = 0; i < numHats; i++) {
             channelSequence.push("Hats");
         }
+    } else if (hatsSteady && numHats == 0) {
+        channelSequence.push("Hats");
     }
     for (i = 0; i < numPercs; i++) {
         channelSequence.push("Perc");
@@ -1003,7 +993,6 @@ function setMeter() {
         meter += 0.05;
     }
     if (snareNotes > 0) {
-        log(numSnares);
         meter += ((getLevel(snareSize) / 1000) * snareNotes) * numSnares * 3;
     }
     if (hatsNotes > 0) {
@@ -1179,7 +1168,7 @@ function createGroove(instrument) {
                         while (isInArray(randInit, arrayOfNotes)) {
                             randInit = randomInt(0, kickSize * 8);
                         }
-                        if(isOdd(randInit) == 0) {
+                        if (isOdd(randInit) == 0) {
                             randInit += 1;
                         }
                         arrayOfNotes.push(randInit);
@@ -1850,7 +1839,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else if (sSlicesArray[i].slice == "verso") {
+            } else if (sSlicesArray[i].slice == "verso") {
                 if (randomInt(0, 1) == 1) {
                     channelSlices.push({
                         seq: "filled",
@@ -1920,7 +1909,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            } else if (sSlicesArray[i].slice == "intro" ) {
+            } else if (sSlicesArray[i].slice == "intro") {
                 if (randomInt(0, 100) >= introPercent) {
                     channelSlices.push({
                         seq: "filled",
@@ -1944,7 +1933,7 @@ function createCSequence(s) {
                         steps: sSlicesArray[i].steps
                     });
                 }
-            }else // todos os drops
+            } else // todos os drops
             {
                 channelSlices.push({
                     seq: "filled",
@@ -2083,7 +2072,7 @@ function loadDevice(p) {
     var synth = style + basenmae + randomInt(array[0],array[1]);
     log(synth);
 
-    outlet(0, "swap " + synth)
+    outlet(0, "swap " + synth);
 }
 function loadNewSynth() {
 	loadDefaults(selectedTypeNewSynth);
@@ -2168,6 +2157,9 @@ setMeter();
 
 setTotalTime();
 
+setSelectors();
+
+
 function singleMidi(s) {
     api = new LiveAPI("this_device");
     liveView = new LiveAPI("live_app view");
@@ -2203,7 +2195,6 @@ function singleMidi(s) {
     createNotes(0, nextFeeeMidi);
 
     resetBang();
-    log("bom dias");
 }
 
 
@@ -2379,7 +2370,7 @@ function setTemplate(s) {
         numBass = 1;
         numSnares = 0;
         numPercs = 2;
-        numHats = 2;
+        numHats = 0;
         numFXs = 3;
         numPads = 1;
         numLeads = 1;
@@ -2441,11 +2432,68 @@ function setTemplate(s) {
         numPads = 1;
         numLeads = 1;
         numVocals = 1;
+    } else if (s == "Teste") {
+        intro = true;
+        introSize = 16;
+        introPercent = 40;
+
+        outro = true;
+        outroSize = 48;
+        outroPercent = 45;
+
+        verseMiniBreak = true;
+        verseSize = 16;
+        verseNum = 4;
+
+        breakLong = true;
+        breakSize = 8;
+        breakNum = 3;
+        dropSize = 8;
+
+        kickSC = true;
+        kickNotes = 1;
+        kickSize = 16;
+
+        bassLowEnd = true;
+        bassSize = 16;
+        bassNotes = 10;
+
+        snareSteady = true;
+        snareHuman = true;
+        snareSize = 16;
+        snareNotes = 2;
+
+        hatsSteady = true;
+        hatsSize = 16;
+        hatsNotes = 4;
+
+        fxTone = true;
+        fxHuman = true;
+        fxSize = 16;
+        fxNotes = 3;
+
+        percSize = 16;
+        percNotes = 1;
+
+        leadSize = 16;
+        leadNotes = 2;
+
+        vocalSize = 16;
+        vocalNotes = 1;
+
+        numBass = 1;
+        numSnares = 1;
+        numPercs = 1;
+        numHats = 1;
+        numFXs = 1;
+        numPads = 1;
+        numLeads = 1;
     }
 
     setMeter();
     setTotalTime();
     setNumSlices();
+    setSelectors();
 }
 
 
@@ -2626,6 +2674,7 @@ function resetBang() {
     channelSlices = [];
 
 }
+
 function toHHMMSS(n) {
     var sec_num = parseInt(n, 10); // don't forget the second param
     var hours = Math.floor(sec_num / 3600);
@@ -2645,6 +2694,11 @@ function toHHMMSS(n) {
     return time;
 }
 
+
+function setSelTemplate(a,v) {
+	log(a,v);
+	outlet(3,v)
+}
 
 function bang() {
     api = new LiveAPI("this_device");
@@ -2683,7 +2737,6 @@ function createMusic(s) {
     // cria cada canal    
     singleChannel(s);
 }
-
 
 
 

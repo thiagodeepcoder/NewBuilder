@@ -565,15 +565,20 @@ function setChannelSequence() {
     channelSequence.push("Kick");
 
     channelSequence.push("Bass");
-    if (numSnares != 0 || snareSteady) {
+
+    if (numSnares != 0) {
         for (i = 0; i < numSnares; i++) {
             channelSequence.push("Snare");
         }
+    } else if (snareSteady && numSnares == 0) {
+        channelSequence.push("Snare");
     }
-    if (numHats != 0 || hatsSteady) {
+    if (numHats != 0) {
         for (i = 0; i < numHats; i++) {
             channelSequence.push("Hats");
         }
+    } else if (hatsSteady && numHats == 0) {
+        channelSequence.push("Hats");
     }
     for (i = 0; i < numPercs; i++) {
         channelSequence.push("Perc");
@@ -614,7 +619,6 @@ function setMeter() {
         meter += 0.05;
     }
     if (snareNotes > 0) {
-        log(numSnares);
         meter += ((getLevel(snareSize) / 1000) * snareNotes) * numSnares * 3;
     }
     if (hatsNotes > 0) {

@@ -52,7 +52,7 @@ function setTemplate(s) {
         numBass = 1;
         numSnares = 0;
         numPercs = 2;
-        numHats = 2;
+        numHats = 0;
         numFXs = 3;
         numPads = 1;
         numLeads = 1;
@@ -114,9 +114,66 @@ function setTemplate(s) {
         numPads = 1;
         numLeads = 1;
         numVocals = 1;
+    } else if (s == "Teste") {
+        intro = true;
+        introSize = 16;
+        introPercent = 40;
+
+        outro = true;
+        outroSize = 48;
+        outroPercent = 45;
+
+        verseMiniBreak = true;
+        verseSize = 16;
+        verseNum = 4;
+
+        breakLong = true;
+        breakSize = 8;
+        breakNum = 3;
+        dropSize = 8;
+
+        kickSC = true;
+        kickNotes = 1;
+        kickSize = 16;
+
+        bassLowEnd = true;
+        bassSize = 16;
+        bassNotes = 10;
+
+        snareSteady = true;
+        snareHuman = true;
+        snareSize = 16;
+        snareNotes = 2;
+
+        hatsSteady = true;
+        hatsSize = 16;
+        hatsNotes = 4;
+
+        fxTone = true;
+        fxHuman = true;
+        fxSize = 16;
+        fxNotes = 3;
+
+        percSize = 16;
+        percNotes = 1;
+
+        leadSize = 16;
+        leadNotes = 2;
+
+        vocalSize = 16;
+        vocalNotes = 1;
+
+        numBass = 1;
+        numSnares = 1;
+        numPercs = 1;
+        numHats = 1;
+        numFXs = 1;
+        numPads = 1;
+        numLeads = 1;
     }
 
     setMeter();
     setTotalTime();
     setNumSlices();
+    setSelectors();
 }
