@@ -50,11 +50,11 @@ function setTemplate(s) {
         vocalNotes = 2;
 
         numBass = 1;
-        numSnares = 0;
+        numSnares = 1;
         numPercs = 2;
-        numHats = 0;
-        numFXs = 3;
-        numPads = 1;
+        numHats = 2;
+        numFXs = 10;
+        numPads = 3;
         numLeads = 1;
         numVocals = 1;
     } else if (s == "Strange") {

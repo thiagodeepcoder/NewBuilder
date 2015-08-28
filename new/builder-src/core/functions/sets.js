@@ -600,14 +600,15 @@ function setChannelSequence() {
 function setMeter() {
 
     var meter = 0;
+    var med = 300;
     if (kickCut) {
         meter += 0.05;
     }
     if (kickNotes > 0) {
-        meter += (getLevel(kickSize) / 1000) * kickNotes;
+        meter += (getLevel(kickSize) / med) * kickNotes;
     }
     if (bassNotes > 0) {
-        meter += (getLevel(bassSize) / 1000) * bassNotes;
+        meter += (getLevel(bassSize) / med) * bassNotes;
     }
     if (bassLowEnd) {
         meter += 0.05;
@@ -619,22 +620,22 @@ function setMeter() {
         meter += 0.05;
     }
     if (snareNotes > 0) {
-        meter += ((getLevel(snareSize) / 1000) * snareNotes) * numSnares * 3;
+        meter += ((getLevel(snareSize) / med) * snareNotes) * numSnares * 3;
     }
     if (hatsNotes > 0) {
-        meter += ((getLevel(hatsSize) / 1000) * hatsNotes) * numHats * 3;
+        meter += ((getLevel(hatsSize) / med) * hatsNotes) * numHats * 3;
     }
     if (fxNotes > 0) {
-        meter += ((getLevel(fxSize) / 1000) * fxNotes) * numFXs * 3;
+        meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
     }
     if (percNotes > 0) {
-        meter += ((getLevel(percSize) / 1000) * percNotes) * numPercs * 3;
+        meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
     }
     if (leadNotes > 0) {
-        meter += ((getLevel(leadSize) / 1000) * leadNotes) * numLeads * 3;
+        meter += ((getLevel(leadSize) / med) * leadNotes) * numLeads * 3;
     }
     if (vocalNotes > 0) {
-        meter += ((getLevel(vocalSize) / 1000) * vocalNotes) * numVocals * 3;
+        meter += ((getLevel(vocalSize) / med) * vocalNotes) * numVocals * 3;
     }
     outlet(1, meter);
 }

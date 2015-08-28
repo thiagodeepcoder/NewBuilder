@@ -974,14 +974,15 @@ function setChannelSequence() {
 function setMeter() {
 
     var meter = 0;
+    var med = 300;
     if (kickCut) {
         meter += 0.05;
     }
     if (kickNotes > 0) {
-        meter += (getLevel(kickSize) / 1000) * kickNotes;
+        meter += (getLevel(kickSize) / med) * kickNotes;
     }
     if (bassNotes > 0) {
-        meter += (getLevel(bassSize) / 1000) * bassNotes;
+        meter += (getLevel(bassSize) / med) * bassNotes;
     }
     if (bassLowEnd) {
         meter += 0.05;
@@ -993,22 +994,22 @@ function setMeter() {
         meter += 0.05;
     }
     if (snareNotes > 0) {
-        meter += ((getLevel(snareSize) / 1000) * snareNotes) * numSnares * 3;
+        meter += ((getLevel(snareSize) / med) * snareNotes) * numSnares * 3;
     }
     if (hatsNotes > 0) {
-        meter += ((getLevel(hatsSize) / 1000) * hatsNotes) * numHats * 3;
+        meter += ((getLevel(hatsSize) / med) * hatsNotes) * numHats * 3;
     }
     if (fxNotes > 0) {
-        meter += ((getLevel(fxSize) / 1000) * fxNotes) * numFXs * 3;
+        meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
     }
     if (percNotes > 0) {
-        meter += ((getLevel(percSize) / 1000) * percNotes) * numPercs * 3;
+        meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
     }
     if (leadNotes > 0) {
-        meter += ((getLevel(leadSize) / 1000) * leadNotes) * numLeads * 3;
+        meter += ((getLevel(leadSize) / med) * leadNotes) * numLeads * 3;
     }
     if (vocalNotes > 0) {
-        meter += ((getLevel(vocalSize) / 1000) * vocalNotes) * numVocals * 3;
+        meter += ((getLevel(vocalSize) / med) * vocalNotes) * numVocals * 3;
     }
     outlet(1, meter);
 }
@@ -1359,7 +1360,7 @@ function createGroove(instrument) {
             newGroove.push({
                 note: 60,
                 init: i * 4,
-                size: 4
+                size: 8
             });
         }
 
@@ -1816,7 +1817,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 100) >= outroPercent) {
+                if (randomInt(0, 100) <= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -1828,7 +1829,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro") {
-                if (randomInt(0, 100) >= introPercent) {
+                if (randomInt(0, 100) <= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -1910,7 +1911,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro") {
-                if (randomInt(0, 100) >= introPercent) {
+                if (randomInt(0, 100) <= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -1922,7 +1923,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 100) >= outroPercent) {
+                if (randomInt(0, 100) <= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -2157,7 +2158,7 @@ setMeter();
 
 setTotalTime();
 
-setSelectors();
+//setSelectors();
 
 
 function singleMidi(s) {
@@ -2368,11 +2369,11 @@ function setTemplate(s) {
         vocalNotes = 2;
 
         numBass = 1;
-        numSnares = 0;
+        numSnares = 1;
         numPercs = 2;
-        numHats = 0;
-        numFXs = 3;
-        numPads = 1;
+        numHats = 2;
+        numFXs = 10;
+        numPads = 3;
         numLeads = 1;
         numVocals = 1;
     } else if (s == "Strange") {
@@ -2695,14 +2696,15 @@ function toHHMMSS(n) {
 }
 
 
-function setSelectors() {
-	outlet(3,v);
+function setSelectors(v) {
+	//outlet(3,v);
+	log(v);
 }
 
 
 function setSelTemplate(a,v) {
 	log(a,v);
-	outlet(3,v);
+	//outlet(3,v);
 }
 
 function bang() {

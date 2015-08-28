@@ -4,4 +4,4 @@ setMeter();
 
 setTotalTime();
 
-setSelectors();
+//setSelectors();

@@ -320,7 +320,7 @@ function createGroove(instrument) {
             newGroove.push({
                 note: 60,
                 init: i * 4,
-                size: 4
+                size: 8
             });
         }
 
@@ -777,7 +777,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 100) >= outroPercent) {
+                if (randomInt(0, 100) <= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -789,7 +789,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro") {
-                if (randomInt(0, 100) >= introPercent) {
+                if (randomInt(0, 100) <= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -871,7 +871,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "intro") {
-                if (randomInt(0, 100) >= introPercent) {
+                if (randomInt(0, 100) <= introPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
@@ -883,7 +883,7 @@ function createCSequence(s) {
                     });
                 }
             } else if (sSlicesArray[i].slice == "outro") {
-                if (randomInt(0, 100) >= outroPercent) {
+                if (randomInt(0, 100) <= outroPercent) {
                     channelSlices.push({
                         seq: "filled",
                         steps: sSlicesArray[i].steps
