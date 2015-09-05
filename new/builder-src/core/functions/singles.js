@@ -41,6 +41,7 @@ function singleChannel(s) {
     liveView = new LiveAPI("live_app view");
     liveSetView = new LiveAPI("live_set view");
     liveSet = new LiveAPI("live_set");
+    createScene(30);
     if (sCreated) {
         if (s == "Kick" && kickSC) {
             channelBang("SC");
@@ -58,6 +59,7 @@ function singleChannel(s) {
 
         if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
             channelBang(s);
+             log(s);
         }
 
 
@@ -118,3 +120,5 @@ function channelBang(s) {
     resetBang();
 
 }
+
+

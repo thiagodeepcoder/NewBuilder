@@ -116,3 +116,5 @@ var kickGrooveNotes = [];
 var buildFinish = false;
 
 var meterTotal = 0;
+
+var channelSeqCreated = false;

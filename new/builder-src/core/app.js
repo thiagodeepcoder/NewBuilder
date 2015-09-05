@@ -1,4 +1,4 @@
-// Ver 2.1
+// Ver 2.2
 autowatch = 1;
 outlets = 4;
 setinletassist(0, "bang triggers action specified in args");
@@ -123,6 +123,8 @@ var kickGrooveNotes = [];
 var buildFinish = false;
 
 var meterTotal = 0;
+
+var channelSeqCreated = false;
 
 
 var DEBUG = true;
@@ -969,6 +971,8 @@ function setChannelSequence() {
     for (i = 0; i < numPads; i++) {
         channelSequence.push("Pad");
     }
+
+    channelSeqCreated = true;
 }
 
 function setMeter() {
@@ -1035,6 +1039,14 @@ function setTotalTime() {
         totalTime += dropSize * breakNum;
     }
     outlet(2, toHHMMSS(totalTime * 1.8));
+}
+
+function setFixedStructure() {
+     sSlicesArray = [];
+    createStructure();
+    sCreated = true;
+    log(sSlicesArray);
+   
 }
 
 
@@ -1356,11 +1368,11 @@ function createGroove(instrument) {
     } else if (channelGroove == "Pad") {
 
         var randInit;
-        for (var i = 0; i < 16; i++) {
+        for (var i = 0; i < 4; i++) {
             newGroove.push({
                 note: 60,
-                init: i * 4,
-                size: 8
+                init: i * 8,
+                size:  8
             });
         }
 
@@ -2204,6 +2216,7 @@ function singleChannel(s) {
     liveView = new LiveAPI("live_app view");
     liveSetView = new LiveAPI("live_set view");
     liveSet = new LiveAPI("live_set");
+    createScene(30);
     if (sCreated) {
         if (s == "Kick" && kickSC) {
             channelBang("SC");
@@ -2221,6 +2234,7 @@ function singleChannel(s) {
 
         if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
             channelBang(s);
+             log(s);
         }
 
 
@@ -2283,6 +2297,8 @@ function channelBang(s) {
 }
 
 
+
+
 var style = "dub";
 
 var kickArray = [0,1];
@@ -2341,7 +2357,6 @@ function setTemplate(s) {
         kickNotes = 1;
         kickSize = 16;
 
-        bassLowEnd = true;
         bassSize = 8;
         bassNotes = 6;
 
@@ -2376,7 +2391,7 @@ function setTemplate(s) {
         numPads = 3;
         numLeads = 1;
         numVocals = 1;
-    } else if (s == "Strange") {
+    } else if (s == "Comun") {
         intro = true;
         introSize = 16;
         introPercent = 40;
@@ -2398,7 +2413,6 @@ function setTemplate(s) {
         kickNotes = 1;
         kickSize = 16;
 
-        bassLowEnd = true;
         bassSize = 16;
         bassNotes = 10;
 
@@ -2433,62 +2447,56 @@ function setTemplate(s) {
         numPads = 1;
         numLeads = 1;
         numVocals = 1;
-    } else if (s == "Teste") {
+    } else if (s == "Ambient") {
         intro = true;
         introSize = 16;
         introPercent = 40;
 
         outro = true;
-        outroSize = 48;
-        outroPercent = 45;
+        outroSize = 32;
+        outroPercent = 30;
+        var outroSmooth = true;
 
-        verseMiniBreak = true;
         verseSize = 16;
         verseNum = 4;
 
         breakLong = true;
-        breakSize = 8;
-        breakNum = 3;
-        dropSize = 8;
+        breakSize = 16;
+        breakNum = 2;
+        dropSize = 16;
 
         kickSC = true;
-        kickNotes = 1;
+        kickNotes = 2;
         kickSize = 16;
 
         bassLowEnd = true;
-        bassSize = 16;
-        bassNotes = 10;
+        bassSize = 4;
+        bassNotes = 7;
 
         snareSteady = true;
-        snareHuman = true;
         snareSize = 16;
-        snareNotes = 2;
+        snareNotes = 1;
 
         hatsSteady = true;
         hatsSize = 16;
-        hatsNotes = 4;
+        hatsNotes = 2;
 
-        fxTone = true;
         fxHuman = true;
         fxSize = 16;
-        fxNotes = 3;
+        fxNotes = 1;
 
         percSize = 16;
         percNotes = 1;
 
-        leadSize = 16;
-        leadNotes = 2;
-
         vocalSize = 16;
-        vocalNotes = 1;
+        vocalNotes = 2
 
         numBass = 1;
-        numSnares = 1;
-        numPercs = 1;
-        numHats = 1;
-        numFXs = 1;
-        numPads = 1;
-        numLeads = 1;
+        numSnares = 2;
+        numPercs = 2;
+        numHats = 2
+        numFXs = 6;
+        numPads = 2;
     }
 
     setMeter();
@@ -2713,11 +2721,12 @@ function bang() {
     liveSetView = new LiveAPI("live_set view");
     liveSet = new LiveAPI("live_set");
     if (!buildFinish) {
-        createScene(25);
         //cria slices da estrutura
         if (!sCreated) {
             createStructure();
             sCreated = true;
+        }
+        if(!channelSeqCreated) {
             setChannelSequence();
         }
 

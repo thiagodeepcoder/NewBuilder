@@ -316,11 +316,11 @@ function createGroove(instrument) {
     } else if (channelGroove == "Pad") {
 
         var randInit;
-        for (var i = 0; i < 16; i++) {
+        for (var i = 0; i < 4; i++) {
             newGroove.push({
                 note: 60,
-                init: i * 4,
-                size: 8
+                init: i * 8,
+                size:  8
             });
         }
 

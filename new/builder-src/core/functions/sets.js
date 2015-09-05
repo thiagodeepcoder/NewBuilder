@@ -595,6 +595,8 @@ function setChannelSequence() {
     for (i = 0; i < numPads; i++) {
         channelSequence.push("Pad");
     }
+
+    channelSeqCreated = true;
 }
 
 function setMeter() {
@@ -661,4 +663,12 @@ function setTotalTime() {
         totalTime += dropSize * breakNum;
     }
     outlet(2, toHHMMSS(totalTime * 1.8));
+}
+
+function setFixedStructure() {
+     sSlicesArray = [];
+    createStructure();
+    sCreated = true;
+    log(sSlicesArray);
+   
 }

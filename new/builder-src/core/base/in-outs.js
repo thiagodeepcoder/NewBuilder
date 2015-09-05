@@ -1,4 +1,4 @@
-// Ver 2.1
+// Ver 2.2
 autowatch = 1;
 outlets = 4;
 setinletassist(0, "bang triggers action specified in args");

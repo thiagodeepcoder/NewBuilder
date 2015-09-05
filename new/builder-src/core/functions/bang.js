@@ -4,11 +4,12 @@ function bang() {
     liveSetView = new LiveAPI("live_set view");
     liveSet = new LiveAPI("live_set");
     if (!buildFinish) {
-        createScene(25);
         //cria slices da estrutura
         if (!sCreated) {
             createStructure();
             sCreated = true;
+        }
+        if(!channelSeqCreated) {
             setChannelSequence();
         }
 
