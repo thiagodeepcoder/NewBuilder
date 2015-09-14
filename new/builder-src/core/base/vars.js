@@ -31,6 +31,7 @@ var cPercs = 1;
 var cHats = 1;
 var cFXs = 1;
 var cPads = 1;
+var cLoops = 1;
 var cLeads = 1;
 var cVocals = 1;
 
@@ -43,6 +44,7 @@ var numPercs = 0;
 var numHats = 0;
 var numFXs = 0;
 var numPads = 0;
+var numLoops = 0;
 var numLeads = 0;
 var numVocals = 0;
 
@@ -62,11 +64,13 @@ var outroPercent = 0;
 var verseMiniBreak = false;
 var verseSize = 16;
 var verseNum = 0;
+var verseHumanizer = false;
 
 var breakLong = false;
 var breakSize = 8;
 var breakNum = 0;
 var dropSize = 8;
+var breakHumanizer = false;
 
 var kickCut = false;
 var kickSC = false;
