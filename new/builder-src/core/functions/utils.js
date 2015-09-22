@@ -7,7 +7,7 @@ function chanceOfBreak() {
 	if (verseHumanizer) {
 		vHumanizer = randomInt(1, 2) * 2;
 	}
-	if (verseMiniBreak == true && randomInt(0, 99) < 75 ) { //check se vai ter break
+	if (verseMiniBreak == true && randomInt(0, 99) < 75) { //check se vai ter break
 		if (verseSize == 16) // check tamanho do verso
 		{
 			sSlicesArray.push({
@@ -137,4 +137,112 @@ function toHHMMSS(n) {
 	}
 	var time = minutes + ':' + seconds;
 	return time;
+}
+
+function readystatechange_parsejson() {
+	if (this.readyState == 4) {
+		jsonData = JSON.parse(this.responseText);
+		var myobj = JSON.parse(this.responseText);
+		var i, j;
+		for (i = 0; i < jsonData.synths.length; i++) {
+			styleArray.push(jsonData.synths[i].style);
+
+			for (j = 0; j < jsonData.synths[i].packs.length; j++) {
+				packArray.push(jsonData.synths[i].packs[j].pack);
+			}
+		}
+		for (i=0;i<jsonData.templates.length;i++) {
+			templateArray.push(jsonData.templates[i].name);
+		}
+	}
+	var finalpa = packArray;
+	finalpa.unshift("all");
+	outlet(3, "_parameter_range", finalpa);
+
+	var finalsa = styleArray;
+	finalsa.unshift("all");
+	outlet(4, "_parameter_range", finalsa);
+
+	var finalt = templateArray;
+	finalt.unshift("Select");
+	outlet(5, "_parameter_range", finalt);
+
+	styleArray.shift();
+	packArray.shift();
+
+	JSONLoaded = true;
+
+}
+
+function readJSON() {
+	ajaxreq = new XMLHttpRequest();
+	ajaxreq.open("GET", jsonHost);
+	ajaxreq.onreadystatechange = readystatechange_parsejson;
+	ajaxreq.send("{}");
+}
+
+function getSynth(synth) {
+	var i;
+	var _pack;
+	var _style;
+	var _synth;
+	//style
+	for (i = 0; i < jsonData.synths.length; i++) {
+		if (jsonData.synths[i].style == selectedStyle) {
+			_style = i;
+			break;
+		}
+	}
+
+	//pack
+	for (i = 0; i < jsonData.synths[_style].packs.length; i++) {
+		if (jsonData.synths[_style].packs[i].pack == selectedPack) {
+			_pack = i;
+			break;
+		}
+	}
+	//synth
+	for (i = 0; i < jsonData.synths[_style].packs[_pack].content.length; i++) {
+		if (jsonData.synths[_style].packs[_pack].content[i].synth == synth) {
+			_synth = i;
+			break;
+		}
+	}
+	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
+	var indexSynth = randomInt(0, totalSynths-1);
+	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
+	log("Style: " + _style);
+	log("Pack: " + _pack);
+	log("Synth: " + _synth);
+	log("Total Synths: " + totalSynths);
+	log("Index: " + indexSynth);
+	log("Choosen: " + choosenSynth);
+
+	return choosenSynth;
+}
+
+function getKeys(keys, obj, path) {
+	for (key in obj) {
+		var currpath = key;
+		keys.push([key]);
+		if (typeof(obj[key]) == 'object' && !(obj[key] instanceof Array))
+			getKeys(keys, obj[key], currpath);
+	}
+}
+
+function setTemplatesJSON(s) {
+	if (JSONLoaded) {
+		var totalTemplates = jsonData.templates.length;
+		var selectedTemplate = 0;
+
+		for (var i = 0; i < totalTemplates; i++) {
+			if (jsonData.templates[i].name == s) {
+				selectedTemplate = i;
+			}
+		}
+		getKeys(keys, jsonData.templates[selectedTemplate].content, '');
+		for (var i = 0; i < keys.length; i++) {
+			this[keys[i][0]] = jsonData.templates[selectedTemplate].content[keys[i][0]];
+		}
+	}
 }

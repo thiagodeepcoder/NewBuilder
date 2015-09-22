@@ -363,7 +363,7 @@ function createCSequence(s) {
 				});
 			}
 		}
-	} else if (s == "Perc" || s == "FX" || s == "Lead" || s == "Vocals") {
+	} else if (s == "Perc" || s == "FX" || s == "Lead" || s == "Vocals" || s == "Shot") {
 		// var gnc = getNameC(s);
 		//var getSeq = gnc[randomInt(0, gnc.length - 1)];
 		for (var i = 0; i < sSlicesArray.length; i++) {

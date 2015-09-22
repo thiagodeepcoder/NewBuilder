@@ -31,11 +31,28 @@ function loadDevice(p) {
 	} else {
 		s = p;
 	}
-	var array = this[s.toLowerCase() + "Array"];
-	var synth = pack + style + s + randomInt(array[0],array[1]);
-	log(synth); //pack0dubKickcut0
 
+	selectedPack = pack;
+	selectedStyle = style;
+
+	if (pack == "all") {
+		selectedPack = packArray[randomInt(0, packArray.length - 1)];
+	}
+	if (style == "all") {
+		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
+	}
+
+	var synth = selectedPack + selectedStyle + getSynth(s);
+
+	
 	outlet(0, "swap " + synth);
+
+	if (s == "Snare" || s == "Perc" || s == "Lead" || s == "Hats" || s == "FX" || s == "Shot" || s == "Vocal") {
+		if (this[s.toLowerCase() + "Acid"] == true) {
+			outlet(0, "loaddev Audio Effect Rack");
+			outlet(0, "swap Acidlizer");
+		}
+	}
 }
 
 function loadNewSynth() {

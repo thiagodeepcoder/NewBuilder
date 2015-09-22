@@ -1,9 +1,15 @@
 // Ver 2.3
 
 autowatch = 1;
-outlets = 4;
+outlets = 6;
 setinletassist(0, "bang triggers action specified in args");
+
 setoutletassist(0, "unique exit of information");
+setoutletassist(1, "unique exit of information");
+setoutletassist(2, "unique exit of information");
+setoutletassist(3, "unique exit of information");
+setoutletassist(4, "unique exit of information");
+setoutletassist(5, "Templates");
 
 var api;
 var liveView;
@@ -37,6 +43,7 @@ var cSnares = 1;
 var cPercs = 1;
 var cHats = 1;
 var cFXs = 1;
+var cShots = 1;
 var cPads = 1;
 var cLoops = 1;
 var cLeads = 1;
@@ -50,6 +57,7 @@ var numSnares = 0;
 var numPercs = 0;
 var numHats = 0;
 var numFXs = 0;
+var numShots = 0;
 var numPads = 0;
 var numLoops = 0;
 var numLeads = 0;
@@ -95,31 +103,43 @@ var snareHuman = false;
 var snareSize = 16;
 var snareNotes = 1;
 var snareSteadyReady = false;
+var snareAcid = false;
 
 var hatsSteady = false;
 var hatsHuman = false;
 var hatsSize = 16;
 var hatsNotes = 1;
 var hatsSteadyReady = false;
+var hatsAcid = false;
 
 var fxTone = false;
 var fxHuman = false;
 var fxSize = 16;
 var fxNotes = 1;
+var fxAcid = false;
+
+var shotTone = false;
+var shotHuman = false;
+var shotSize = 16;
+var shotNotes = 1;
+var shotAcid = false;
 
 var percHuman = false;
 var percSize = 16;
 var percNotes = 1;
+var percAcid = false;
 
 var leadTone = false;
 var leadHuman = false;
 var leadSize = 16;
 var leadNotes = 1;
+var leadAcid = false;
 
 var vocalTone = false;
 var vocalHuman = false;
 var vocalSize = 16;
 var vocalNotes = 1;
+var vocalAcid = false;
 
 var selectedTypeNewSynth = "";
 var kickGrooveNotes = [];
@@ -129,6 +149,18 @@ var buildFinish = false;
 var meterTotal = 0;
 
 var channelSeqCreated = false;
+var jsonHost = "https://dl.dropboxusercontent.com/u/7530606/musicbuilderdata.json";
+var jsonData;
+var JSONLoaded = false;
+
+var style = "all";
+var pack = "all"
+var selectedPack = "";
+var selectedStyle = "";
+var styleArray = [];
+var packArray = [];
+var templateArray = [];
+var keys = [];
 
 
 var DEBUG = true;
@@ -312,6 +344,10 @@ function getColor(name) {
 			fcolor = [80, 200, 180];
 			break;
 
+		case "Shot":
+			fcolor = [30, 30, 250];
+			break;
+
 		case "Pad":
 			fcolor = [200, 170, 80];
 			break;
@@ -409,6 +445,11 @@ function setCustomHats(v) {
 function setCustomFX(v) {
 	cFXs = notes2Channels(v);
 	numFXs = Math.floor(v * 10);
+}
+
+function setCustomShot(v) {
+	cShots = notes2Channels(v);
+	numShots = Math.floor(v * 10);
 }
 
 function setCustomPad(v) {
@@ -718,7 +759,6 @@ function setBass(v) {
 	}
 	if (isNumber(v)) {
 		bassNotes = note2Num(1, 16, v);
-		log(bassNotes);
 	}
 	setMeter();
 }
@@ -736,6 +776,12 @@ function setSnare(v) {
 			break;
 		case "Humanizer":
 			snareHuman = true;
+			break;
+		case "Acidlizer":
+			snareAcid = true;
+			break;
+		case "Normalizer":
+			snareAcid = false;
 			break;
 		case "2s":
 			snareSize = 1;
@@ -776,6 +822,12 @@ function setHats(v) {
 		case "Humanizer":
 			hatsHuman = true;
 			break;
+		case "Acidlizer":
+			hatsAcid = true;
+			break;
+		case "Normalizer":
+			hatsAcid = false;
+			break;
 		case "2s":
 			hatsSize = 1;
 			break;
@@ -815,6 +867,12 @@ function setFX(v) {
 		case "Humanizer":
 			fxHuman = true;
 			break;
+		case "Acidlizer":
+			fxAcid = true;
+			break;
+		case "Normalizer":
+			fxAcid = false;
+			break;
 		case "2s":
 			fxSize = 1;
 			break;
@@ -840,6 +898,51 @@ function setFX(v) {
 	setMeter();
 }
 
+function setShot(v) {
+	switch (v) {
+		case "Atonal":
+			shotTone = false;
+			break;
+		case "Tones":
+			shotTone = true;
+			break;
+		case "Robotizer":
+			shotHuman = false;
+			break;
+		case "Humanizer":
+			shotHuman = true;
+			break;
+		case "Acidlizer":
+			shotAcid = true;
+			break;
+		case "Normalizer":
+			shotAcid = false;
+			break;
+		case "2s":
+			shotSize = 1;
+			break;
+		case "4s":
+			shotSize = 2;
+			break;
+		case "8s":
+			shotSize = 4;
+			break;
+		case "15s":
+			shotSize = 8;
+			break;
+		case "30s":
+			shotSize = 16;
+			break;
+		case "60s":
+			shotSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		shotNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
 function setPerc(v) {
 	switch (v) {
 		case "Robotizer":
@@ -847,6 +950,12 @@ function setPerc(v) {
 			break;
 		case "Humanizer":
 			percHuman = true;
+			break;
+		case "Acidlizer":
+			percAcid = true;
+			break;
+		case "Normalizer":
+			percAcid = false;
 			break;
 		case "2s":
 			percSize = 1;
@@ -884,6 +993,12 @@ function setLead(v) {
 		case "Humanizer":
 			leadHuman = true;
 			break;
+		case "Acidlizer":
+			leadAcid = true;
+			break;
+		case "Normalizer":
+			leadAcid = false;
+			break;
 		case "2s":
 			leadSize = 1;
 			break;
@@ -920,6 +1035,12 @@ function setVocals(v) {
 		case "Humanizer":
 			vocalHuman = true;
 			break;
+		case "Acidlizer":
+			vocalAcid = true;
+			break;
+		case "Normalizer":
+			vocalAcid = false;
+			break;
 		case "2s":
 			vocalSize = 1;
 			break;
@@ -944,7 +1065,6 @@ function setVocals(v) {
 
 function setChannelLoadSynth(s) {
 	selectedTypeNewSynth = s;
-	log(selectedTypeNewSynth);
 }
 
 function setNumSlices() {
@@ -957,7 +1077,6 @@ function setNumSlices() {
 		o = 1;
 	}
 	sSlices = i + verseNum + breakNum + o;
-	log(sSlices);
 }
 
 function setChannelSequence() {
@@ -985,6 +1104,9 @@ function setChannelSequence() {
 	}
 	for (i = 0; i < numFXs; i++) {
 		channelSequence.push("FX");
+	}
+	for (i = 0; i < numShots; i++) {
+		channelSequence.push("Shot");
 	}
 	for (i = 0; i < numLeads; i++) {
 		channelSequence.push("Lead");
@@ -1033,6 +1155,9 @@ function setMeter() {
 	if (fxNotes > 0) {
 		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
 	}
+	if (shotNotes > 0) {
+		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
+	}
 	if (percNotes > 0) {
 		meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
 	}
@@ -1078,8 +1203,12 @@ function setFixedStructure() {
 	sSlicesArray = [];
 	createStructure();
 	sCreated = true;
-	log(sSlicesArray);
-
+}
+function setPack(s) {
+	pack = s;
+}
+function setStyle(s) {
+	style = s;
 }
 
 
@@ -1275,7 +1404,7 @@ function createCSequence(s) {
 						steps: sSlicesArray[i].steps
 					});
 				}
-			}else {
+			} else {
 				channelSlices.push({
 					seq: "filled",
 					steps: sSlicesArray[i].steps
@@ -1284,7 +1413,7 @@ function createCSequence(s) {
 		}
 	} else if (s == "Loop") {
 		for (var i = 0; i < sSlicesArray.length; i++) {
-			if (sSlicesArray[i].slice == "break" ) {
+			if (sSlicesArray[i].slice == "break") {
 				if (randomInt(0, 1) == 1) {
 					channelSlices.push({
 						seq: "filled",
@@ -1309,17 +1438,10 @@ function createCSequence(s) {
 					});
 				}
 			} else if (sSlicesArray[i].slice == "intro") {
-				if (randomInt(0, 100) >= introPercent) {
-					channelSlices.push({
-						seq: "filled",
-						steps: sSlicesArray[i].steps
-					});
-				} else {
-					channelSlices.push({
-						seq: "blank",
-						steps: sSlicesArray[i].steps
-					});
-				}
+				channelSlices.push({
+					seq: "blank",
+					steps: sSlicesArray[i].steps
+				});
 			} else {
 				channelSlices.push({
 					seq: "filled",
@@ -1487,7 +1609,7 @@ function createCSequence(s) {
 				});
 			}
 		}
-	} else if (s == "Perc" || s == "FX" || s == "Lead" || s == "Vocals") {
+	} else if (s == "Perc" || s == "FX" || s == "Lead" || s == "Vocals" || s == "Shot") {
 		// var gnc = getNameC(s);
 		//var getSeq = gnc[randomInt(0, gnc.length - 1)];
 		for (var i = 0; i < sSlicesArray.length; i++) {
@@ -1650,7 +1772,6 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * hatsSize));
 			}
 		}
 	} else if (channelGroove == "Snare") {
@@ -1680,7 +1801,6 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * snareSize));
 			}
 		}
 	} else if (channelGroove == "Hats fixo") {
@@ -1720,10 +1840,9 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * hatsSize));
 			}
 		}
-	} else if (channelGroove == "FX") {
+	} else if (channelGroove == "FX" || channelGroove == "Shot") {
 
 		numberNotes = cgSelected;
 		var randInit;
@@ -1850,7 +1969,6 @@ function createGroove(instrument) {
 					} else {
 						toneVocal = 60;
 					}
-					log(toneVocal);
 					toneArray.push(toneVocal);
 					arrayOfNotes.push(randInit);
 					newGroove.push({
@@ -1870,7 +1988,6 @@ function createGroove(instrument) {
 			}
 		}
 	} else if (channelGroove == "Lowend" || channelGroove == "Loop") {
-		log(newGroove);
 		numberNotes = cgSelected;
 		var randInit = 8;
 		for (var i = 0; i < randInit; i++) {
@@ -1918,7 +2035,6 @@ function createGroove(instrument) {
 					} else {
 						tone = 60;
 					}
-					log(randInit);
 					toneArray.push(tone);
 					newGroove.push({
 						note: tone,
@@ -2119,16 +2235,34 @@ function loadDevice(p) {
 	} else {
 		s = p;
 	}
-	var array = this[s.toLowerCase() + "Array"];
-	var synth = pack + style + s + randomInt(array[0],array[1]);
-	log(synth); //pack0dubKickcut0
 
+	selectedPack = pack;
+	selectedStyle = style;
+
+	if (pack == "all") {
+		selectedPack = packArray[randomInt(0, packArray.length - 1)];
+	}
+	if (style == "all") {
+		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
+	}
+
+	var synth = selectedPack + selectedStyle + getSynth(s);
+
+	
 	outlet(0, "swap " + synth);
+
+	if (s == "Snare" || s == "Perc" || s == "Lead" || s == "Hats" || s == "FX" || s == "Shot" || s == "Vocal") {
+		if (this[s.toLowerCase() + "Acid"] == true) {
+			outlet(0, "loaddev Audio Effect Rack");
+			outlet(0, "swap Acidlizer");
+		}
+	}
 }
 
 function loadNewSynth() {
 	loadDefaults(selectedTypeNewSynth);
 }
+
 
 
 
@@ -2209,7 +2343,10 @@ setMeter();
 
 setTotalTime();
 
-//setSelectors();
+//setSelectors(); 
+
+readJSON();
+
 
 
 function singleMidi(s) {
@@ -2331,274 +2468,52 @@ function channelBang(s) {
 
 // exemplo pack01dubKick0
 
-var style = "dub";
-var pack = "pack0"
-
-var kickArray = [0,6];
+var kickArray = [0,10];
 var kickBaseName = "Kick";
 
-var kickcutArray = [0,6];
+var kickcutArray = [0,10];
 var kickcutBaseName = "Kickcut";
 
-var bassArray = [0,21];
+var bassArray = [0,10];
 var bassBaseName = "Bass";
 
-var lowendArray = [0,7];
+var lowendArray = [0,10];
 var lowendBaseName = "Lowend";
 
-var snareArray = [0,17];
+var snareArray = [0,10];
 var snareBaseName = "Snare";
 
-var hatsArray = [0,7];
+var hatsArray = [0,10];
 var hatsBaseName = "Hat";
 
 var percArray = [0,0];
 var percBaseName = "Perc";
 
-var fxArray = [0,27];
+var fxArray = [0,30];
 var fxBaseName = "FX";
 
 var leadArray = [0,0];
 var leadBaseName = "Lead";
 
-var padArray = [0,14];
+var padArray = [0,10];
 var padBaseName = "Texture";
 
 var vocalsArray = [0,10];
 var vocalsBaseName = "Vocal";
 
-var loopArray = [0,9];
+var loopArray = [0,20];
 var loopsBaseName = "Loop";
 
 
 
 function setTemplate(s) {
-	if (s == "Broken") {
-		intro = true;
-		introSize = 32;
-		introPercent = 20;
-
-		outro = true;
-		outroSize = 48;
-		outroPercent = 25;
-
-		verseMiniBreak = true;
-		verseSize = 16;
-		verseNum = 3;
-
-		breakLong = true;
-		breakSize = 16;
-		breakNum = 2;
-		dropSize = 16;
-
-		kickCut = true;
-		kickSC = true;
-		kickNotes = 1;
-		kickSize = 16;
-
-		bassSize = 8;
-		bassNotes = 6;
-
-		snareSteady = true;
-		snareHuman = true;
-		snareSize = 16;
-		snareNotes = 2;
-
-		hatsSteady = true;
-		hatsSize = 16;
-		hatsNotes = 2;
-
-		fxTone = true;
-		fxHuman = true;
-		fxSize = 16;
-		fxNotes = 2;
-
-		percSize = 16;
-		percNotes = 2;
-
-		leadSize = 16;
-		leadNotes = 3;
-
-		vocalSize = 16;
-		vocalNotes = 2;
-
-		numBass = 1;
-		numSnares = 1;
-		numPercs = 2;
-		numHats = 2;
-		numFXs = 10;
-		numPads = 3;
-		numLoops = 2;
-		numLeads = 1;
-		numVocals = 1;
-	} else if (s == "Comun") {
-		intro = true;
-		introSize = 16;
-		introPercent = 40;
-
-		outro = true;
-		outroSize = 48;
-		outroPercent = 45;
-
-		verseMiniBreak = true;
-		verseSize = 16;
-		verseNum = 4;
-		verseHumanizer = true;
-
-		breakLong = true;
-		breakSize = 8;
-		breakNum = 3;
-		dropSize = 8;
-
-		kickSC = true;
-		kickNotes = 1;
-		kickSize = 16;
-
-		bassSize = 16;
-		bassNotes = 10;
-
-		snareSteady = true;
-		snareHuman = true;
-		snareSize = 16;
-		snareNotes = 2;
-
-		hatsSteady = true;
-		hatsSize = 16;
-		hatsNotes = 4;
-
-		fxTone = true;
-		fxHuman = true;
-		fxSize = 16;
-		fxNotes = 3;
-
-		percSize = 16;
-		percNotes = 1;
-
-		leadSize = 16;
-		leadNotes = 2;
-
-		vocalSize = 16;
-		vocalNotes = 1;
-
-		numBass = 1;
-		numSnares = 1;
-		numPercs = 3;
-		numHats = 3;
-		numFXs = 5;
-		numPads = 1;
-		numLoops = 3;
-		numLeads = 1;
-		numVocals = 1;
-	} else if (s == "Ambient") {
-		intro = true;
-		introSize = 16;
-		introPercent = 40;
-
-		outro = true;
-		outroSize = 32;
-		outroPercent = 30;
-		outroSmooth = true;
-
-		verseSize = 16;
-		verseNum = 4;
-		verseHumanizer = true;
-
-		breakLong = true;
-		breakSize = 16;
-		breakNum = 2;
-		dropSize = 16;
-
-		kickSC = true;
-		kickNotes = 2;
-		kickSize = 16;
-
-		bassLowEnd = true;
-		bassSize = 4;
-		bassNotes = 7;
-
-		snareSteady = true;
-		snareSize = 16;
-		snareNotes = 1;
-
-		hatsSteady = true;
-		hatsSize = 16;
-		hatsNotes = 2;
-
-		fxHuman = true;
-		fxSize = 16;
-		fxNotes = 1;
-
-		percSize = 16;
-		percNotes = 1;
-
-		vocalSize = 16;
-		vocalNotes = 1;
-
-		numBass = 1;
-		numSnares = 2;
-		numPercs = 2;
-		numHats = 2;
-		numFXs = 6;
-		numPads = 2;
-		numLoops = 1;
-		numVocals  = 2;
-	} else if (s == "Experimental") {
-		intro = true;
-		introSize = 16;
-		introPercent = 40;
-
-		outro = true;
-		outroSize = 32;
-		outroPercent = 40;
-		outroSmooth  = true;
-
-		verseSize = 16;
-		verseNum = 4;
-		verseHumanizer = true;
-		verseMiniBreak  = true;
-
-		breakSize = 32;
-		breakNum = 2;
-		dropSize = 16;
-
-		kickSC = true;
-		kickNotes = 3;
-		kickSize = 16;
-		kickCut = true;
-
-		bassLowEnd = true;
-		bassSize = 16;
-		bassNotes = 7;
-
-		snareSteady = true;
-		snareSize = 16;
-		snareNotes = 1;
-
-		hatsSteady = true;
-		hatsSize = 16;
-		hatsNotes = 2;
-
-		fxHuman = true;
-		fxSize = 16;
-		fxNotes = 1;
-
-		vocalSize = 16;
-		vocalNotes = 1;
-
-		numBass = 1;
-		numSnares = 1;
-		numPercs = 0;
-		numHats = 1;
-		numFXs = 8;
-		numPads = 2;
-		numLoops = 3;
-		numVocals  = 1;
+	if (JSONLoaded) {
+		setTemplatesJSON(s);
+		setMeter();
+		setTotalTime();
+		setNumSlices();
+		setSelectors();
 	}
-
-	setMeter();
-	setTotalTime();
-	setNumSlices();
-	setSelectors();
 }
 
 
@@ -2611,7 +2526,7 @@ function chanceOfBreak() {
 	if (verseHumanizer) {
 		vHumanizer = randomInt(1, 2) * 2;
 	}
-	if (verseMiniBreak == true && randomInt(0, 99) < 75 ) { //check se vai ter break
+	if (verseMiniBreak == true && randomInt(0, 99) < 75) { //check se vai ter break
 		if (verseSize == 16) // check tamanho do verso
 		{
 			sSlicesArray.push({
@@ -2743,15 +2658,121 @@ function toHHMMSS(n) {
 	return time;
 }
 
+function readystatechange_parsejson() {
+	if (this.readyState == 4) {
+		jsonData = JSON.parse(this.responseText);
+		var myobj = JSON.parse(this.responseText);
+		var i, j;
+		for (i = 0; i < jsonData.synths.length; i++) {
+			styleArray.push(jsonData.synths[i].style);
+
+			for (j = 0; j < jsonData.synths[i].packs.length; j++) {
+				packArray.push(jsonData.synths[i].packs[j].pack);
+			}
+		}
+		for (i=0;i<jsonData.templates.length;i++) {
+			templateArray.push(jsonData.templates[i].name);
+		}
+	}
+	var finalpa = packArray;
+	finalpa.unshift("all");
+	outlet(3, "_parameter_range", finalpa);
+
+	var finalsa = styleArray;
+	finalsa.unshift("all");
+	outlet(4, "_parameter_range", finalsa);
+
+	var finalt = templateArray;
+	finalt.unshift("Select");
+	outlet(5, "_parameter_range", finalt);
+
+	styleArray.shift();
+	packArray.shift();
+
+	JSONLoaded = true;
+
+}
+
+function readJSON() {
+	ajaxreq = new XMLHttpRequest();
+	ajaxreq.open("GET", jsonHost);
+	ajaxreq.onreadystatechange = readystatechange_parsejson;
+	ajaxreq.send("{}");
+}
+
+function getSynth(synth) {
+	var i;
+	var _pack;
+	var _style;
+	var _synth;
+	//style
+	for (i = 0; i < jsonData.synths.length; i++) {
+		if (jsonData.synths[i].style == selectedStyle) {
+			_style = i;
+			break;
+		}
+	}
+
+	//pack
+	for (i = 0; i < jsonData.synths[_style].packs.length; i++) {
+		if (jsonData.synths[_style].packs[i].pack == selectedPack) {
+			_pack = i;
+			break;
+		}
+	}
+	//synth
+	for (i = 0; i < jsonData.synths[_style].packs[_pack].content.length; i++) {
+		if (jsonData.synths[_style].packs[_pack].content[i].synth == synth) {
+			_synth = i;
+			break;
+		}
+	}
+	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
+	var indexSynth = randomInt(0, totalSynths-1);
+	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
+	log("Style: " + _style);
+	log("Pack: " + _pack);
+	log("Synth: " + _synth);
+	log("Total Synths: " + totalSynths);
+	log("Index: " + indexSynth);
+	log("Choosen: " + choosenSynth);
+
+	return choosenSynth;
+}
+
+function getKeys(keys, obj, path) {
+	for (key in obj) {
+		var currpath = key;
+		keys.push([key]);
+		if (typeof(obj[key]) == 'object' && !(obj[key] instanceof Array))
+			getKeys(keys, obj[key], currpath);
+	}
+}
+
+function setTemplatesJSON(s) {
+	if (JSONLoaded) {
+		var totalTemplates = jsonData.templates.length;
+		var selectedTemplate = 0;
+
+		for (var i = 0; i < totalTemplates; i++) {
+			if (jsonData.templates[i].name == s) {
+				selectedTemplate = i;
+			}
+		}
+		getKeys(keys, jsonData.templates[selectedTemplate].content, '');
+		for (var i = 0; i < keys.length; i++) {
+			this[keys[i][0]] = jsonData.templates[selectedTemplate].content[keys[i][0]];
+		}
+	}
+}
+
 
 function setSelectors(v) {
 	//outlet(3,v);
-	log(v);
 }
 
 
 function setSelTemplate(a,v) {
-	log(a,v);
 	//outlet(3,v);
 }
 

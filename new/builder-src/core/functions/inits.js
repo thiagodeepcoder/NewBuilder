@@ -4,4 +4,7 @@ setMeter();
 
 setTotalTime();
 
-//setSelectors();
+//setSelectors(); 
+
+readJSON();
+

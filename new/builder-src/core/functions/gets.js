@@ -45,6 +45,10 @@ function getColor(name) {
 			fcolor = [80, 200, 180];
 			break;
 
+		case "Shot":
+			fcolor = [30, 30, 250];
+			break;
+
 		case "Pad":
 			fcolor = [200, 170, 80];
 			break;

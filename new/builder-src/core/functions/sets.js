@@ -28,6 +28,11 @@ function setCustomFX(v) {
 	numFXs = Math.floor(v * 10);
 }
 
+function setCustomShot(v) {
+	cShots = notes2Channels(v);
+	numShots = Math.floor(v * 10);
+}
+
 function setCustomPad(v) {
 	cPads = notes2Channels(v);
 	numPads = Math.floor(v * 5);
@@ -335,7 +340,6 @@ function setBass(v) {
 	}
 	if (isNumber(v)) {
 		bassNotes = note2Num(1, 16, v);
-		log(bassNotes);
 	}
 	setMeter();
 }
@@ -353,6 +357,12 @@ function setSnare(v) {
 			break;
 		case "Humanizer":
 			snareHuman = true;
+			break;
+		case "Acidlizer":
+			snareAcid = true;
+			break;
+		case "Normalizer":
+			snareAcid = false;
 			break;
 		case "2s":
 			snareSize = 1;
@@ -393,6 +403,12 @@ function setHats(v) {
 		case "Humanizer":
 			hatsHuman = true;
 			break;
+		case "Acidlizer":
+			hatsAcid = true;
+			break;
+		case "Normalizer":
+			hatsAcid = false;
+			break;
 		case "2s":
 			hatsSize = 1;
 			break;
@@ -432,6 +448,12 @@ function setFX(v) {
 		case "Humanizer":
 			fxHuman = true;
 			break;
+		case "Acidlizer":
+			fxAcid = true;
+			break;
+		case "Normalizer":
+			fxAcid = false;
+			break;
 		case "2s":
 			fxSize = 1;
 			break;
@@ -457,6 +479,51 @@ function setFX(v) {
 	setMeter();
 }
 
+function setShot(v) {
+	switch (v) {
+		case "Atonal":
+			shotTone = false;
+			break;
+		case "Tones":
+			shotTone = true;
+			break;
+		case "Robotizer":
+			shotHuman = false;
+			break;
+		case "Humanizer":
+			shotHuman = true;
+			break;
+		case "Acidlizer":
+			shotAcid = true;
+			break;
+		case "Normalizer":
+			shotAcid = false;
+			break;
+		case "2s":
+			shotSize = 1;
+			break;
+		case "4s":
+			shotSize = 2;
+			break;
+		case "8s":
+			shotSize = 4;
+			break;
+		case "15s":
+			shotSize = 8;
+			break;
+		case "30s":
+			shotSize = 16;
+			break;
+		case "60s":
+			shotSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		shotNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
 function setPerc(v) {
 	switch (v) {
 		case "Robotizer":
@@ -464,6 +531,12 @@ function setPerc(v) {
 			break;
 		case "Humanizer":
 			percHuman = true;
+			break;
+		case "Acidlizer":
+			percAcid = true;
+			break;
+		case "Normalizer":
+			percAcid = false;
 			break;
 		case "2s":
 			percSize = 1;
@@ -501,6 +574,12 @@ function setLead(v) {
 		case "Humanizer":
 			leadHuman = true;
 			break;
+		case "Acidlizer":
+			leadAcid = true;
+			break;
+		case "Normalizer":
+			leadAcid = false;
+			break;
 		case "2s":
 			leadSize = 1;
 			break;
@@ -537,6 +616,12 @@ function setVocals(v) {
 		case "Humanizer":
 			vocalHuman = true;
 			break;
+		case "Acidlizer":
+			vocalAcid = true;
+			break;
+		case "Normalizer":
+			vocalAcid = false;
+			break;
 		case "2s":
 			vocalSize = 1;
 			break;
@@ -561,7 +646,6 @@ function setVocals(v) {
 
 function setChannelLoadSynth(s) {
 	selectedTypeNewSynth = s;
-	log(selectedTypeNewSynth);
 }
 
 function setNumSlices() {
@@ -574,7 +658,6 @@ function setNumSlices() {
 		o = 1;
 	}
 	sSlices = i + verseNum + breakNum + o;
-	log(sSlices);
 }
 
 function setChannelSequence() {
@@ -602,6 +685,9 @@ function setChannelSequence() {
 	}
 	for (i = 0; i < numFXs; i++) {
 		channelSequence.push("FX");
+	}
+	for (i = 0; i < numShots; i++) {
+		channelSequence.push("Shot");
 	}
 	for (i = 0; i < numLeads; i++) {
 		channelSequence.push("Lead");
@@ -650,6 +736,9 @@ function setMeter() {
 	if (fxNotes > 0) {
 		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
 	}
+	if (shotNotes > 0) {
+		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
+	}
 	if (percNotes > 0) {
 		meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
 	}
@@ -695,6 +784,10 @@ function setFixedStructure() {
 	sSlicesArray = [];
 	createStructure();
 	sCreated = true;
-	log(sSlicesArray);
-
+}
+function setPack(s) {
+	pack = s;
+}
+function setStyle(s) {
+	style = s;
 }

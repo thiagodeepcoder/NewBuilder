@@ -95,7 +95,6 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * hatsSize));
 			}
 		}
 	} else if (channelGroove == "Snare") {
@@ -125,7 +124,6 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * snareSize));
 			}
 		}
 	} else if (channelGroove == "Hats fixo") {
@@ -165,10 +163,9 @@ function createGroove(instrument) {
 						size: 1
 					});
 				}
-				log((j * hatsSize));
 			}
 		}
-	} else if (channelGroove == "FX") {
+	} else if (channelGroove == "FX" || channelGroove == "Shot") {
 
 		numberNotes = cgSelected;
 		var randInit;
@@ -295,7 +292,6 @@ function createGroove(instrument) {
 					} else {
 						toneVocal = 60;
 					}
-					log(toneVocal);
 					toneArray.push(toneVocal);
 					arrayOfNotes.push(randInit);
 					newGroove.push({
@@ -315,7 +311,6 @@ function createGroove(instrument) {
 			}
 		}
 	} else if (channelGroove == "Lowend" || channelGroove == "Loop") {
-		log(newGroove);
 		numberNotes = cgSelected;
 		var randInit = 8;
 		for (var i = 0; i < randInit; i++) {
@@ -363,7 +358,6 @@ function createGroove(instrument) {
 					} else {
 						tone = 60;
 					}
-					log(randInit);
 					toneArray.push(tone);
 					newGroove.push({
 						note: tone,

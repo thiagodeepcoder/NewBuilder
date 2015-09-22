@@ -1,8 +1,5 @@
 // exemplo pack01dubKick0
 
-var style = "dub";
-var pack = "pack1"
-
 var kickArray = [0,10];
 var kickBaseName = "Kick";
 
