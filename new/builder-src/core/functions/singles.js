@@ -59,7 +59,6 @@ function singleChannel(s) {
 
 		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
 			channelBang(s);
-			 log(s);
 		}
 
 

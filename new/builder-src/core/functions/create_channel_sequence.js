@@ -146,7 +146,7 @@ function createCSequence(s) {
 						steps: sSlicesArray[i].steps
 					});
 				}
-			} else if (sSlicesArray[i].slice == "outro") {
+			} else if (sSlicesArray[i].slice == "intro") {
 				if (introKickBass) {
 					channelSlices.push({
 						seq: "filled",
@@ -192,13 +192,15 @@ function createCSequence(s) {
 					});
 				}
 			} else if (sSlicesArray[i].slice == "intro") {
-				channelSlices.push({
-					seq: "blank",
-					steps: sSlicesArray[i].steps
-				});
+				if (randomInt(0, 100) >= introPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				}
 			} else {
 				channelSlices.push({
-					seq: "filled",
+					seq: "blank",
 					steps: sSlicesArray[i].steps
 				});
 			}
@@ -418,6 +420,30 @@ function createCSequence(s) {
 					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
+			} else if (sSlicesArray[i].slice == "intro" ) {
+				if (randomInt(0, 100) <= introPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				} else {
+					channelSlices.push({
+						seq: "blank",
+						steps: sSlicesArray[i].steps
+					});
+				}
+			} else if (sSlicesArray[i].slice == "outro") {
+				if (randomInt(0, 100) <= outroPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				} else {
+					channelSlices.push({
+						seq: "blank",
+						steps: sSlicesArray[i].steps
+					});
+				}
 			} else {
 				channelSlices.push({
 					seq: "blank",

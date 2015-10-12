@@ -5,9 +5,9 @@ function randomInt(min, max) {
 function chanceOfBreak() {
 	var vHumanizer = 0;
 	if (verseHumanizer) {
-		vHumanizer = randomInt(1, 2) * 2;
+		vHumanizer = randomInt(-2, 2) * 2;
 	}
-	if (verseMiniBreak == true && randomInt(0, 99) < 75) { //check se vai ter break
+	if (verseMiniBreak == true && randomInt(0, 99) < 50) { //check se vai ter break
 		if (verseSize == 16) // check tamanho do verso
 		{
 			sSlicesArray.push({
@@ -36,7 +36,10 @@ function chanceOfBreak() {
 		//}
 
 	} else {
-
+		if(vHumanizer<0)
+		{
+			vHumanizer = vHumanizer*-1;
+		}
 		sSlicesArray.push({
 			slice: "verso",
 			steps: verseSize - vHumanizer
@@ -151,7 +154,7 @@ function readystatechange_parsejson() {
 				packArray.push(jsonData.synths[i].packs[j].pack);
 			}
 		}
-		for (i=0;i<jsonData.templates.length;i++) {
+		for (i = 0; i < jsonData.templates.length; i++) {
 			templateArray.push(jsonData.templates[i].name);
 		}
 	}
@@ -209,7 +212,7 @@ function getSynth(synth) {
 		}
 	}
 	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
-	var indexSynth = randomInt(0, totalSynths-1);
+	var indexSynth = randomInt(0, totalSynths - 1);
 	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
 	log("Style: " + _style);
 	log("Pack: " + _pack);
@@ -243,6 +246,52 @@ function setTemplatesJSON(s) {
 		getKeys(keys, jsonData.templates[selectedTemplate].content, '');
 		for (var i = 0; i < keys.length; i++) {
 			this[keys[i][0]] = jsonData.templates[selectedTemplate].content[keys[i][0]];
+
+			changeInterface(keys[i][0], jsonData.templates[selectedTemplate].content[keys[i][0]]);
+
 		}
 	}
+}
+
+function changeInterface(k, v) {
+	if (k != "numBass") {
+		outlet(6, 'send', k);
+		if (k.slice(-4) == "Size") {
+			var c = 0;
+			switch (v) {
+				case 2:
+					c = 1;
+					break;
+				case 4:
+					c = 2;
+					break;
+				case 8:
+					c = 3;
+					break;
+				case 16:
+					c = 4;
+					break;
+				case 32:
+					c = 5;
+					break;
+				case 64:
+					c = 6;
+					break;
+			}
+			outlet(6,"set", c);
+		}
+		else {
+			outlet(6,"set", v);
+		}
+	}
+}
+
+function setfirstScene () {
+	var __t = new LiveAPI("live_set view");
+	var livesetTrack = new LiveAPI("live_set tracks 1");
+	var allTracks = livesetTrack.get("clip_slots");
+
+	var ss = 1;
+	var l = ["id",Number(allTracks[(ss*2)-1])];
+	__t.set("highlighted_clip_slot",l);
 }

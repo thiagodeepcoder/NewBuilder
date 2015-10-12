@@ -2,66 +2,66 @@ function getColor(name) {
 	var fcolor;
 	switch (name) {
 		case "SC":
-			fcolor = [255, 255, 255];
+			fcolor = [123, 123, 123];
 			break;
 
 		case "Kick":
-			fcolor = [255, 255, 255];
+			fcolor = [255, 0, 0];
 			break;
 
 		case "Kick cut":
-			fcolor = [255, 255, 255];
+			fcolor = [243, 58, 23];
 			break;
 
 		case "Bass":
-			fcolor = [255, 0, 0];
+			fcolor = [255, 163, 29];
 			break;
 
 		case "Lowend":
-			fcolor = [255, 0, 0];
+			fcolor = [255, 161, 113];
 			break;
 
 		case "Snare":
-			fcolor = [255, 190, 0];
+			fcolor = [255, 238, 158];
 			break;
 
 		case "Snare fixo":
-			fcolor = [255, 190, 0];
+			fcolor = [255, 240, 47];
 			break;
 
 		case "Hats":
-			fcolor = [255, 255, 0];
+			fcolor = [212, 229, 152];
 			break;
 
 		case "Hats fixo":
-			fcolor = [255, 255, 0];
+			fcolor = [182, 209, 115];
 			break;
 
 		case "Perc":
-			fcolor = [120, 200, 0]
+			fcolor = [203, 242, 249]
 			break;
 
 		case "FX":
-			fcolor = [80, 200, 180];
+			fcolor = [0, 165, 239];
 			break;
 
 		case "Shot":
-			fcolor = [30, 30, 250];
+			fcolor = [83, 160, 49];
 			break;
 
 		case "Pad":
-			fcolor = [200, 170, 80];
+			fcolor = [130, 107, 229];
 			break;
 
 		case "Loop":
-			fcolor = [200, 100, 250];
+			fcolor = [255, 44, 211];
 			break;
 		case "Lead":
-			fcolor = [40, 70, 30];
+			fcolor = [255, 255, 255];
 			break;
 
 		case "Vocals":
-			fcolor = [40, 70, 200];
+			fcolor = [255, 145, 165];
 			break;
 	}
 	return fcolor;

@@ -104,11 +104,22 @@ function createGroove(instrument) {
 			if (j == 0) {
 				for (var i = 0; i < snareNotes; i++) {
 					if (snareHuman) {
-						human = randomInt(1, 4) / 8;
+						human = randomInt(2, 4) / 8;
 					} else {
 						human = 0;
 					}
-					randInit = randomInt(0, snareSize * 16) + human;
+
+					do {
+						randInit = randomInt(0, snareSize * 16) + human;
+					}
+					while (isInArray(randInit, arrayOfNotes));
+
+
+					if (randInit % 4 == 0) {
+						randInit++;
+					}
+
+					
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -143,11 +154,20 @@ function createGroove(instrument) {
 			if (j == 0) {
 				for (var i = 0; i < hatsNotes; i++) {
 					if (hatsHuman) {
-						human = randomInt(1, 4) / 8;
+						human = randomInt(2, 4) / 8;
 					} else {
 						human = 0;
 					}
-					randInit = randomInt(0, hatsSize * 16) + human;
+
+					do {
+						randInit = randomInt(0, hatsSize * 16) + human;
+					}
+					while (isInArray(randInit, arrayOfNotes));
+
+
+					if (randInit % 4 == 0) {
+						randInit++;
+					}
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -337,7 +357,7 @@ function createGroove(instrument) {
 			if (j == 0) { // cria sequencia base a ser duplicada
 				for (var i = 0; i < notes; i++) {
 					if (human == 1) {
-						variation = randomInt(1, 4) / 8;
+						variation = randomInt(2, 4) / 8;
 					} else {
 						variation = 0;
 					}

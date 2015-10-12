@@ -1,4 +1,4 @@
-// Ver 2.3
+// Ver 2.6
 
 autowatch = 1;
 outlets = 7;
@@ -302,66 +302,66 @@ function getColor(name) {
 	var fcolor;
 	switch (name) {
 		case "SC":
-			fcolor = [255, 255, 255];
+			fcolor = [123, 123, 123];
 			break;
 
 		case "Kick":
-			fcolor = [255, 255, 255];
+			fcolor = [255, 0, 0];
 			break;
 
 		case "Kick cut":
-			fcolor = [255, 255, 255];
+			fcolor = [243, 58, 23];
 			break;
 
 		case "Bass":
-			fcolor = [255, 0, 0];
+			fcolor = [255, 163, 29];
 			break;
 
 		case "Lowend":
-			fcolor = [255, 0, 0];
+			fcolor = [255, 161, 113];
 			break;
 
 		case "Snare":
-			fcolor = [255, 190, 0];
+			fcolor = [255, 238, 158];
 			break;
 
 		case "Snare fixo":
-			fcolor = [255, 190, 0];
+			fcolor = [255, 240, 47];
 			break;
 
 		case "Hats":
-			fcolor = [255, 255, 0];
+			fcolor = [212, 229, 152];
 			break;
 
 		case "Hats fixo":
-			fcolor = [255, 255, 0];
+			fcolor = [182, 209, 115];
 			break;
 
 		case "Perc":
-			fcolor = [120, 200, 0]
+			fcolor = [203, 242, 249]
 			break;
 
 		case "FX":
-			fcolor = [80, 200, 180];
+			fcolor = [0, 165, 239];
 			break;
 
 		case "Shot":
-			fcolor = [30, 30, 250];
+			fcolor = [83, 160, 49];
 			break;
 
 		case "Pad":
-			fcolor = [200, 170, 80];
+			fcolor = [130, 107, 229];
 			break;
 
 		case "Loop":
-			fcolor = [200, 100, 250];
+			fcolor = [255, 44, 211];
 			break;
 		case "Lead":
-			fcolor = [40, 70, 30];
+			fcolor = [255, 255, 255];
 			break;
 
 		case "Vocals":
-			fcolor = [40, 70, 200];
+			fcolor = [255, 145, 165];
 			break;
 	}
 	return fcolor;
@@ -1393,7 +1393,7 @@ function createCSequence(s) {
 						steps: sSlicesArray[i].steps
 					});
 				}
-			} else if (sSlicesArray[i].slice == "outro") {
+			} else if (sSlicesArray[i].slice == "intro") {
 				if (introKickBass) {
 					channelSlices.push({
 						seq: "filled",
@@ -1439,13 +1439,15 @@ function createCSequence(s) {
 					});
 				}
 			} else if (sSlicesArray[i].slice == "intro") {
-				channelSlices.push({
-					seq: "blank",
-					steps: sSlicesArray[i].steps
-				});
+				if (randomInt(0, 100) >= introPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				}
 			} else {
 				channelSlices.push({
-					seq: "filled",
+					seq: "blank",
 					steps: sSlicesArray[i].steps
 				});
 			}
@@ -1665,6 +1667,30 @@ function createCSequence(s) {
 					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
+			} else if (sSlicesArray[i].slice == "intro" ) {
+				if (randomInt(0, 100) <= introPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				} else {
+					channelSlices.push({
+						seq: "blank",
+						steps: sSlicesArray[i].steps
+					});
+				}
+			} else if (sSlicesArray[i].slice == "outro") {
+				if (randomInt(0, 100) <= outroPercent) {
+					channelSlices.push({
+						seq: "filled",
+						steps: sSlicesArray[i].steps
+					});
+				} else {
+					channelSlices.push({
+						seq: "blank",
+						steps: sSlicesArray[i].steps
+					});
+				}
 			} else {
 				channelSlices.push({
 					seq: "blank",
@@ -1782,11 +1808,22 @@ function createGroove(instrument) {
 			if (j == 0) {
 				for (var i = 0; i < snareNotes; i++) {
 					if (snareHuman) {
-						human = randomInt(1, 4) / 8;
+						human = randomInt(2, 4) / 8;
 					} else {
 						human = 0;
 					}
-					randInit = randomInt(0, snareSize * 16) + human;
+
+					do {
+						randInit = randomInt(0, snareSize * 16) + human;
+					}
+					while (isInArray(randInit, arrayOfNotes));
+
+
+					if (randInit % 4 == 0) {
+						randInit++;
+					}
+
+					
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -1821,11 +1858,20 @@ function createGroove(instrument) {
 			if (j == 0) {
 				for (var i = 0; i < hatsNotes; i++) {
 					if (hatsHuman) {
-						human = randomInt(1, 4) / 8;
+						human = randomInt(2, 4) / 8;
 					} else {
 						human = 0;
 					}
-					randInit = randomInt(0, hatsSize * 16) + human;
+
+					do {
+						randInit = randomInt(0, hatsSize * 16) + human;
+					}
+					while (isInArray(randInit, arrayOfNotes));
+
+
+					if (randInit % 4 == 0) {
+						randInit++;
+					}
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -2015,7 +2061,7 @@ function createGroove(instrument) {
 			if (j == 0) { // cria sequencia base a ser duplicada
 				for (var i = 0; i < notes; i++) {
 					if (human == 1) {
-						variation = randomInt(1, 4) / 8;
+						variation = randomInt(2, 4) / 8;
 					} else {
 						variation = 0;
 					}
@@ -2344,10 +2390,7 @@ setMeter();
 
 setTotalTime();
 
-//setSelectors(); 
-
 readJSON();
-
 
 
 function singleMidi(s) {
@@ -2411,7 +2454,6 @@ function singleChannel(s) {
 
 		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
 			channelBang(s);
-			 log(s);
 		}
 
 
@@ -2467,46 +2509,6 @@ function channelBang(s) {
 
 }
 
-// exemplo pack01dubKick0
-
-var kickArray = [0,10];
-var kickBaseName = "Kick";
-
-var kickcutArray = [0,10];
-var kickcutBaseName = "Kickcut";
-
-var bassArray = [0,10];
-var bassBaseName = "Bass";
-
-var lowendArray = [0,10];
-var lowendBaseName = "Lowend";
-
-var snareArray = [0,10];
-var snareBaseName = "Snare";
-
-var hatsArray = [0,10];
-var hatsBaseName = "Hat";
-
-var percArray = [0,0];
-var percBaseName = "Perc";
-
-var fxArray = [0,30];
-var fxBaseName = "FX";
-
-var leadArray = [0,0];
-var leadBaseName = "Lead";
-
-var padArray = [0,10];
-var padBaseName = "Texture";
-
-var vocalsArray = [0,10];
-var vocalsBaseName = "Vocal";
-
-var loopArray = [0,20];
-var loopsBaseName = "Loop";
-
-
-
 function setTemplate(s) {
 	if (JSONLoaded) {
 		setTemplatesJSON(s);
@@ -2525,9 +2527,9 @@ function randomInt(min, max) {
 function chanceOfBreak() {
 	var vHumanizer = 0;
 	if (verseHumanizer) {
-		vHumanizer = randomInt(1, 2) * 2;
+		vHumanizer = randomInt(-2, 2) * 2;
 	}
-	if (verseMiniBreak == true && randomInt(0, 99) < 75) { //check se vai ter break
+	if (verseMiniBreak == true && randomInt(0, 99) < 50) { //check se vai ter break
 		if (verseSize == 16) // check tamanho do verso
 		{
 			sSlicesArray.push({
@@ -2556,7 +2558,10 @@ function chanceOfBreak() {
 		//}
 
 	} else {
-
+		if(vHumanizer<0)
+		{
+			vHumanizer = vHumanizer*-1;
+		}
 		sSlicesArray.push({
 			slice: "verso",
 			steps: verseSize - vHumanizer
@@ -2671,7 +2676,7 @@ function readystatechange_parsejson() {
 				packArray.push(jsonData.synths[i].packs[j].pack);
 			}
 		}
-		for (i=0;i<jsonData.templates.length;i++) {
+		for (i = 0; i < jsonData.templates.length; i++) {
 			templateArray.push(jsonData.templates[i].name);
 		}
 	}
@@ -2729,7 +2734,7 @@ function getSynth(synth) {
 		}
 	}
 	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
-	var indexSynth = randomInt(0, totalSynths-1);
+	var indexSynth = randomInt(0, totalSynths - 1);
 	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
 	log("Style: " + _style);
 	log("Pack: " + _pack);
@@ -2763,10 +2768,55 @@ function setTemplatesJSON(s) {
 		getKeys(keys, jsonData.templates[selectedTemplate].content, '');
 		for (var i = 0; i < keys.length; i++) {
 			this[keys[i][0]] = jsonData.templates[selectedTemplate].content[keys[i][0]];
+
+			changeInterface(keys[i][0], jsonData.templates[selectedTemplate].content[keys[i][0]]);
+
 		}
 	}
 }
 
+function changeInterface(k, v) {
+	if (k != "numBass") {
+		outlet(6, 'send', k);
+		if (k.slice(-4) == "Size") {
+			var c = 0;
+			switch (v) {
+				case 2:
+					c = 1;
+					break;
+				case 4:
+					c = 2;
+					break;
+				case 8:
+					c = 3;
+					break;
+				case 16:
+					c = 4;
+					break;
+				case 32:
+					c = 5;
+					break;
+				case 64:
+					c = 6;
+					break;
+			}
+			outlet(6,"set", c);
+		}
+		else {
+			outlet(6,"set", v);
+		}
+	}
+}
+
+function setfirstScene () {
+	var __t = new LiveAPI("live_set view");
+	var livesetTrack = new LiveAPI("live_set tracks 1");
+	var allTracks = livesetTrack.get("clip_slots");
+
+	var ss = 1;
+	var l = ["id",Number(allTracks[(ss*2)-1])];
+	__t.set("highlighted_clip_slot",l);
+}
 
 function setSelectors(v) {
 	//outlet(3,v);
@@ -2788,11 +2838,10 @@ function bang() {
 			createStructure();
 			sCreated = true;
 		}
-		if(!channelSeqCreated) {
+		if (!channelSeqCreated) {
 			setChannelSequence();
 		}
 
-		log(sSlicesArray);
 		createMusic(channelSequence[countBangs]);
 
 		if (countBangs < channelSequence.length - 1) {
@@ -2806,6 +2855,12 @@ function bang() {
 
 			var muteT = new LiveAPI("live_set tracks 1");
 			muteT.set("mute", "1");
+
+			var builderT = new LiveAPI("live_set tracks 0 view");
+			builderT.set("is_collapsed", "1");
+
+
+			setfirstScene();
 			//sSlicesArray = [];
 		}
 	}
