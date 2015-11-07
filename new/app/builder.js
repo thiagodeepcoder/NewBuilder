@@ -142,6 +142,9 @@ var vocalSize = 16;
 var vocalNotes = 1;
 var vocalAcid = false;
 
+var comboOn = true;
+var comboNotes = 1;
+
 var selectedTypeNewSynth = "";
 var kickGrooveNotes = [];
 
@@ -162,6 +165,7 @@ var styleArray = [];
 var packArray = [];
 var templateArray = [];
 var keys = [];
+var alreadySynths = [];
 
 
 var DEBUG = true;
@@ -177,74 +181,77 @@ var testSingleChannel = [true,"SC"];
 //---------------
 
 function createNotes(t, c, seq) {
-    /*if(seq != null)
-    {
-        setNoteSeq(seq);
-    }
-    else
-    {
-        setNoteSeq(this[templateSet[t-1].notes]);
-    }*/
-    var notes = [];
-    var args = newGroove; //getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length / 2;
+	/*if(seq != null)
+	{
+	    setNoteSeq(seq);
+	}
+	else
+	{
+	    setNoteSeq(this[templateSet[t-1].notes]);
+	}*/
+	var notes = [];
+	var args = newGroove; //getNoteSeq();
+	var clip = new Clip(t, c);
+	var noteBlock = args.length / 2;
+	var changedNote;
+	for (var ni = 0; ni < args.length; ni++) {
 
-    for (var ni = 0; ni < args.length; ni++) {
+		changedNote = convertNote(args[ni].note);
+		if (channelSequence[channelSequence.length - 1] == "Combo") {
+			changedNote = args[ni].note;
+		}
 
-        var changedNote = convertNote(args[ni].note);
+		if (args[ni].size != 0) {
+			notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
+		}
+	}
 
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
-        }
-    }
-
-    clip.setNotes(notes);
+	clip.setNotes(notes);
 }
 
 function changeNotes(t, c, seq) {
-    setNoteSeq(this[seq]);
-    var notes = [];
-    var args = getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length / 2;
+	setNoteSeq(this[seq]);
+	var notes = [];
+	var args = getNoteSeq();
+	var clip = new Clip(t, c);
+	var noteBlock = args.length / 2;
 
 
-    for (var ni = 0; ni < args.length; ni++) {
+	for (var ni = 0; ni < args.length; ni++) {
 
-        var changedNote = convertNote(args[ni].note);
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
-        }
-    }
+		var changedNote = convertNote(args[ni].note);
+		if (args[ni].size != 0) {
+			notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
+		}
+	}
 
-    return notes;
+	return notes;
 }
 
 function convertNote(n) {
-    var c = 57;
-    var fNote = n - c;
+	var c = 57;
+	var fNote = n - c;
 
 
-    for (var nn = 0; nn < noteTrack.length; nn++) {
-        if (fNote < 7) {
-            if (noteTrack[nn] == fNote) {
-                return fNote + c;
-            } else if (noteTrack[nn] == fNote + 1) {
-                return fNote + c + 1;
-            } else if (noteTrack[nn] == fNote + 2) {
-                return fNote + c + 2;
-            }
-        } else {
-            if (noteTrack[nn] == fNote) {
-                return fNote + c;
-            } else if (noteTrack[nn] == fNote - 1) {
-                return fNote + c - 1;
-            } else if (noteTrack[nn] == fNote - 2) {
-                return fNote + c - 2;
-            }
-        }
-    }
+	for (var nn = 0; nn < noteTrack.length; nn++) {
+		if (fNote < 7) {
+			if (noteTrack[nn] == fNote) {
+				return fNote + c;
+			} else if (noteTrack[nn] == fNote + 1) {
+				return fNote + c + 1;
+			} else if (noteTrack[nn] == fNote + 2) {
+				return fNote + c + 2;
+			}
+		} else {
+			if (noteTrack[nn] == fNote) {
+				return fNote + c;
+			} else if (noteTrack[nn] == fNote - 1) {
+				return fNote + c - 1;
+			} else if (noteTrack[nn] == fNote - 2) {
+				return fNote + c - 2;
+			}
+		}
+	}
 
 }
 
@@ -342,6 +349,10 @@ function getColor(name) {
 			break;
 
 		case "FX":
+			fcolor = [0, 165, 239];
+			break;
+
+		case "Combo":
 			fcolor = [0, 165, 239];
 			break;
 
@@ -615,7 +626,7 @@ function setVerses(v) {
 			verseHumanizer = true;
 			break;
 		case "Robotizer":
-			verseHumanizer  = false;
+			verseHumanizer = false;
 			break;
 		case "No Long":
 			verseLong = false;
@@ -655,7 +666,7 @@ function setBreaks(v) {
 			breakHumanizer = true;
 			break;
 		case "Robotizer":
-			breakHumanizer  = false;
+			breakHumanizer = false;
 			break;
 		case "15s":
 			breakSize = 8;
@@ -899,6 +910,21 @@ function setFX(v) {
 	setMeter();
 }
 
+function setCombo(v) {
+	switch (v) {
+		case "Combed":
+			comboOn = true;
+			break;
+		case "Not Combo":
+			comboOn = false;
+			break;
+	}
+	if (isNumber(v)) {
+		comboNotes = v;
+	}
+	setMeter();
+}
+
 function setShot(v) {
 	switch (v) {
 		case "Atonal":
@@ -1082,6 +1108,8 @@ function setNumSlices() {
 
 function setChannelSequence() {
 	var i;
+
+	
 	channelSequence.push("Kick");
 
 	channelSequence.push("Bass");
@@ -1121,7 +1149,9 @@ function setChannelSequence() {
 	for (i = 0; i < numLoops; i++) {
 		channelSequence.push("Loop");
 	}
-
+	if(comboOn) {
+		channelSequence.push("Combo");
+	}
 	channelSeqCreated = true;
 }
 
@@ -1155,6 +1185,9 @@ function setMeter() {
 	}
 	if (fxNotes > 0) {
 		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
+	}
+	if (comboNotes > 0) {
+		meter += comboNotes * 0.01;
 	}
 	if (shotNotes > 0) {
 		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
@@ -1205,9 +1238,11 @@ function setFixedStructure() {
 	createStructure();
 	sCreated = true;
 }
+
 function setPack(s) {
 	pack = s;
 }
+
 function setStyle(s) {
 	style = s;
 }
@@ -1447,7 +1482,7 @@ function createCSequence(s) {
 				}
 			} else {
 				channelSlices.push({
-					seq: "blank",
+					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
 			}
@@ -1667,7 +1702,7 @@ function createCSequence(s) {
 					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
-			} else if (sSlicesArray[i].slice == "intro" ) {
+			} else if (sSlicesArray[i].slice == "intro") {
 				if (randomInt(0, 100) <= introPercent) {
 					channelSlices.push({
 						seq: "filled",
@@ -1691,6 +1726,20 @@ function createCSequence(s) {
 						steps: sSlicesArray[i].steps
 					});
 				}
+			} else {
+				channelSlices.push({
+					seq: "blank",
+					steps: sSlicesArray[i].steps
+				});
+			}
+		}
+	} else if (s == "Combo") {
+		for (var i = 0; i < sSlicesArray.length; i++) {
+			if (sSlicesArray[i].slice == "break") {
+				channelSlices.push({
+					seq: "filled",
+					steps: sSlicesArray[i].steps
+				});
 			} else {
 				channelSlices.push({
 					seq: "blank",
@@ -1823,7 +1872,7 @@ function createGroove(instrument) {
 						randInit++;
 					}
 
-					
+
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -1937,6 +1986,47 @@ function createGroove(instrument) {
 				note: 60,
 				init: i * 8,
 				size: 8
+			});
+		}
+
+		// código para pad com variação de notas
+
+		/*numberNotes = cgSelected;
+		var randInit;
+		for (var i = 0; i < numberNotes; i++) {
+		    randInit = randomInt(0, 256);
+		    newGroove.push({
+		        note: randomInt(60, 72),
+		        init: randInit / 4,
+		        size: 4
+		    });
+		}*/
+	} else if (channelGroove == "Combo") {
+
+		var randInit;
+		var toneArray = [];
+		var toneLead = 0;
+		for (var i = 0; i < comboNotes; i++) {
+
+			randInit = randomInt(0, 2 * 16) + randomInt(1, 4) / 8;
+
+			while (isInArray(randInit, arrayOfNotes)) {
+				randInit = randomInt(0, 2 * 16) + randomInt(1, 4) / 8;
+			}
+
+			arrayOfNotes.push(randInit);
+
+			toneLead = randomInt(1, 132);
+
+			while (isInArray(toneLead, toneArray)) {
+				toneLead = randomInt(1, 132);
+			}
+
+			toneArray.push(toneLead);
+			newGroove.push({
+				note: toneLead,
+				init: randInit,
+				size: 0.5
 			});
 		}
 
@@ -2285,17 +2375,28 @@ function loadDevice(p) {
 
 	selectedPack = pack;
 	selectedStyle = style;
+	var synth = "";
+	var rselect = "";
 
-	if (pack == "all") {
-		selectedPack = packArray[randomInt(0, packArray.length - 1)];
+	if (p != "Combo") {
+		while (isInArray(synth, alreadySynths)) {
+			if (pack == "all" || p == "FX") {
+				selectedPack = packArray[randomInt(0, packArray.length - 1)];
+			}
+			if (style == "all") {
+				selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
+			}
+
+			rselect = getSynth(s);
+			synth = selectedPack + selectedStyle + rselect;
+		}
+	} else {
+		synth = "dubCombo0"
 	}
-	if (style == "all") {
-		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
-	}
 
-	var synth = selectedPack + selectedStyle + getSynth(s);
+	log(synth);
+	alreadySynths.push(synth);
 
-	
 	outlet(0, "swap " + synth);
 
 	if (s == "Snare" || s == "Perc" || s == "Lead" || s == "Hats" || s == "FX" || s == "Shot" || s == "Vocal") {
@@ -2852,6 +2953,7 @@ function bang() {
 			//sCreated = false;
 			buildFinish = true;
 			countBangs = 0;
+			alreadySynths = [];
 
 			var muteT = new LiveAPI("live_set tracks 1");
 			muteT.set("mute", "1");

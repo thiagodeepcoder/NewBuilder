@@ -128,6 +128,9 @@ var vocalSize = 16;
 var vocalNotes = 1;
 var vocalAcid = false;
 
+var comboOn = true;
+var comboNotes = 1;
+
 var selectedTypeNewSynth = "";
 var kickGrooveNotes = [];
 
@@ -148,3 +151,4 @@ var styleArray = [];
 var packArray = [];
 var templateArray = [];
 var keys = [];
+var alreadySynths = [];

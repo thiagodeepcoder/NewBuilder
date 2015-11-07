@@ -34,17 +34,28 @@ function loadDevice(p) {
 
 	selectedPack = pack;
 	selectedStyle = style;
+	var synth = "";
+	var rselect = "";
 
-	if (pack == "all") {
-		selectedPack = packArray[randomInt(0, packArray.length - 1)];
+	if (p != "Combo") {
+		while (isInArray(synth, alreadySynths)) {
+			if (pack == "all" || p == "FX") {
+				selectedPack = packArray[randomInt(0, packArray.length - 1)];
+			}
+			if (style == "all") {
+				selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
+			}
+
+			rselect = getSynth(s);
+			synth = selectedPack + selectedStyle + rselect;
+		}
+	} else {
+		synth = "dubCombo0"
 	}
-	if (style == "all") {
-		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
-	}
 
-	var synth = selectedPack + selectedStyle + getSynth(s);
+	log(synth);
+	alreadySynths.push(synth);
 
-	
 	outlet(0, "swap " + synth);
 
 	if (s == "Snare" || s == "Perc" || s == "Lead" || s == "Hats" || s == "FX" || s == "Shot" || s == "Vocal") {

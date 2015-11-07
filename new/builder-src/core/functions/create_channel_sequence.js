@@ -420,7 +420,7 @@ function createCSequence(s) {
 					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
-			} else if (sSlicesArray[i].slice == "intro" ) {
+			} else if (sSlicesArray[i].slice == "intro") {
 				if (randomInt(0, 100) <= introPercent) {
 					channelSlices.push({
 						seq: "filled",
@@ -444,6 +444,20 @@ function createCSequence(s) {
 						steps: sSlicesArray[i].steps
 					});
 				}
+			} else {
+				channelSlices.push({
+					seq: "blank",
+					steps: sSlicesArray[i].steps
+				});
+			}
+		}
+	} else if (s == "Combo") {
+		for (var i = 0; i < sSlicesArray.length; i++) {
+			if (sSlicesArray[i].slice == "break") {
+				channelSlices.push({
+					seq: "filled",
+					steps: sSlicesArray[i].steps
+				});
 			} else {
 				channelSlices.push({
 					seq: "blank",

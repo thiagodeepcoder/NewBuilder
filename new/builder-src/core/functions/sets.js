@@ -195,7 +195,7 @@ function setVerses(v) {
 			verseHumanizer = true;
 			break;
 		case "Robotizer":
-			verseHumanizer  = false;
+			verseHumanizer = false;
 			break;
 		case "No Long":
 			verseLong = false;
@@ -235,7 +235,7 @@ function setBreaks(v) {
 			breakHumanizer = true;
 			break;
 		case "Robotizer":
-			breakHumanizer  = false;
+			breakHumanizer = false;
 			break;
 		case "15s":
 			breakSize = 8;
@@ -479,6 +479,21 @@ function setFX(v) {
 	setMeter();
 }
 
+function setCombo(v) {
+	switch (v) {
+		case "Combed":
+			comboOn = true;
+			break;
+		case "Not Combo":
+			comboOn = false;
+			break;
+	}
+	if (isNumber(v)) {
+		comboNotes = v;
+	}
+	setMeter();
+}
+
 function setShot(v) {
 	switch (v) {
 		case "Atonal":
@@ -662,6 +677,8 @@ function setNumSlices() {
 
 function setChannelSequence() {
 	var i;
+
+	
 	channelSequence.push("Kick");
 
 	channelSequence.push("Bass");
@@ -701,7 +718,9 @@ function setChannelSequence() {
 	for (i = 0; i < numLoops; i++) {
 		channelSequence.push("Loop");
 	}
-
+	if(comboOn) {
+		channelSequence.push("Combo");
+	}
 	channelSeqCreated = true;
 }
 
@@ -735,6 +754,9 @@ function setMeter() {
 	}
 	if (fxNotes > 0) {
 		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
+	}
+	if (comboNotes > 0) {
+		meter += comboNotes * 0.015;
 	}
 	if (shotNotes > 0) {
 		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
@@ -785,9 +807,11 @@ function setFixedStructure() {
 	createStructure();
 	sCreated = true;
 }
+
 function setPack(s) {
 	pack = s;
 }
+
 function setStyle(s) {
 	style = s;
 }

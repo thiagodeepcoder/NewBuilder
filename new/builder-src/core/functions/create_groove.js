@@ -119,7 +119,7 @@ function createGroove(instrument) {
 						randInit++;
 					}
 
-					
+
 					arrayOfNotes.push(randInit);
 					newGroove.push({
 						note: 60,
@@ -233,6 +233,47 @@ function createGroove(instrument) {
 				note: 60,
 				init: i * 8,
 				size: 8
+			});
+		}
+
+		// código para pad com variação de notas
+
+		/*numberNotes = cgSelected;
+		var randInit;
+		for (var i = 0; i < numberNotes; i++) {
+		    randInit = randomInt(0, 256);
+		    newGroove.push({
+		        note: randomInt(60, 72),
+		        init: randInit / 4,
+		        size: 4
+		    });
+		}*/
+	} else if (channelGroove == "Combo") {
+
+		var randInit;
+		var toneArray = [];
+		var toneLead = 0;
+		for (var i = 0; i < comboNotes; i++) {
+
+			randInit = randomInt(0, 2 * 16) + randomInt(1, 4) / 8;
+
+			while (isInArray(randInit, arrayOfNotes)) {
+				randInit = randomInt(0, 2 * 16) + randomInt(1, 4) / 8;
+			}
+
+			arrayOfNotes.push(randInit);
+
+			toneLead = randomInt(1, 132);
+
+			while (isInArray(toneLead, toneArray)) {
+				toneLead = randomInt(1, 132);
+			}
+
+			toneArray.push(toneLead);
+			newGroove.push({
+				note: toneLead,
+				init: randInit,
+				size: 0.5
 			});
 		}
 

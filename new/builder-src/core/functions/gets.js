@@ -45,6 +45,10 @@ function getColor(name) {
 			fcolor = [0, 165, 239];
 			break;
 
+		case "Combo":
+			fcolor = [0, 165, 239];
+			break;
+
 		case "Shot":
 			fcolor = [83, 160, 49];
 			break;

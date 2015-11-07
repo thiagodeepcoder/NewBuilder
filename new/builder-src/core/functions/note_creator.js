@@ -7,74 +7,77 @@
 //---------------
 
 function createNotes(t, c, seq) {
-    /*if(seq != null)
-    {
-        setNoteSeq(seq);
-    }
-    else
-    {
-        setNoteSeq(this[templateSet[t-1].notes]);
-    }*/
-    var notes = [];
-    var args = newGroove; //getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length / 2;
+	/*if(seq != null)
+	{
+	    setNoteSeq(seq);
+	}
+	else
+	{
+	    setNoteSeq(this[templateSet[t-1].notes]);
+	}*/
+	var notes = [];
+	var args = newGroove; //getNoteSeq();
+	var clip = new Clip(t, c);
+	var noteBlock = args.length / 2;
+	var changedNote;
+	for (var ni = 0; ni < args.length; ni++) {
 
-    for (var ni = 0; ni < args.length; ni++) {
+		changedNote = convertNote(args[ni].note);
+		if (channelSequence[channelSequence.length - 1] == "Combo") {
+			changedNote = args[ni].note;
+		}
 
-        var changedNote = convertNote(args[ni].note);
+		if (args[ni].size != 0) {
+			notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
+		}
+	}
 
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, args[ni].init, args[ni].size, 100, 0));
-        }
-    }
-
-    clip.setNotes(notes);
+	clip.setNotes(notes);
 }
 
 function changeNotes(t, c, seq) {
-    setNoteSeq(this[seq]);
-    var notes = [];
-    var args = getNoteSeq();
-    var clip = new Clip(t, c);
-    var noteBlock = args.length / 2;
+	setNoteSeq(this[seq]);
+	var notes = [];
+	var args = getNoteSeq();
+	var clip = new Clip(t, c);
+	var noteBlock = args.length / 2;
 
 
-    for (var ni = 0; ni < args.length; ni++) {
+	for (var ni = 0; ni < args.length; ni++) {
 
-        var changedNote = convertNote(args[ni].note);
-        if (args[ni].size != 0) {
-            notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
-        }
-    }
+		var changedNote = convertNote(args[ni].note);
+		if (args[ni].size != 0) {
+			notes.push(new Note(changedNote, (0.25 * ni), args[ni].size * 0.25, 100, 0));
+		}
+	}
 
-    return notes;
+	return notes;
 }
 
 function convertNote(n) {
-    var c = 57;
-    var fNote = n - c;
+	var c = 57;
+	var fNote = n - c;
 
 
-    for (var nn = 0; nn < noteTrack.length; nn++) {
-        if (fNote < 7) {
-            if (noteTrack[nn] == fNote) {
-                return fNote + c;
-            } else if (noteTrack[nn] == fNote + 1) {
-                return fNote + c + 1;
-            } else if (noteTrack[nn] == fNote + 2) {
-                return fNote + c + 2;
-            }
-        } else {
-            if (noteTrack[nn] == fNote) {
-                return fNote + c;
-            } else if (noteTrack[nn] == fNote - 1) {
-                return fNote + c - 1;
-            } else if (noteTrack[nn] == fNote - 2) {
-                return fNote + c - 2;
-            }
-        }
-    }
+	for (var nn = 0; nn < noteTrack.length; nn++) {
+		if (fNote < 7) {
+			if (noteTrack[nn] == fNote) {
+				return fNote + c;
+			} else if (noteTrack[nn] == fNote + 1) {
+				return fNote + c + 1;
+			} else if (noteTrack[nn] == fNote + 2) {
+				return fNote + c + 2;
+			}
+		} else {
+			if (noteTrack[nn] == fNote) {
+				return fNote + c;
+			} else if (noteTrack[nn] == fNote - 1) {
+				return fNote + c - 1;
+			} else if (noteTrack[nn] == fNote - 2) {
+				return fNote + c - 2;
+			}
+		}
+	}
 
 }
 

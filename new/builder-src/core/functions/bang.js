@@ -23,6 +23,7 @@ function bang() {
 			//sCreated = false;
 			buildFinish = true;
 			countBangs = 0;
+			alreadySynths = [];
 
 			var muteT = new LiveAPI("live_set tracks 1");
 			muteT.set("mute", "1");
