@@ -1447,7 +1447,7 @@ function createCSequence(s) {
 				}
 			} else {
 				channelSlices.push({
-					seq: "blank",
+					seq: "filled",
 					steps: sSlicesArray[i].steps
 				});
 			}
