@@ -2380,7 +2380,7 @@ function loadDevice(p) {
 
 	if (p != "Combo") {
 		while (isInArray(synth, alreadySynths)) {
-			if (pack == "all" || p == "FX") {
+			if (pack == "all" || p == "FX" || p == "Shot") {
 				selectedPack = packArray[randomInt(0, packArray.length - 1)];
 			}
 			if (style == "all") {
