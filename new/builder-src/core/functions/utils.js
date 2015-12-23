@@ -56,6 +56,7 @@ function addToChannelStructure(n, s) {
 }
 
 function isInArray(value, array) {
+	log(array.indexOf(value));
 	return array.indexOf(value) > -1;
 }
 
