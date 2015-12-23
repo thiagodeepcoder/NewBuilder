@@ -678,7 +678,7 @@ function setNumSlices() {
 function setChannelSequence() {
 	var i;
 
-
+	
 	channelSequence.push("Kick");
 
 	channelSequence.push("Bass");
@@ -718,7 +718,7 @@ function setChannelSequence() {
 	for (i = 0; i < numLoops; i++) {
 		channelSequence.push("Loop");
 	}
-	if (comboOn) {
+	if(comboOn) {
 		channelSequence.push("Combo");
 	}
 	channelSeqCreated = true;
@@ -814,15 +814,4 @@ function setPack(s) {
 
 function setStyle(s) {
 	style = s;
-}
-
-function setPitch(v) {
-	switch (v) {
-		case "Normal Pitches":
-			lowerPitch = false;
-			break;
-		case "Lower Pitches":
-			lowerPitch = true;
-			break;
-	}
 }

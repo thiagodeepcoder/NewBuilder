@@ -152,4 +152,3 @@ var packArray = [];
 var templateArray = [];
 var keys = [];
 var alreadySynths = [];
-var lowerPitch = false;

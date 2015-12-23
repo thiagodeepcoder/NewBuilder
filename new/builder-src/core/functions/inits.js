@@ -5,4 +5,3 @@ setMeter();
 setTotalTime();
 
 readJSON();
-
