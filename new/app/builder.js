@@ -1,4 +1,4 @@
-// Ver 2.6
+// Ver 2.7
 
 autowatch = 1;
 outlets = 7;
@@ -166,6 +166,7 @@ var packArray = [];
 var templateArray = [];
 var keys = [];
 var alreadySynths = [];
+var lowerPitch = false;
 
 
 var DEBUG = true;
@@ -1109,7 +1110,7 @@ function setNumSlices() {
 function setChannelSequence() {
 	var i;
 
-	
+
 	channelSequence.push("Kick");
 
 	channelSequence.push("Bass");
@@ -1149,7 +1150,7 @@ function setChannelSequence() {
 	for (i = 0; i < numLoops; i++) {
 		channelSequence.push("Loop");
 	}
-	if(comboOn) {
+	if (comboOn) {
 		channelSequence.push("Combo");
 	}
 	channelSeqCreated = true;
@@ -1187,7 +1188,7 @@ function setMeter() {
 		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
 	}
 	if (comboNotes > 0) {
-		meter += comboNotes * 0.01;
+		meter += comboNotes * 0.015;
 	}
 	if (shotNotes > 0) {
 		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
@@ -1245,6 +1246,17 @@ function setPack(s) {
 
 function setStyle(s) {
 	style = s;
+}
+
+function setPitch(v) {
+	switch (v) {
+		case "Normal Pitches":
+			lowerPitch = false;
+			break;
+		case "Lower Pitches":
+			lowerPitch = true;
+			break;
+	}
 }
 
 
@@ -2378,9 +2390,19 @@ function loadDevice(p) {
 	var synth = "";
 	var rselect = "";
 
+	if (pack == "all" || p == "FX" || p == "Shot") {
+		selectedPack = packArray[randomInt(0, packArray.length - 1)];
+	}
+	if (style == "all") {
+		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
+	}
+	rselect = getSynth(s);
+	synth = selectedPack + selectedStyle + rselect;
+
 	if (p != "Combo") {
+		log("synth === " + p);
 		while (isInArray(synth, alreadySynths)) {
-			if (pack == "all" || p == "FX") {
+			if (pack == "all" || p == "FX" || p == "Shot") {
 				selectedPack = packArray[randomInt(0, packArray.length - 1)];
 			}
 			if (style == "all") {
@@ -2391,19 +2413,26 @@ function loadDevice(p) {
 			synth = selectedPack + selectedStyle + rselect;
 		}
 	} else {
-		synth = "dubCombo0"
+		synth = "dubCombo0";
 	}
 
-	log(synth);
 	alreadySynths.push(synth);
 
 	outlet(0, "swap " + synth);
+	log(p + " === " + synth);
 
 	if (s == "Snare" || s == "Perc" || s == "Lead" || s == "Hats" || s == "FX" || s == "Shot" || s == "Vocal") {
 		if (this[s.toLowerCase() + "Acid"] == true) {
 			outlet(0, "loaddev Audio Effect Rack");
 			outlet(0, "swap Acidlizer");
 		}
+	}
+	if (s == "Lead" || s == "Pad" || s == "FX" || s == "Shot" || s == "Vocal") {
+		if (lowerPitch) {
+			outlet(0, "loaddev Pitch");
+			outlet(0, "swap -12");
+		}
+
 	}
 }
 
@@ -2492,6 +2521,7 @@ setMeter();
 setTotalTime();
 
 readJSON();
+
 
 
 function singleMidi(s) {
@@ -2679,6 +2709,7 @@ function addToChannelStructure(n, s) {
 }
 
 function isInArray(value, array) {
+	log(array.indexOf(value));
 	return array.indexOf(value) > -1;
 }
 
