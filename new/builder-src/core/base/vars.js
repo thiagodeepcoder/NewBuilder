@@ -121,7 +121,7 @@ var leadHuman = false;
 var leadSize = 16;
 var leadNotes = 1;
 var leadAcid = false;
-
+ 
 var vocalTone = false;
 var vocalHuman = false;
 var vocalSize = 16;
@@ -153,3 +153,20 @@ var templateArray = [];
 var keys = [];
 var alreadySynths = [];
 var lowerPitch = false;
+var singleCombo = false;
+
+var apbass = [];
+var apkick= [];
+var apkickcut = [];
+var aphats = [];
+var apfx = [];
+var aplead = [];
+var aploop = [];
+var aplowend = [];
+var appad = [];
+var apperc = [];
+var apshot = [];
+var apsnare = [];
+var apvocals = [];
+var phpreqCount = 4;
+var arrayofTables = ["bass","kick","fx","hats","kickcut","lead","loop","lowend","pad","perc","shot","snare","vocals"];

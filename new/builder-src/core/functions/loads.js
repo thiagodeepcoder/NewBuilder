@@ -43,10 +43,11 @@ function loadDevice(p) {
 	if (style == "all") {
 		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
 	}
-	rselect = getSynth(s);
-	synth = selectedPack + selectedStyle + rselect;
+
 
 	if (p != "Combo") {
+		/*rselect = getSynthS(s);
+		synth = selectedPack + selectedStyle + rselect;
 		log("synth === " + p);
 		while (isInArray(synth, alreadySynths)) {
 			if (pack == "all" || p == "FX" || p == "Shot") {
@@ -58,7 +59,16 @@ function loadDevice(p) {
 
 			rselect = getSynth(s);
 			synth = selectedPack + selectedStyle + rselect;
+			}
+			*/
+
+		synth = getSynthS(s);
+
+		while (isInArray(synth, alreadySynths)) {
+			synth = getSynthS(s);
 		}
+		PHPUpdate(s.toLowerCase(), synth);
+
 	} else {
 		synth = "dubCombo0";
 	}

@@ -23,7 +23,7 @@ function createNotes(t, c, seq) {
 	for (var ni = 0; ni < args.length; ni++) {
 
 		changedNote = convertNote(args[ni].note);
-		if (channelSequence[channelSequence.length - 1] == "Combo") {
+		if (channelSequence[channelSequence.length - 1] == "Combo" || singleCombo) {
 			changedNote = args[ni].note;
 		}
 

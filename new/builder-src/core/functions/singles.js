@@ -57,7 +57,7 @@ function singleChannel(s) {
 			hatsSteadyReady = true;
 		}
 
-		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
+		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats" ) {
 			channelBang(s);
 		}
 
@@ -70,6 +70,11 @@ function singleChannel(s) {
 			channelBang("Lowend");
 		}
 
+		/*if(s=="FX" && comboOn) {
+			singleCombo = true;
+			comboOn = false;
+			channelBang("Combo");
+		}*/
 
 	}
 }

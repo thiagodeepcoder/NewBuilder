@@ -56,7 +56,6 @@ function addToChannelStructure(n, s) {
 }
 
 function isInArray(value, array) {
-	log(array.indexOf(value));
 	return array.indexOf(value) > -1;
 }
 
@@ -212,17 +211,24 @@ function getSynth(synth) {
 			break;
 		}
 	}
-	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
-	var indexSynth = randomInt(0, totalSynths - 1);
-	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
 	log("Style: " + _style);
 	log("Pack: " + _pack);
 	log("Synth: " + _synth);
+	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
+	var indexSynth = randomInt(0, totalSynths - 1);
+	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
+	
 	log("Total Synths: " + totalSynths);
 	log("Index: " + indexSynth);
 	log("Choosen: " + choosenSynth);
 
 	return choosenSynth;
+}
+
+function getSynthS(synth) {
+	var arraySynth = this["ap" + synth.toLowerCase()];
+	return arraySynth[randomInt(0,arraySynth.length-1)];
+
 }
 
 function getKeys(keys, obj, path) {
@@ -295,4 +301,9 @@ function setfirstScene () {
 	var ss = 1;
 	var l = ["id",Number(allTracks[(ss*2)-1])];
 	__t.set("highlighted_clip_slot",l);
+}
+
+function getStats() {
+	getResponses();
+	log("Stats Loaded");
 }

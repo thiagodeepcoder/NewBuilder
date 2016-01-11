@@ -3,6 +3,7 @@ function bang() {
 	liveView = new LiveAPI("live_app view");
 	liveSetView = new LiveAPI("live_set view");
 	liveSet = new LiveAPI("live_set");
+	getResponses();
 	if (!buildFinish) {
 		//cria slices da estrutura
 		if (!sCreated) {

@@ -722,6 +722,7 @@ function setChannelSequence() {
 		channelSequence.push("Combo");
 	}
 	channelSeqCreated = true;
+	log(comboOn,channelSequence);
 }
 
 function setMeter() {

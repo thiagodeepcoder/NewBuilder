@@ -1,16 +1,5 @@
-// Ver 2.7
+// Ver 2.8
 
-autowatch = 1;
-outlets = 7;
-setinletassist(0, "bang triggers action specified in args");
-
-setoutletassist(0, "Out the Patch");
-setoutletassist(1, "Track Level");
-setoutletassist(2, "Track Time");
-setoutletassist(3, "Packs");
-setoutletassist(4, "Styles");
-setoutletassist(5, "Templates");
-setoutletassist(6, "Update");
 
 var api;
 var liveView;
@@ -135,7 +124,7 @@ var leadHuman = false;
 var leadSize = 16;
 var leadNotes = 1;
 var leadAcid = false;
-
+ 
 var vocalTone = false;
 var vocalHuman = false;
 var vocalSize = 16;
@@ -167,10 +156,227 @@ var templateArray = [];
 var keys = [];
 var alreadySynths = [];
 var lowerPitch = false;
+var singleCombo = false;
 
+var apbass = [];
+var apkick= [];
+var apkickcut = [];
+var aphats = [];
+var apfx = [];
+var aplead = [];
+var aploop = [];
+var aplowend = [];
+var appad = [];
+var apperc = [];
+var apshot = [];
+var apsnare = [];
+var apvocals = [];
+var phpreqCount = 4;
+var arrayofTables = ["bass","kick","fx","hats","kickcut","lead","loop","lowend","pad","perc","shot","snare","vocals"];
+
+
+autowatch = 1;
+outlets = 7;
+setinletassist(0, "bang triggers action specified in args");
+
+setoutletassist(0, "Out the Patch");
+setoutletassist(1, "Track Level");
+setoutletassist(2, "Track Time");
+setoutletassist(3, "Packs");
+setoutletassist(4, "Styles");
+setoutletassist(5, "Templates");
+setoutletassist(6, "Update");
 
 var DEBUG = true;
 var testSingleChannel = [true,"SC"];
+
+
+
+
+//--------------------------------------------------------------------
+// Clip class
+ 
+function Clip(t,m) {
+  var path = "live_set tracks " + t + " clip_slots " + m + " clip";
+  this.liveObject = new LiveAPI(path);
+}
+  
+Clip.prototype.getLength = function() {
+  return this.liveObject.get('length');
+}
+  
+Clip.prototype._parseNoteData = function(data) {
+  var notes = [];
+  // data starts with "notes"/count and ends with "done" (which we ignore)
+  for(var i=2,len=data.length-1; i<len; i+=6) {
+    // and each note starts with "note" (which we ignore) and is 6 items in the list
+    var note = new Note(data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]);
+    notes.push(note);
+  }
+  return notes;
+}
+  
+Clip.prototype.getSelectedNotes = function() {
+  var data = this.liveObject.call('get_selected_notes');
+  return this._parseNoteData(data);
+}
+  
+   
+Clip.prototype.getNotes = function(startTime, timeRange, startPitch, pitchRange) {
+  if(!startTime) startTime = 0;
+  if(!timeRange) timeRange = this.getLength();
+  if(!startPitch) startPitch = 0;
+  if(!pitchRange) pitchRange = 128;
+   
+  var data = this.liveObject.call("get_notes", startTime, startPitch, timeRange, pitchRange);
+  return this._parseNoteData(data);
+}
+ 
+Clip.prototype._sendNotes = function(notes) {
+  var liveObject = this.liveObject;
+  liveObject.call("notes", notes.length);
+  notes.forEach(function(note) {
+    liveObject.call("note", note.getPitch(),
+                    note.getStart(), note.getDuration(),
+                    note.getVelocity(), note.getMuted());
+  });
+  liveObject.call('done');
+}
+  
+Clip.prototype.replaceSelectedNotes = function(notes) {
+  this.liveObject.call("replace_selected_notes");
+  this._sendNotes(notes);
+}
+  
+Clip.prototype.setNotes = function(notes) {
+  this.liveObject.call("set_notes");
+  this._sendNotes(notes);
+}
+ 
+Clip.prototype.selectAllNotes = function() {
+  this.liveObject.call("select_all_notes");
+}
+ 
+Clip.prototype.replaceAllNotes = function(notes) {
+  this.selectAllNotes();
+  this.replaceSelectedNotes(notes);
+}
+
+//--------------------------------------------------------------------
+// Note class
+  
+function Note(pitch, start, duration, velocity, muted) {
+  this.pitch = pitch;
+  this.start = start;
+  this.duration = duration;
+  this.velocity = velocity;
+  this.muted = muted;
+}
+  
+Note.prototype.toString = function() {
+  return '{pitch:' + this.pitch +
+         ', start:' + this.start +
+         ', duration:' + this.duration +
+         ', velocity:' + this.velocity +
+         ', muted:' + this.muted + '}';
+}
+ 
+Note.MIN_DURATION = 1/128;
+  
+Note.prototype.getPitch = function() {
+  if(this.pitch < 0) return 0;
+  if(this.pitch > 127) return 127;
+  return this.pitch;
+}
+  
+Note.prototype.getStart = function() {
+  // we convert to strings with decimals to work around a bug in Max
+  // otherwise we get an invalid syntax error when trying to set notes
+  if(this.start <= 0) return "0.0";
+  return this.start.toFixed(4);
+}
+  
+Note.prototype.getDuration = function() {
+  if(this.duration <= Note.MIN_DURATION) return Note.MIN_DURATION;
+  return this.duration.toFixed(4); // workaround similar bug as with getStart()
+}
+  
+Note.prototype.getVelocity = function() {
+  if(this.velocity < 0) return 0;
+  if(this.velocity > 127) return 127;
+  return this.velocity;
+}
+  
+Note.prototype.getMuted = function() {
+  if(this.muted) return 1;
+  return 0;
+}
+ 
+
+function log() {
+    for (var i = 0, len = arguments.length; i < len; i++) {
+        var message = arguments[i];
+        if (message && message.toString) {
+            var s = message.toString();
+            if (s.indexOf("[object ") >= 0) {
+                s = JSON.stringify(message);
+            }
+            post(s);
+        } else if (message === null) {
+            post("<null>");
+        } else {
+            post(message);
+        }
+    }
+    post("\n");
+}
+
+
+function bang() {
+	api = new LiveAPI("this_device");
+	liveView = new LiveAPI("live_app view");
+	liveSetView = new LiveAPI("live_set view");
+	liveSet = new LiveAPI("live_set");
+	getResponses();
+	if (!buildFinish) {
+		//cria slices da estrutura
+		if (!sCreated) {
+			createStructure();
+			sCreated = true;
+		}
+		if (!channelSeqCreated) {
+			setChannelSequence();
+		}
+
+		createMusic(channelSequence[countBangs]);
+
+		if (countBangs < channelSequence.length - 1) {
+			//if (countBangs < 1) {
+			countBangs++;
+			bang();
+		} else {
+			//sCreated = false;
+			buildFinish = true;
+			countBangs = 0;
+			alreadySynths = [];
+
+			var muteT = new LiveAPI("live_set tracks 1");
+			muteT.set("mute", "1");
+
+			var builderT = new LiveAPI("live_set tracks 0 view");
+			builderT.set("is_collapsed", "1");
+
+
+			setfirstScene();
+			//sSlicesArray = [];
+		}
+	}
+}
+
+function createMusic(s) {
+	// cria cada canal    
+	singleChannel(s);
+}
 
 
 // ==================================================
@@ -198,7 +404,7 @@ function createNotes(t, c, seq) {
 	for (var ni = 0; ni < args.length; ni++) {
 
 		changedNote = convertNote(args[ni].note);
-		if (channelSequence[channelSequence.length - 1] == "Combo") {
+		if (channelSequence[channelSequence.length - 1] == "Combo" || singleCombo) {
 			changedNote = args[ni].note;
 		}
 
@@ -286,1011 +492,6 @@ var scaleA = [2, 3, 5, 7, 9, 10, 12];
 var scaleAsharp = [1, 3, 4, 6, 8, 10, 11];
 var scaleB = [2, 4, 5, 7, 9, 11, 12];
 
-
-function log() {
-    for (var i = 0, len = arguments.length; i < len; i++) {
-        var message = arguments[i];
-        if (message && message.toString) {
-            var s = message.toString();
-            if (s.indexOf("[object ") >= 0) {
-                s = JSON.stringify(message);
-            }
-            post(s);
-        } else if (message === null) {
-            post("<null>");
-        } else {
-            post(message);
-        }
-    }
-    post("\n");
-}
-
-
-function getColor(name) {
-	var fcolor;
-	switch (name) {
-		case "SC":
-			fcolor = [123, 123, 123];
-			break;
-
-		case "Kick":
-			fcolor = [255, 0, 0];
-			break;
-
-		case "Kick cut":
-			fcolor = [243, 58, 23];
-			break;
-
-		case "Bass":
-			fcolor = [255, 163, 29];
-			break;
-
-		case "Lowend":
-			fcolor = [255, 161, 113];
-			break;
-
-		case "Snare":
-			fcolor = [255, 238, 158];
-			break;
-
-		case "Snare fixo":
-			fcolor = [255, 240, 47];
-			break;
-
-		case "Hats":
-			fcolor = [212, 229, 152];
-			break;
-
-		case "Hats fixo":
-			fcolor = [182, 209, 115];
-			break;
-
-		case "Perc":
-			fcolor = [203, 242, 249]
-			break;
-
-		case "FX":
-			fcolor = [0, 165, 239];
-			break;
-
-		case "Combo":
-			fcolor = [0, 165, 239];
-			break;
-
-		case "Shot":
-			fcolor = [83, 160, 49];
-			break;
-
-		case "Pad":
-			fcolor = [130, 107, 229];
-			break;
-
-		case "Loop":
-			fcolor = [255, 44, 211];
-			break;
-		case "Lead":
-			fcolor = [255, 255, 255];
-			break;
-
-		case "Vocals":
-			fcolor = [255, 145, 165];
-			break;
-	}
-	return fcolor;
-}
-
-function getNextFreeSlot(t) {
-
-	setCustomTrack(t);
-	var nScenes = liveSet.get("scenes").length / 2;
-	var clipCounter = 0;
-
-	for (var ns = 0; ns < nScenes; ns++) {
-		var path = "live_set tracks " + t + " clip_slots " + ns;
-		var sLot = new LiveAPI(path);
-		if (sLot.get("has_clip") == 1) {
-			clipCounter++
-		} else {
-			break;
-		}
-	}
-
-	return clipCounter;
-}
-
-function getTotalChannels() {
-	var a = new LiveAPI("live_set");
-	var t = a.get("tracks");
-	return t.length / 2;
-}
-
-function getTrackName(n) {
-	var a = new LiveAPI("live_set tracks " + n);
-	return a.get("name");
-}
-
-function getLevel(n) {
-	switch (n) {
-		case 1:
-			return 5;
-			break;
-		case 2:
-			return 4;
-			break;
-		case 4:
-			return 3;
-			break;
-		case 8:
-			return 2;
-			break;
-		case 16:
-			return 1;
-			break;
-	}
-}
-
-
-function setTrackName(trackNumber, trackName) {
-	var tracks = new LiveAPI("live_set tracks " + trackNumber);
-	tracks.set("name", trackName);
-}
-
-function setCustomBass(v) {
-	cBass = v;
-	numBass = cBass;
-}
-
-function setCustomSnares(v) {
-	cSnares = notes2Channels(v);
-	numSnares = Math.floor(v * 5);
-}
-
-function setCustomPerc(v) {
-	cPercs = v;
-	numPercs = Math.floor(v * 5);
-}
-
-function setCustomHats(v) {
-	cHats = notes2Channels(v);
-	numHats = Math.floor(v * 5);
-}
-
-function setCustomFX(v) {
-	cFXs = notes2Channels(v);
-	numFXs = Math.floor(v * 10);
-}
-
-function setCustomShot(v) {
-	cShots = notes2Channels(v);
-	numShots = Math.floor(v * 10);
-}
-
-function setCustomPad(v) {
-	cPads = notes2Channels(v);
-	numPads = Math.floor(v * 5);
-}
-
-function setCustomLoop(v) {
-	cLoops = notes2Channels(v);
-	numLoops = Math.floor(v * 5);
-}
-
-function setCustomLead(v) {
-	cLeads = notes2Channels(v);
-	numLeads = Math.floor(v * 5);
-}
-
-function setCustomVocals(v) {
-	cVocals = notes2Channels(v);
-	numVocals = Math.floor(v * 5);
-}
-
-function setTempSelect(v) {
-	if (v != "Select") {
-		var sc;
-		var lastChar = v.substr(v.length - 1); // => 1
-		for (var i = 0; i < totalDropDowns; i++) {
-			sc = this["customTemp" + lastChar][i];
-			outlet(4, sc);
-			outlet(3, i);
-		}
-	}
-}
-
-function setTrackClip(t, m) {
-	var path = "live_set tracks " + t + " clip_slots " + m;
-	sceneSlot = new LiveAPI(path);
-}
-
-function setClipColor(t, m, rgb) {
-	setSceneClip(t, m);
-	var red = rgb[0];
-	var green = rgb[1];
-	var blue = rgb[2];
-	sceneSlotClip.set("color", 65536 * red + 256 * green + blue);
-}
-
-function setSceneClip(t, m) {
-	var path = "live_set tracks " + t + " clip_slots " + m + " clip";
-	sceneSlotClip = new LiveAPI(path);
-}
-
-function setBuilderChannel() {
-	setCustomTrack(0);
-	selectedTrack.set("name", "Builder");
-}
-
-function setCustomTrack(t) {
-	selectedTrack = new LiveAPI("live_set tracks " + t);
-}
-
-function setNote(note) {
-	if (note.slice(1) == "#") {
-		noteTrack = this["scale" + note.slice(0, 1) + "sharp"];
-	} else {
-		noteTrack = this["scale" + note.slice(0, 1)];
-	}
-}
-
-function setIntro(v) {
-	switch (v) {
-		case "Enable":
-			intro = true;
-			break;
-		case "Disable":
-			intro = false;
-			break;
-		case "No Minibreak":
-			introKickBass = false;
-			break;
-		case "With Minibreak":
-			introKickBass = true;
-			break;
-		case "No Kick/Bass":
-			introKickBass = false;
-			break;
-		case "With Kick/Bass":
-			introKickBass = true;
-			break;
-		case "15s":
-			introSize = 8;
-			break;
-		case "30s":
-			introSize = 16;
-			break;
-		case "45s":
-			introSize = 24;
-			break;
-		case "60s":
-			introSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		introPercent = v * 100;
-	}
-	setNumSlices();
-	setTotalTime();
-}
-
-function setOutro(v) {
-	switch (v) {
-		case "Enable":
-			outro = true;
-			break;
-		case "Disable":
-			outro = false;
-			break;
-		case "No Smooth":
-			outroSmooth = false;
-			break;
-		case "With Smooth":
-			outroSmooth = true;
-			break;
-		case "No Bass":
-			outroBass = false;
-			break;
-		case "With Bass":
-			outroBass = true;
-			break;
-		case "30s":
-			outroSize = 16;
-			break;
-		case "45s":
-			outroSize = 24;
-			break;
-		case "60s":
-			outroSize = 32;
-			break;
-		case "90s":
-			outroSize = 48;
-			break;
-		case "120s":
-			outroSize = 64;
-			break;
-	}
-	if (isNumber(v)) {
-		outroPercent = v * 100;
-	}
-	setNumSlices();
-	setTotalTime();
-}
-
-function setVerses(v) {
-	switch (v) {
-		case "No Mini Break":
-			verseMinibreak = false;
-			break;
-		case "With Mini Break":
-			verseMiniBreak = true;
-			break;
-		case "Humanizer":
-			verseHumanizer = true;
-			break;
-		case "Robotizer":
-			verseHumanizer = false;
-			break;
-		case "No Long":
-			verseLong = false;
-			break;
-		case "1 Long":
-			verseLong = true;
-			break;
-		case "15s":
-			verseSize = 8;
-			break;
-		case "30s":
-			verseSize = 16;
-			break;
-		case "45s":
-			verseSize = 24;
-			break;
-		case "60s":
-			verseSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		verseNum = v * 10;
-	}
-	setNumSlices();
-	setTotalTime();
-}
-
-function setBreaks(v) {
-	switch (v) {
-		case "No Long":
-			breakLong = false;
-			break;
-		case "1 Long":
-			breakLong = true;
-			break;
-		case "Humanizer":
-			breakHumanizer = true;
-			break;
-		case "Robotizer":
-			breakHumanizer = false;
-			break;
-		case "15s":
-			breakSize = 8;
-			break;
-		case "30s":
-			breakSize = 16;
-			break;
-		case "45s":
-			breakSize = 24;
-			break;
-		case "60s":
-			breakSize = 32;
-			break;
-		case "16s":
-			dropSize = 8;
-			break;
-		case "32s":
-			dropSize = 16;
-			break;
-	}
-	if (isNumber(v)) {
-		breakNum = v * 10;
-	}
-	setNumSlices();
-	setTotalTime();
-}
-
-function setKick(v) {
-	switch (v) {
-		case "No Kick cut":
-			kickCut = false;
-			break;
-		case "With Kick cut":
-			kickCut = true;
-			break;
-		case "No SC":
-			kickSC = false;
-			break;
-		case "With SC":
-			kickSC = true;
-			break;
-		case "2s":
-			kickSize = 1;
-			break;
-		case "4s":
-			kickSize = 2;
-			break;
-		case "8s":
-			kickSize = 4;
-			break;
-		case "15s":
-			kickSize = 8;
-			break;
-		case "30s":
-			kickSize = 16;
-			break;
-	}
-	if (isNumber(v)) {
-		kickNotes = v * 8;
-	}
-	setMeter();
-}
-
-function setBass(v) {
-	switch (v) {
-		case "No Low End":
-			bassLowEnd = false;
-			break;
-		case "With Low End":
-			bassLowEnd = true;
-			break;
-		case "Robotizer":
-			bassHuman = false;
-			break;
-		case "Humanizer":
-			bassHuman = true;
-			break;
-		case "Atonal":
-			bassTone = false;
-			break;
-		case "Tones":
-			bassTone = true;
-			break;
-		case "2s":
-			bassSize = 1;
-			break;
-		case "4s":
-			bassSize = 2;
-			break;
-		case "8s":
-			bassSize = 4;
-			break;
-		case "15s":
-			bassSize = 8;
-			break;
-		case "30s":
-			bassSize = 16;
-			break;
-		case "60s":
-			bassSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		bassNotes = note2Num(1, 16, v);
-	}
-	setMeter();
-}
-
-function setSnare(v) {
-	switch (v) {
-		case "No Steady":
-			snareSteady = false;
-			break;
-		case "With Steady":
-			snareSteady = true;
-			break;
-		case "Robotizer":
-			snareHuman = false;
-			break;
-		case "Humanizer":
-			snareHuman = true;
-			break;
-		case "Acidlizer":
-			snareAcid = true;
-			break;
-		case "Normalizer":
-			snareAcid = false;
-			break;
-		case "2s":
-			snareSize = 1;
-			break;
-		case "4s":
-			snareSize = 2;
-			break;
-		case "8s":
-			snareSize = 4;
-			break;
-		case "15s":
-			snareSize = 8;
-			break;
-		case "30s":
-			snareSize = 16;
-			break;
-		case "60s":
-			snareSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		snareNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setHats(v) {
-	switch (v) {
-		case "No Steady":
-			hatsSteady = false;
-			break;
-		case "With Steady":
-			hatsSteady = true;
-			break;
-		case "Robotizer":
-			hatsHuman = false;
-			break;
-		case "Humanizer":
-			hatsHuman = true;
-			break;
-		case "Acidlizer":
-			hatsAcid = true;
-			break;
-		case "Normalizer":
-			hatsAcid = false;
-			break;
-		case "2s":
-			hatsSize = 1;
-			break;
-		case "4s":
-			hatsSize = 2;
-			break;
-		case "8s":
-			hatsSize = 4;
-			break;
-		case "15s":
-			hatsSize = 8;
-			break;
-		case "30s":
-			hatsSize = 16;
-			break;
-		case "60s":
-			hatsSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		hatsNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setFX(v) {
-	switch (v) {
-		case "Atonal":
-			fxTone = false;
-			break;
-		case "Tones":
-			fxTone = true;
-			break;
-		case "Robotizer":
-			fxHuman = false;
-			break;
-		case "Humanizer":
-			fxHuman = true;
-			break;
-		case "Acidlizer":
-			fxAcid = true;
-			break;
-		case "Normalizer":
-			fxAcid = false;
-			break;
-		case "2s":
-			fxSize = 1;
-			break;
-		case "4s":
-			fxSize = 2;
-			break;
-		case "8s":
-			fxSize = 4;
-			break;
-		case "15s":
-			fxSize = 8;
-			break;
-		case "30s":
-			fxSize = 16;
-			break;
-		case "60s":
-			fxSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		fxNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setCombo(v) {
-	switch (v) {
-		case "Combed":
-			comboOn = true;
-			break;
-		case "Not Combo":
-			comboOn = false;
-			break;
-	}
-	if (isNumber(v)) {
-		comboNotes = v;
-	}
-	setMeter();
-}
-
-function setShot(v) {
-	switch (v) {
-		case "Atonal":
-			shotTone = false;
-			break;
-		case "Tones":
-			shotTone = true;
-			break;
-		case "Robotizer":
-			shotHuman = false;
-			break;
-		case "Humanizer":
-			shotHuman = true;
-			break;
-		case "Acidlizer":
-			shotAcid = true;
-			break;
-		case "Normalizer":
-			shotAcid = false;
-			break;
-		case "2s":
-			shotSize = 1;
-			break;
-		case "4s":
-			shotSize = 2;
-			break;
-		case "8s":
-			shotSize = 4;
-			break;
-		case "15s":
-			shotSize = 8;
-			break;
-		case "30s":
-			shotSize = 16;
-			break;
-		case "60s":
-			shotSize = 32;
-			break;
-	}
-	if (isNumber(v)) {
-		shotNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setPerc(v) {
-	switch (v) {
-		case "Robotizer":
-			percHuman = false;
-			break;
-		case "Humanizer":
-			percHuman = true;
-			break;
-		case "Acidlizer":
-			percAcid = true;
-			break;
-		case "Normalizer":
-			percAcid = false;
-			break;
-		case "2s":
-			percSize = 1;
-			break;
-		case "4s":
-			percSize = 2;
-			break;
-		case "8s":
-			percSize = 4;
-			break;
-		case "15s":
-			percSize = 8;
-			break;
-		case "30s":
-			percSize = 16;
-			break;
-	}
-	if (isNumber(v)) {
-		percNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setLead(v) {
-	switch (v) {
-		case "Atonal":
-			leadTone = false;
-			break;
-		case "Tones":
-			leadTone = true;
-			break;
-		case "Robotizer":
-			leadHuman = false;
-			break;
-		case "Humanizer":
-			leadHuman = true;
-			break;
-		case "Acidlizer":
-			leadAcid = true;
-			break;
-		case "Normalizer":
-			leadAcid = false;
-			break;
-		case "2s":
-			leadSize = 1;
-			break;
-		case "4s":
-			leadSize = 2;
-			break;
-		case "8s":
-			leadSize = 4;
-			break;
-		case "15s":
-			leadSize = 8;
-			break;
-		case "30s":
-			leadSize = 16;
-			break;
-	}
-	if (isNumber(v)) {
-		leadNotes = note2Num(1, 16, v);
-	}
-	setMeter();
-}
-
-function setVocals(v) {
-	switch (v) {
-		case "Atonal":
-			vocalTone = false;
-			break;
-		case "Tones":
-			vocalTone = true;
-			break;
-		case "Robotizer":
-			vocalHuman = false;
-			break;
-		case "Humanizer":
-			vocalHuman = true;
-			break;
-		case "Acidlizer":
-			vocalAcid = true;
-			break;
-		case "Normalizer":
-			vocalAcid = false;
-			break;
-		case "2s":
-			vocalSize = 1;
-			break;
-		case "4s":
-			vocalSize = 2;
-			break;
-		case "8s":
-			vocalSize = 4;
-			break;
-		case "15s":
-			vocalSize = 8;
-			break;
-		case "30s":
-			vocalSize = 16;
-			break;
-	}
-	if (isNumber(v)) {
-		vocalNotes = note2Num(1, 8, v);
-	}
-	setMeter();
-}
-
-function setChannelLoadSynth(s) {
-	selectedTypeNewSynth = s;
-}
-
-function setNumSlices() {
-	var i = 0;
-	var o = 0;
-	if (intro) {
-		i = 1;
-	}
-	if (outro) {
-		o = 1;
-	}
-	sSlices = i + verseNum + breakNum + o;
-}
-
-function setChannelSequence() {
-	var i;
-
-
-	channelSequence.push("Kick");
-
-	channelSequence.push("Bass");
-
-	if (numSnares != 0) {
-		for (i = 0; i < numSnares; i++) {
-			channelSequence.push("Snare");
-		}
-	} else if (snareSteady && numSnares == 0) {
-		channelSequence.push("Snare");
-	}
-	if (numHats != 0) {
-		for (i = 0; i < numHats; i++) {
-			channelSequence.push("Hats");
-		}
-	} else if (hatsSteady && numHats == 0) {
-		channelSequence.push("Hats");
-	}
-	for (i = 0; i < numPercs; i++) {
-		channelSequence.push("Perc");
-	}
-	for (i = 0; i < numFXs; i++) {
-		channelSequence.push("FX");
-	}
-	for (i = 0; i < numShots; i++) {
-		channelSequence.push("Shot");
-	}
-	for (i = 0; i < numLeads; i++) {
-		channelSequence.push("Lead");
-	}
-	for (i = 0; i < numVocals; i++) {
-		channelSequence.push("Vocals");
-	}
-	for (i = 0; i < numPads; i++) {
-		channelSequence.push("Pad");
-	}
-	for (i = 0; i < numLoops; i++) {
-		channelSequence.push("Loop");
-	}
-	if (comboOn) {
-		channelSequence.push("Combo");
-	}
-	channelSeqCreated = true;
-}
-
-function setMeter() {
-
-	var meter = 0;
-	var med = 300;
-	if (kickCut) {
-		meter += 0.05;
-	}
-	if (kickNotes > 0) {
-		meter += (getLevel(kickSize) / med) * kickNotes;
-	}
-	if (bassNotes > 0) {
-		meter += (getLevel(bassSize) / med) * bassNotes;
-	}
-	if (bassLowEnd) {
-		meter += 0.05;
-	}
-	if (snareSteady) {
-		meter += 0.05;
-	}
-	if (hatsSteady) {
-		meter += 0.05;
-	}
-	if (snareNotes > 0) {
-		meter += ((getLevel(snareSize) / med) * snareNotes) * numSnares * 3;
-	}
-	if (hatsNotes > 0) {
-		meter += ((getLevel(hatsSize) / med) * hatsNotes) * numHats * 3;
-	}
-	if (fxNotes > 0) {
-		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
-	}
-	if (comboNotes > 0) {
-		meter += comboNotes * 0.015;
-	}
-	if (shotNotes > 0) {
-		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
-	}
-	if (percNotes > 0) {
-		meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
-	}
-	if (leadNotes > 0) {
-		meter += ((getLevel(leadSize) / med) * leadNotes) * numLeads * 3;
-	}
-	if (vocalNotes > 0) {
-		meter += ((getLevel(vocalSize) / med) * vocalNotes) * numVocals * 3;
-	}
-	if (numPads > 0) {
-		meter += 0.025 * numPads;
-	}
-	if (numLoops > 0) {
-		meter += 0.05 * numLoops;
-	}
-	outlet(1, meter);
-}
-
-function setTotalTime() {
-	var totalTime = 0;
-	if (intro) {
-		totalTime += introSize;
-	}
-	if (outro) {
-		totalTime += outroSize;
-	}
-	if (verseNum > 0) {
-		totalTime += verseSize * verseNum;
-	}
-	if (breakNum > 0) {
-		totalTime += breakSize * breakNum;
-	}
-	if (breakLong) {
-		totalTime += breakSize;
-	}
-	if (dropSize) {
-		totalTime += dropSize * breakNum;
-	}
-	outlet(2, toHHMMSS(totalTime * 1.9));
-}
-
-function setFixedStructure() {
-	sSlicesArray = [];
-	createStructure();
-	sCreated = true;
-}
-
-function setPack(s) {
-	pack = s;
-}
-
-function setStyle(s) {
-	style = s;
-}
-
-function setPitch(v) {
-	switch (v) {
-		case "Normal Pitches":
-			lowerPitch = false;
-			break;
-		case "Lower Pitches":
-			lowerPitch = true;
-			break;
-	}
-}
-
-
-function createScene(ns) {
-    var n = ns - ((liveSet.get("scenes").length) / 2);
-    for (var m = 0; m < n; m++) {
-        liveSet.call("create_scene", ((liveSet.get("scenes").length) / 2));
-    }
-}
-
-function createTrack(name) {
-    liveSet.call("create_midi_track", (liveSet.get("tracks").length / 2));
-    setTrackName((liveSet.get("tracks").length / 2) - 1, name);
-}
-
-function createTTrack(name) {
-    liveSet.call("create_audio_track", (liveSet.get("tracks").length / 2));
-    setTrackName((liveSet.get("tracks").length / 2) - 1, name);
-}
-
-function createClipCustom(t, c, s, fill, name, plus) {
-    setTrackClip(t, c);
-    sceneSlot.call("create_clip", "" + s * 4);
-    setSceneClip(t, c);
-    if (plus) {
-        sceneSlotClip.set("name", "New " + name);
-    }
-    var getcolor = getColor(name);
-    if (fill == "blank") {
-        setClipColor(t, c, [50, 50, 50]);
-    } else {
-        setClipColor(t, c, getcolor);
-    }
-}
 
 function createCSequence(s) {
 	if (s == "SC") {
@@ -2205,151 +1406,960 @@ function createGroove(instrument) {
 }
 
 
-function createStructure() {
-	var rand;
-	var vCounter = 0;
-	var bCounter = 0;
-	var kbMinibreak = 0;
-	for (var i = 0; i < sSlices; i++) {
-		//entra no Intro
-		if (i == 0 && intro == true) {
-			rand = introSize;
-			if (introMiniBreak) {
-				kbMinibreak = 4;
-			}
-			sSlicesArray.push({
-				slice: "intro",
-				steps: rand - kbMinibreak
-			});
-			if (introMiniBreak) {
-				sSlicesArray.push({
-					slice: "break",
-					steps: 4
-				});
-				sSlicesArray.push({
-					slice: "drop",
-					steps: dropSize
-				});
-			}
-		}
-		//entra no verso
-		else if (i == 1) {
-			chanceOfBreak();
-			vCounter++;
-		} else if (i > 1 && i < sSlices - 1) {
-			if (vCounter < verseNum || bCounter < breakNum) {
+function setTrackName(trackNumber, trackName) {
+	var tracks = new LiveAPI("live_set tracks " + trackNumber);
+	tracks.set("name", trackName);
+}
 
-				var randin = randomInt(0, 1);
+function setCustomBass(v) {
+	cBass = v;
+	numBass = cBass;
+}
 
-				var bHumanizer = 0;
-				if (breakHumanizer) {
-					bHumanizer  = randomInt(-1, 1)*2;
-				}
+function setCustomSnares(v) {
+	cSnares = notes2Channels(v);
+	numSnares = Math.floor(v * 5);
+}
 
-				if (randin == 0) { // 0 escolhe break
-					if (bCounter < breakNum) // check se tem breaks avaliable
-					{
-						sSlicesArray.push({
-							slice: "break",
-							steps: breakSize + bHumanizer
-						});
-						log(breakSize + bHumanizer);
-						if (breakLong ) {
-							sSlicesArray.push({
-								slice: "break",
-								steps: breakSize
-							});
-							breakLong = false;
-						} 
-						sSlicesArray.push({
-							slice: "drop",
-							steps: dropSize
-						});
-						bCounter++;
-					} else {
-						chanceOfBreak();
-						vCounter++;
-					}
+function setCustomPerc(v) {
+	cPercs = v;
+	numPercs = Math.floor(v * 5);
+}
 
-				} else if (randin == 1) { // 1 escolhe verso
-					if (vCounter < verseNum ) // check se tem verses avaliable
-					{
-						chanceOfBreak();
-						vCounter++;
-					} else {
-						sSlicesArray.push({
-							slice: "break",
-							steps: breakSize + bHumanizer
-						});
-						sSlicesArray.push({
-							slice: "drop",
-							steps: dropSize
-						});
-						bCounter++;
-					}
-				}
-			}
-		} else if (i == sSlices - 1 && outro == true) { // último
-			rand = outroSize;
-			sSlicesArray.push({
-				slice: "outro",
-				steps: rand
-			});
+function setCustomHats(v) {
+	cHats = notes2Channels(v);
+	numHats = Math.floor(v * 5);
+}
+
+function setCustomFX(v) {
+	cFXs = notes2Channels(v);
+	numFXs = Math.floor(v * 10);
+}
+
+function setCustomShot(v) {
+	cShots = notes2Channels(v);
+	numShots = Math.floor(v * 10);
+}
+
+function setCustomPad(v) {
+	cPads = notes2Channels(v);
+	numPads = Math.floor(v * 5);
+}
+
+function setCustomLoop(v) {
+	cLoops = notes2Channels(v);
+	numLoops = Math.floor(v * 5);
+}
+
+function setCustomLead(v) {
+	cLeads = notes2Channels(v);
+	numLeads = Math.floor(v * 5);
+}
+
+function setCustomVocals(v) {
+	cVocals = notes2Channels(v);
+	numVocals = Math.floor(v * 5);
+}
+
+function setTempSelect(v) {
+	if (v != "Select") {
+		var sc;
+		var lastChar = v.substr(v.length - 1); // => 1
+		for (var i = 0; i < totalDropDowns; i++) {
+			sc = this["customTemp" + lastChar][i];
+			outlet(4, sc);
+			outlet(3, i);
 		}
 	}
 }
 
+function setTrackClip(t, m) {
+	var path = "live_set tracks " + t + " clip_slots " + m;
+	sceneSlot = new LiveAPI(path);
+}
 
-//--------------------------------------------------------------------
-// Note class
-  
-function Note(pitch, start, duration, velocity, muted) {
-  this.pitch = pitch;
-  this.start = start;
-  this.duration = duration;
-  this.velocity = velocity;
-  this.muted = muted;
+function setClipColor(t, m, rgb) {
+	setSceneClip(t, m);
+	var red = rgb[0];
+	var green = rgb[1];
+	var blue = rgb[2];
+	sceneSlotClip.set("color", 65536 * red + 256 * green + blue);
 }
-  
-Note.prototype.toString = function() {
-  return '{pitch:' + this.pitch +
-         ', start:' + this.start +
-         ', duration:' + this.duration +
-         ', velocity:' + this.velocity +
-         ', muted:' + this.muted + '}';
+
+function setSceneClip(t, m) {
+	var path = "live_set tracks " + t + " clip_slots " + m + " clip";
+	sceneSlotClip = new LiveAPI(path);
 }
- 
-Note.MIN_DURATION = 1/128;
-  
-Note.prototype.getPitch = function() {
-  if(this.pitch < 0) return 0;
-  if(this.pitch > 127) return 127;
-  return this.pitch;
+
+function setBuilderChannel() {
+	setCustomTrack(0);
+	selectedTrack.set("name", "Builder");
 }
-  
-Note.prototype.getStart = function() {
-  // we convert to strings with decimals to work around a bug in Max
-  // otherwise we get an invalid syntax error when trying to set notes
-  if(this.start <= 0) return "0.0";
-  return this.start.toFixed(4);
+
+function setCustomTrack(t) {
+	selectedTrack = new LiveAPI("live_set tracks " + t);
 }
-  
-Note.prototype.getDuration = function() {
-  if(this.duration <= Note.MIN_DURATION) return Note.MIN_DURATION;
-  return this.duration.toFixed(4); // workaround similar bug as with getStart()
+
+function setNote(note) {
+	if (note.slice(1) == "#") {
+		noteTrack = this["scale" + note.slice(0, 1) + "sharp"];
+	} else {
+		noteTrack = this["scale" + note.slice(0, 1)];
+	}
 }
-  
-Note.prototype.getVelocity = function() {
-  if(this.velocity < 0) return 0;
-  if(this.velocity > 127) return 127;
-  return this.velocity;
+
+function setIntro(v) {
+	switch (v) {
+		case "Enable":
+			intro = true;
+			break;
+		case "Disable":
+			intro = false;
+			break;
+		case "No Minibreak":
+			introKickBass = false;
+			break;
+		case "With Minibreak":
+			introKickBass = true;
+			break;
+		case "No Kick/Bass":
+			introKickBass = false;
+			break;
+		case "With Kick/Bass":
+			introKickBass = true;
+			break;
+		case "15s":
+			introSize = 8;
+			break;
+		case "30s":
+			introSize = 16;
+			break;
+		case "45s":
+			introSize = 24;
+			break;
+		case "60s":
+			introSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		introPercent = v * 100;
+	}
+	setNumSlices();
+	setTotalTime();
 }
-  
-Note.prototype.getMuted = function() {
-  if(this.muted) return 1;
-  return 0;
+
+function setOutro(v) {
+	switch (v) {
+		case "Enable":
+			outro = true;
+			break;
+		case "Disable":
+			outro = false;
+			break;
+		case "No Smooth":
+			outroSmooth = false;
+			break;
+		case "With Smooth":
+			outroSmooth = true;
+			break;
+		case "No Bass":
+			outroBass = false;
+			break;
+		case "With Bass":
+			outroBass = true;
+			break;
+		case "30s":
+			outroSize = 16;
+			break;
+		case "45s":
+			outroSize = 24;
+			break;
+		case "60s":
+			outroSize = 32;
+			break;
+		case "90s":
+			outroSize = 48;
+			break;
+		case "120s":
+			outroSize = 64;
+			break;
+	}
+	if (isNumber(v)) {
+		outroPercent = v * 100;
+	}
+	setNumSlices();
+	setTotalTime();
 }
- 
+
+function setVerses(v) {
+	switch (v) {
+		case "No Mini Break":
+			verseMinibreak = false;
+			break;
+		case "With Mini Break":
+			verseMiniBreak = true;
+			break;
+		case "Humanizer":
+			verseHumanizer = true;
+			break;
+		case "Robotizer":
+			verseHumanizer = false;
+			break;
+		case "No Long":
+			verseLong = false;
+			break;
+		case "1 Long":
+			verseLong = true;
+			break;
+		case "15s":
+			verseSize = 8;
+			break;
+		case "30s":
+			verseSize = 16;
+			break;
+		case "45s":
+			verseSize = 24;
+			break;
+		case "60s":
+			verseSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		verseNum = v * 10;
+	}
+	setNumSlices();
+	setTotalTime();
+}
+
+function setBreaks(v) {
+	switch (v) {
+		case "No Long":
+			breakLong = false;
+			break;
+		case "1 Long":
+			breakLong = true;
+			break;
+		case "Humanizer":
+			breakHumanizer = true;
+			break;
+		case "Robotizer":
+			breakHumanizer = false;
+			break;
+		case "15s":
+			breakSize = 8;
+			break;
+		case "30s":
+			breakSize = 16;
+			break;
+		case "45s":
+			breakSize = 24;
+			break;
+		case "60s":
+			breakSize = 32;
+			break;
+		case "16s":
+			dropSize = 8;
+			break;
+		case "32s":
+			dropSize = 16;
+			break;
+	}
+	if (isNumber(v)) {
+		breakNum = v * 10;
+	}
+	setNumSlices();
+	setTotalTime();
+}
+
+function setKick(v) {
+	switch (v) {
+		case "No Kick cut":
+			kickCut = false;
+			break;
+		case "With Kick cut":
+			kickCut = true;
+			break;
+		case "No SC":
+			kickSC = false;
+			break;
+		case "With SC":
+			kickSC = true;
+			break;
+		case "2s":
+			kickSize = 1;
+			break;
+		case "4s":
+			kickSize = 2;
+			break;
+		case "8s":
+			kickSize = 4;
+			break;
+		case "15s":
+			kickSize = 8;
+			break;
+		case "30s":
+			kickSize = 16;
+			break;
+	}
+	if (isNumber(v)) {
+		kickNotes = v * 8;
+	}
+	setMeter();
+}
+
+function setBass(v) {
+	switch (v) {
+		case "No Low End":
+			bassLowEnd = false;
+			break;
+		case "With Low End":
+			bassLowEnd = true;
+			break;
+		case "Robotizer":
+			bassHuman = false;
+			break;
+		case "Humanizer":
+			bassHuman = true;
+			break;
+		case "Atonal":
+			bassTone = false;
+			break;
+		case "Tones":
+			bassTone = true;
+			break;
+		case "2s":
+			bassSize = 1;
+			break;
+		case "4s":
+			bassSize = 2;
+			break;
+		case "8s":
+			bassSize = 4;
+			break;
+		case "15s":
+			bassSize = 8;
+			break;
+		case "30s":
+			bassSize = 16;
+			break;
+		case "60s":
+			bassSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		bassNotes = note2Num(1, 16, v);
+	}
+	setMeter();
+}
+
+function setSnare(v) {
+	switch (v) {
+		case "No Steady":
+			snareSteady = false;
+			break;
+		case "With Steady":
+			snareSteady = true;
+			break;
+		case "Robotizer":
+			snareHuman = false;
+			break;
+		case "Humanizer":
+			snareHuman = true;
+			break;
+		case "Acidlizer":
+			snareAcid = true;
+			break;
+		case "Normalizer":
+			snareAcid = false;
+			break;
+		case "2s":
+			snareSize = 1;
+			break;
+		case "4s":
+			snareSize = 2;
+			break;
+		case "8s":
+			snareSize = 4;
+			break;
+		case "15s":
+			snareSize = 8;
+			break;
+		case "30s":
+			snareSize = 16;
+			break;
+		case "60s":
+			snareSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		snareNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setHats(v) {
+	switch (v) {
+		case "No Steady":
+			hatsSteady = false;
+			break;
+		case "With Steady":
+			hatsSteady = true;
+			break;
+		case "Robotizer":
+			hatsHuman = false;
+			break;
+		case "Humanizer":
+			hatsHuman = true;
+			break;
+		case "Acidlizer":
+			hatsAcid = true;
+			break;
+		case "Normalizer":
+			hatsAcid = false;
+			break;
+		case "2s":
+			hatsSize = 1;
+			break;
+		case "4s":
+			hatsSize = 2;
+			break;
+		case "8s":
+			hatsSize = 4;
+			break;
+		case "15s":
+			hatsSize = 8;
+			break;
+		case "30s":
+			hatsSize = 16;
+			break;
+		case "60s":
+			hatsSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		hatsNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setFX(v) {
+	switch (v) {
+		case "Atonal":
+			fxTone = false;
+			break;
+		case "Tones":
+			fxTone = true;
+			break;
+		case "Robotizer":
+			fxHuman = false;
+			break;
+		case "Humanizer":
+			fxHuman = true;
+			break;
+		case "Acidlizer":
+			fxAcid = true;
+			break;
+		case "Normalizer":
+			fxAcid = false;
+			break;
+		case "2s":
+			fxSize = 1;
+			break;
+		case "4s":
+			fxSize = 2;
+			break;
+		case "8s":
+			fxSize = 4;
+			break;
+		case "15s":
+			fxSize = 8;
+			break;
+		case "30s":
+			fxSize = 16;
+			break;
+		case "60s":
+			fxSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		fxNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setCombo(v) {
+	switch (v) {
+		case "Combed":
+			comboOn = true;
+			break;
+		case "Not Combo":
+			comboOn = false;
+			break;
+	}
+	if (isNumber(v)) {
+		comboNotes = v;
+	}
+	setMeter();
+}
+
+function setShot(v) {
+	switch (v) {
+		case "Atonal":
+			shotTone = false;
+			break;
+		case "Tones":
+			shotTone = true;
+			break;
+		case "Robotizer":
+			shotHuman = false;
+			break;
+		case "Humanizer":
+			shotHuman = true;
+			break;
+		case "Acidlizer":
+			shotAcid = true;
+			break;
+		case "Normalizer":
+			shotAcid = false;
+			break;
+		case "2s":
+			shotSize = 1;
+			break;
+		case "4s":
+			shotSize = 2;
+			break;
+		case "8s":
+			shotSize = 4;
+			break;
+		case "15s":
+			shotSize = 8;
+			break;
+		case "30s":
+			shotSize = 16;
+			break;
+		case "60s":
+			shotSize = 32;
+			break;
+	}
+	if (isNumber(v)) {
+		shotNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setPerc(v) {
+	switch (v) {
+		case "Robotizer":
+			percHuman = false;
+			break;
+		case "Humanizer":
+			percHuman = true;
+			break;
+		case "Acidlizer":
+			percAcid = true;
+			break;
+		case "Normalizer":
+			percAcid = false;
+			break;
+		case "2s":
+			percSize = 1;
+			break;
+		case "4s":
+			percSize = 2;
+			break;
+		case "8s":
+			percSize = 4;
+			break;
+		case "15s":
+			percSize = 8;
+			break;
+		case "30s":
+			percSize = 16;
+			break;
+	}
+	if (isNumber(v)) {
+		percNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setLead(v) {
+	switch (v) {
+		case "Atonal":
+			leadTone = false;
+			break;
+		case "Tones":
+			leadTone = true;
+			break;
+		case "Robotizer":
+			leadHuman = false;
+			break;
+		case "Humanizer":
+			leadHuman = true;
+			break;
+		case "Acidlizer":
+			leadAcid = true;
+			break;
+		case "Normalizer":
+			leadAcid = false;
+			break;
+		case "2s":
+			leadSize = 1;
+			break;
+		case "4s":
+			leadSize = 2;
+			break;
+		case "8s":
+			leadSize = 4;
+			break;
+		case "15s":
+			leadSize = 8;
+			break;
+		case "30s":
+			leadSize = 16;
+			break;
+	}
+	if (isNumber(v)) {
+		leadNotes = note2Num(1, 16, v);
+	}
+	setMeter();
+}
+
+function setVocals(v) {
+	switch (v) {
+		case "Atonal":
+			vocalTone = false;
+			break;
+		case "Tones":
+			vocalTone = true;
+			break;
+		case "Robotizer":
+			vocalHuman = false;
+			break;
+		case "Humanizer":
+			vocalHuman = true;
+			break;
+		case "Acidlizer":
+			vocalAcid = true;
+			break;
+		case "Normalizer":
+			vocalAcid = false;
+			break;
+		case "2s":
+			vocalSize = 1;
+			break;
+		case "4s":
+			vocalSize = 2;
+			break;
+		case "8s":
+			vocalSize = 4;
+			break;
+		case "15s":
+			vocalSize = 8;
+			break;
+		case "30s":
+			vocalSize = 16;
+			break;
+	}
+	if (isNumber(v)) {
+		vocalNotes = note2Num(1, 8, v);
+	}
+	setMeter();
+}
+
+function setChannelLoadSynth(s) {
+	selectedTypeNewSynth = s;
+}
+
+function setNumSlices() {
+	var i = 0;
+	var o = 0;
+	if (intro) {
+		i = 1;
+	}
+	if (outro) {
+		o = 1;
+	}
+	sSlices = i + verseNum + breakNum + o;
+}
+
+function setChannelSequence() {
+	var i;
+
+
+	channelSequence.push("Kick");
+
+	channelSequence.push("Bass");
+
+	if (numSnares != 0) {
+		for (i = 0; i < numSnares; i++) {
+			channelSequence.push("Snare");
+		}
+	} else if (snareSteady && numSnares == 0) {
+		channelSequence.push("Snare");
+	}
+	if (numHats != 0) {
+		for (i = 0; i < numHats; i++) {
+			channelSequence.push("Hats");
+		}
+	} else if (hatsSteady && numHats == 0) {
+		channelSequence.push("Hats");
+	}
+	for (i = 0; i < numPercs; i++) {
+		channelSequence.push("Perc");
+	}
+	for (i = 0; i < numFXs; i++) {
+		channelSequence.push("FX");
+	}
+	for (i = 0; i < numShots; i++) {
+		channelSequence.push("Shot");
+	}
+	for (i = 0; i < numLeads; i++) {
+		channelSequence.push("Lead");
+	}
+	for (i = 0; i < numVocals; i++) {
+		channelSequence.push("Vocals");
+	}
+	for (i = 0; i < numPads; i++) {
+		channelSequence.push("Pad");
+	}
+	for (i = 0; i < numLoops; i++) {
+		channelSequence.push("Loop");
+	}
+	if (comboOn) {
+		channelSequence.push("Combo");
+	}
+	channelSeqCreated = true;
+	log(comboOn,channelSequence);
+}
+
+function setMeter() {
+
+	var meter = 0;
+	var med = 300;
+	if (kickCut) {
+		meter += 0.05;
+	}
+	if (kickNotes > 0) {
+		meter += (getLevel(kickSize) / med) * kickNotes;
+	}
+	if (bassNotes > 0) {
+		meter += (getLevel(bassSize) / med) * bassNotes;
+	}
+	if (bassLowEnd) {
+		meter += 0.05;
+	}
+	if (snareSteady) {
+		meter += 0.05;
+	}
+	if (hatsSteady) {
+		meter += 0.05;
+	}
+	if (snareNotes > 0) {
+		meter += ((getLevel(snareSize) / med) * snareNotes) * numSnares * 3;
+	}
+	if (hatsNotes > 0) {
+		meter += ((getLevel(hatsSize) / med) * hatsNotes) * numHats * 3;
+	}
+	if (fxNotes > 0) {
+		meter += ((getLevel(fxSize) / med) * fxNotes) * numFXs * 3;
+	}
+	if (comboNotes > 0) {
+		meter += comboNotes * 0.015;
+	}
+	if (shotNotes > 0) {
+		meter += ((getLevel(shotSize) / med) * shotNotes) * numShots * 3;
+	}
+	if (percNotes > 0) {
+		meter += ((getLevel(percSize) / med) * percNotes) * numPercs * 3;
+	}
+	if (leadNotes > 0) {
+		meter += ((getLevel(leadSize) / med) * leadNotes) * numLeads * 3;
+	}
+	if (vocalNotes > 0) {
+		meter += ((getLevel(vocalSize) / med) * vocalNotes) * numVocals * 3;
+	}
+	if (numPads > 0) {
+		meter += 0.025 * numPads;
+	}
+	if (numLoops > 0) {
+		meter += 0.05 * numLoops;
+	}
+	outlet(1, meter);
+}
+
+function setTotalTime() {
+	var totalTime = 0;
+	if (intro) {
+		totalTime += introSize;
+	}
+	if (outro) {
+		totalTime += outroSize;
+	}
+	if (verseNum > 0) {
+		totalTime += verseSize * verseNum;
+	}
+	if (breakNum > 0) {
+		totalTime += breakSize * breakNum;
+	}
+	if (breakLong) {
+		totalTime += breakSize;
+	}
+	if (dropSize) {
+		totalTime += dropSize * breakNum;
+	}
+	outlet(2, toHHMMSS(totalTime * 1.9));
+}
+
+function setFixedStructure() {
+	sSlicesArray = [];
+	createStructure();
+	sCreated = true;
+}
+
+function setPack(s) {
+	pack = s;
+}
+
+function setStyle(s) {
+	style = s;
+}
+
+function setPitch(v) {
+	switch (v) {
+		case "Normal Pitches":
+			lowerPitch = false;
+			break;
+		case "Lower Pitches":
+			lowerPitch = true;
+			break;
+	}
+}
+
+
+function getColor(name) {
+	var fcolor;
+	switch (name) {
+		case "SC":
+			fcolor = [123, 123, 123];
+			break;
+
+		case "Kick":
+			fcolor = [255, 0, 0];
+			break;
+
+		case "Kick cut":
+			fcolor = [243, 58, 23];
+			break;
+
+		case "Bass":
+			fcolor = [255, 163, 29];
+			break;
+
+		case "Lowend":
+			fcolor = [255, 161, 113];
+			break;
+
+		case "Snare":
+			fcolor = [255, 238, 158];
+			break;
+
+		case "Snare fixo":
+			fcolor = [255, 240, 47];
+			break;
+
+		case "Hats":
+			fcolor = [212, 229, 152];
+			break;
+
+		case "Hats fixo":
+			fcolor = [182, 209, 115];
+			break;
+
+		case "Perc":
+			fcolor = [203, 242, 249]
+			break;
+
+		case "FX":
+			fcolor = [0, 165, 239];
+			break;
+
+		case "Combo":
+			fcolor = [0, 165, 239];
+			break;
+
+		case "Shot":
+			fcolor = [83, 160, 49];
+			break;
+
+		case "Pad":
+			fcolor = [130, 107, 229];
+			break;
+
+		case "Loop":
+			fcolor = [255, 44, 211];
+			break;
+		case "Lead":
+			fcolor = [255, 255, 255];
+			break;
+
+		case "Vocals":
+			fcolor = [255, 145, 165];
+			break;
+	}
+	return fcolor;
+}
+
+function getNextFreeSlot(t) {
+
+	setCustomTrack(t);
+	var nScenes = liveSet.get("scenes").length / 2;
+	var clipCounter = 0;
+
+	for (var ns = 0; ns < nScenes; ns++) {
+		var path = "live_set tracks " + t + " clip_slots " + ns;
+		var sLot = new LiveAPI(path);
+		if (sLot.get("has_clip") == 1) {
+			clipCounter++
+		} else {
+			break;
+		}
+	}
+
+	return clipCounter;
+}
+
+function getTotalChannels() {
+	var a = new LiveAPI("live_set");
+	var t = a.get("tracks");
+	return t.length / 2;
+}
+
+function getTrackName(n) {
+	var a = new LiveAPI("live_set tracks " + n);
+	return a.get("name");
+}
+
+function getLevel(n) {
+	switch (n) {
+		case 1:
+			return 5;
+			break;
+		case 2:
+			return 4;
+			break;
+		case 4:
+			return 3;
+			break;
+		case 8:
+			return 2;
+			break;
+		case 16:
+			return 1;
+			break;
+	}
+}
+
 
 function loadDefaults(s) {
 	outlet(0, "loaddev Simpler");
@@ -2396,10 +2406,11 @@ function loadDevice(p) {
 	if (style == "all") {
 		selectedStyle = styleArray[randomInt(0, styleArray.length - 1)];
 	}
-	rselect = getSynth(s);
-	synth = selectedPack + selectedStyle + rselect;
+
 
 	if (p != "Combo") {
+		/*rselect = getSynthS(s);
+		synth = selectedPack + selectedStyle + rselect;
 		log("synth === " + p);
 		while (isInArray(synth, alreadySynths)) {
 			if (pack == "all" || p == "FX" || p == "Shot") {
@@ -2411,7 +2422,16 @@ function loadDevice(p) {
 
 			rselect = getSynth(s);
 			synth = selectedPack + selectedStyle + rselect;
+			}
+			*/
+
+		synth = getSynthS(s);
+
+		while (isInArray(synth, alreadySynths)) {
+			synth = getSynthS(s);
 		}
+		PHPUpdate(s.toLowerCase(), synth);
+
 	} else {
 		synth = "dubCombo0";
 	}
@@ -2443,202 +2463,9 @@ function loadNewSynth() {
 
 
 
-//--------------------------------------------------------------------
-// Clip class
- 
-function Clip(t,m) {
-  var path = "live_set tracks " + t + " clip_slots " + m + " clip";
-  this.liveObject = new LiveAPI(path);
-}
-  
-Clip.prototype.getLength = function() {
-  return this.liveObject.get('length');
-}
-  
-Clip.prototype._parseNoteData = function(data) {
-  var notes = [];
-  // data starts with "notes"/count and ends with "done" (which we ignore)
-  for(var i=2,len=data.length-1; i<len; i+=6) {
-    // and each note starts with "note" (which we ignore) and is 6 items in the list
-    var note = new Note(data[i+1], data[i+2], data[i+3], data[i+4], data[i+5]);
-    notes.push(note);
-  }
-  return notes;
-}
-  
-Clip.prototype.getSelectedNotes = function() {
-  var data = this.liveObject.call('get_selected_notes');
-  return this._parseNoteData(data);
-}
-  
-   
-Clip.prototype.getNotes = function(startTime, timeRange, startPitch, pitchRange) {
-  if(!startTime) startTime = 0;
-  if(!timeRange) timeRange = this.getLength();
-  if(!startPitch) startPitch = 0;
-  if(!pitchRange) pitchRange = 128;
-   
-  var data = this.liveObject.call("get_notes", startTime, startPitch, timeRange, pitchRange);
-  return this._parseNoteData(data);
-}
- 
-Clip.prototype._sendNotes = function(notes) {
-  var liveObject = this.liveObject;
-  liveObject.call("notes", notes.length);
-  notes.forEach(function(note) {
-    liveObject.call("note", note.getPitch(),
-                    note.getStart(), note.getDuration(),
-                    note.getVelocity(), note.getMuted());
-  });
-  liveObject.call('done');
-}
-  
-Clip.prototype.replaceSelectedNotes = function(notes) {
-  this.liveObject.call("replace_selected_notes");
-  this._sendNotes(notes);
-}
-  
-Clip.prototype.setNotes = function(notes) {
-  this.liveObject.call("set_notes");
-  this._sendNotes(notes);
-}
- 
-Clip.prototype.selectAllNotes = function() {
-  this.liveObject.call("select_all_notes");
-}
- 
-Clip.prototype.replaceAllNotes = function(notes) {
-  this.selectAllNotes();
-  this.replaceSelectedNotes(notes);
-}
 
 
 
-setNote("C");
-
-setMeter();
-
-setTotalTime();
-
-readJSON();
-
-
-
-function singleMidi(s) {
-	api = new LiveAPI("this_device");
-	liveView = new LiveAPI("live_app view");
-	liveSetView = new LiveAPI("live_set view");
-	liveSet = new LiveAPI("live_set");
-
-	liveView.call("focus_view", "Session");
-
-	var nextFeeeMidi = getNextFreeSlot(0);
-	var sizeSelected = 16;
-	if (s == "Kick") {
-		sizeSelected = kickSize;
-	}
-
-	if (s == "Snare") {
-		sizeSelected = snareSize;
-	}
-
-	if (s == "Hats") {
-		sizeSelected = hatsSize;
-	}
-
-	if (s == "Bass") {
-		sizeSelected = bassSize;
-	}
-
-	if (s == "FX") {
-		sizeSelected = fxSize;
-	}
-
-	createGroove(s);
-	createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
-	createNotes(0, nextFeeeMidi);
-
-	resetBang();
-}
-
-
-function singleChannel(s) {
-	api = new LiveAPI("this_device");
-	liveView = new LiveAPI("live_app view");
-	liveSetView = new LiveAPI("live_set view");
-	liveSet = new LiveAPI("live_set");
-	createScene(30);
-	if (sCreated) {
-		if (s == "Kick" && kickSC) {
-			channelBang("SC");
-		}
-
-		if (s == "Snare" && snareSteady && !snareSteadyReady) {
-			channelBang("Snare fixo");
-			snareSteadyReady = true;
-		}
-
-		if (s == "Hats" && hatsSteady && !hatsSteadyReady) {
-			channelBang("Hats fixo");
-			hatsSteadyReady = true;
-		}
-
-		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats") {
-			channelBang(s);
-		}
-
-
-		if (s == "Kick" && kickCut) {
-			channelBang("Kick cut");
-		}
-
-		if (s == "Bass" && bassLowEnd) {
-			channelBang("Lowend");
-		}
-
-
-	}
-}
-
-function channelBang(s) {
-
-	liveView.call("focus_view", "Session");
-
-	var nextTrack = getTotalChannels();
-	setCustomTrack(nextTrack); // seta a selectedTrack
-	createTrack(s); // cria um novo channel
-
-	trackView = new LiveAPI("live_set tracks " + Number(nextTrack) + " view");
-	trackView.set("is_collapsed", "1");
-
-	createCSequence(s); // cria sequencia do canal de midi timeline
-	createGroove(s); //cria groove
-
-	//loadDefaults(nextTrack);
-	loadDevice(s);
-	var nextFeeeMidi;
-
-	for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
-		for (var j = 0; j < channelSlices[i].steps / 16; j++) {
-			nextFeeeMidi = getNextFreeSlot(nextTrack);
-			if (channelSlices[i].steps % 16 == 0) {
-				finalSteps = 16;
-			} else {
-				finalSteps = channelSlices[i].steps;
-			}
-
-			createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, s, false); //sSlicesArray[i].slice
-
-			if (channelSlices[i].seq != "blank") {
-				createNotes(nextTrack, nextFeeeMidi);
-			}
-		}
-	}
-
-	setBuilderChannel();
-	resetBang();
-
-}
 
 function setTemplate(s) {
 	if (JSONLoaded) {
@@ -2650,6 +2477,44 @@ function setTemplate(s) {
 	}
 }
 
+
+
+
+
+
+
+
+function createScene(ns) {
+    var n = ns - ((liveSet.get("scenes").length) / 2);
+    for (var m = 0; m < n; m++) {
+        liveSet.call("create_scene", ((liveSet.get("scenes").length) / 2));
+    }
+}
+
+function createTrack(name) {
+    liveSet.call("create_midi_track", (liveSet.get("tracks").length / 2));
+    setTrackName((liveSet.get("tracks").length / 2) - 1, name);
+}
+
+function createTTrack(name) {
+    liveSet.call("create_audio_track", (liveSet.get("tracks").length / 2));
+    setTrackName((liveSet.get("tracks").length / 2) - 1, name);
+}
+
+function createClipCustom(t, c, s, fill, name, plus) {
+    setTrackClip(t, c);
+    sceneSlot.call("create_clip", "" + s * 4);
+    setSceneClip(t, c);
+    if (plus) {
+        sceneSlotClip.set("name", "New " + name);
+    }
+    var getcolor = getColor(name);
+    if (fill == "blank") {
+        setClipColor(t, c, [50, 50, 50]);
+    } else {
+        setClipColor(t, c, getcolor);
+    }
+}
 
 function randomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1) + min);
@@ -2709,7 +2574,6 @@ function addToChannelStructure(n, s) {
 }
 
 function isInArray(value, array) {
-	log(array.indexOf(value));
 	return array.indexOf(value) > -1;
 }
 
@@ -2865,17 +2729,24 @@ function getSynth(synth) {
 			break;
 		}
 	}
-	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
-	var indexSynth = randomInt(0, totalSynths - 1);
-	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
 	log("Style: " + _style);
 	log("Pack: " + _pack);
 	log("Synth: " + _synth);
+	var totalSynths = jsonData.synths[_style].packs[_pack].content[_synth].instruments.length;
+	var indexSynth = randomInt(0, totalSynths - 1);
+	var choosenSynth = jsonData.synths[_style].packs[_pack].content[_synth].instruments[indexSynth];
+	
 	log("Total Synths: " + totalSynths);
 	log("Index: " + indexSynth);
 	log("Choosen: " + choosenSynth);
 
 	return choosenSynth;
+}
+
+function getSynthS(synth) {
+	var arraySynth = this["ap" + synth.toLowerCase()];
+	return arraySynth[randomInt(0,arraySynth.length-1)];
+
 }
 
 function getKeys(keys, obj, path) {
@@ -2950,6 +2821,11 @@ function setfirstScene () {
 	__t.set("highlighted_clip_slot",l);
 }
 
+function getStats() {
+	getResponses();
+	log("Stats Loaded");
+}
+
 function setSelectors(v) {
 	//outlet(3,v);
 }
@@ -2959,50 +2835,289 @@ function setSelTemplate(a,v) {
 	//outlet(3,v);
 }
 
-function bang() {
-	api = new LiveAPI("this_device");
-	liveView = new LiveAPI("live_app view");
-	liveSetView = new LiveAPI("live_set view");
-	liveSet = new LiveAPI("live_set");
-	if (!buildFinish) {
-		//cria slices da estrutura
-		if (!sCreated) {
-			createStructure();
-			sCreated = true;
+function createStructure() {
+	var rand;
+	var vCounter = 0;
+	var bCounter = 0;
+	var kbMinibreak = 0;
+	for (var i = 0; i < sSlices; i++) {
+		//entra no Intro
+		if (i == 0 && intro == true) {
+			rand = introSize;
+			if (introMiniBreak) {
+				kbMinibreak = 4;
+			}
+			sSlicesArray.push({
+				slice: "intro",
+				steps: rand - kbMinibreak
+			});
+			if (introMiniBreak) {
+				sSlicesArray.push({
+					slice: "break",
+					steps: 4
+				});
+				sSlicesArray.push({
+					slice: "drop",
+					steps: dropSize
+				});
+			}
 		}
-		if (!channelSeqCreated) {
-			setChannelSequence();
-		}
+		//entra no verso
+		else if (i == 1) {
+			chanceOfBreak();
+			vCounter++;
+		} else if (i > 1 && i < sSlices - 1) {
+			if (vCounter < verseNum || bCounter < breakNum) {
 
-		createMusic(channelSequence[countBangs]);
+				var randin = randomInt(0, 1);
 
-		if (countBangs < channelSequence.length - 1) {
-			//if (countBangs < 1) {
-			countBangs++;
-			bang();
-		} else {
-			//sCreated = false;
-			buildFinish = true;
-			countBangs = 0;
-			alreadySynths = [];
+				var bHumanizer = 0;
+				if (breakHumanizer) {
+					bHumanizer  = randomInt(-1, 1)*2;
+				}
 
-			var muteT = new LiveAPI("live_set tracks 1");
-			muteT.set("mute", "1");
+				if (randin == 0) { // 0 escolhe break
+					if (bCounter < breakNum) // check se tem breaks avaliable
+					{
+						sSlicesArray.push({
+							slice: "break",
+							steps: breakSize + bHumanizer
+						});
+						log(breakSize + bHumanizer);
+						if (breakLong ) {
+							sSlicesArray.push({
+								slice: "break",
+								steps: breakSize
+							});
+							breakLong = false;
+						} 
+						sSlicesArray.push({
+							slice: "drop",
+							steps: dropSize
+						});
+						bCounter++;
+					} else {
+						chanceOfBreak();
+						vCounter++;
+					}
 
-			var builderT = new LiveAPI("live_set tracks 0 view");
-			builderT.set("is_collapsed", "1");
-
-
-			setfirstScene();
-			//sSlicesArray = [];
+				} else if (randin == 1) { // 1 escolhe verso
+					if (vCounter < verseNum ) // check se tem verses avaliable
+					{
+						chanceOfBreak();
+						vCounter++;
+					} else {
+						sSlicesArray.push({
+							slice: "break",
+							steps: breakSize + bHumanizer
+						});
+						sSlicesArray.push({
+							slice: "drop",
+							steps: dropSize
+						});
+						bCounter++;
+					}
+				}
+			}
+		} else if (i == sSlices - 1 && outro == true) { // último
+			rand = outroSize;
+			sSlicesArray.push({
+				slice: "outro",
+				steps: rand
+			});
 		}
 	}
 }
 
-function createMusic(s) {
-	// cria cada canal    
-	singleChannel(s);
+
+function singleMidi(s) {
+	api = new LiveAPI("this_device");
+	liveView = new LiveAPI("live_app view");
+	liveSetView = new LiveAPI("live_set view");
+	liveSet = new LiveAPI("live_set");
+
+	liveView.call("focus_view", "Session");
+
+	var nextFeeeMidi = getNextFreeSlot(0);
+	var sizeSelected = 16;
+	if (s == "Kick") {
+		sizeSelected = kickSize;
+	}
+
+	if (s == "Snare") {
+		sizeSelected = snareSize;
+	}
+
+	if (s == "Hats") {
+		sizeSelected = hatsSize;
+	}
+
+	if (s == "Bass") {
+		sizeSelected = bassSize;
+	}
+
+	if (s == "FX") {
+		sizeSelected = fxSize;
+	}
+
+	createGroove(s);
+	createClipCustom(0, nextFeeeMidi, 16, "filled", s, true);
+	createNotes(0, nextFeeeMidi);
+
+	resetBang();
 }
+
+
+function singleChannel(s) {
+	api = new LiveAPI("this_device");
+	liveView = new LiveAPI("live_app view");
+	liveSetView = new LiveAPI("live_set view");
+	liveSet = new LiveAPI("live_set");
+	createScene(30);
+	if (sCreated) {
+		if (s == "Kick" && kickSC) {
+			channelBang("SC");
+		}
+
+		if (s == "Snare" && snareSteady && !snareSteadyReady) {
+			channelBang("Snare fixo");
+			snareSteadyReady = true;
+		}
+
+		if (s == "Hats" && hatsSteady && !hatsSteadyReady) {
+			channelBang("Hats fixo");
+			hatsSteadyReady = true;
+		}
+
+		if (s == "Hats" && numHats > 0 || s == "Snare" && numSnares > 0 || s != "Snare" && s != "Hats" ) {
+			channelBang(s);
+		}
+
+
+		if (s == "Kick" && kickCut) {
+			channelBang("Kick cut");
+		}
+
+		if (s == "Bass" && bassLowEnd) {
+			channelBang("Lowend");
+		}
+
+		/*if(s=="FX" && comboOn) {
+			singleCombo = true;
+			comboOn = false;
+			channelBang("Combo");
+		}*/
+
+	}
+}
+
+function channelBang(s) {
+
+	liveView.call("focus_view", "Session");
+
+	var nextTrack = getTotalChannels();
+	setCustomTrack(nextTrack); // seta a selectedTrack
+	createTrack(s); // cria um novo channel
+
+	trackView = new LiveAPI("live_set tracks " + Number(nextTrack) + " view");
+	trackView.set("is_collapsed", "1");
+
+	createCSequence(s); // cria sequencia do canal de midi timeline
+	createGroove(s); //cria groove
+
+	//loadDefaults(nextTrack);
+	loadDevice(s);
+	var nextFeeeMidi;
+
+	for (var i = 0; i < channelSlices.length; i++) { // Sequencia de slices do canal
+		for (var j = 0; j < channelSlices[i].steps / 16; j++) {
+			nextFeeeMidi = getNextFreeSlot(nextTrack);
+			if (channelSlices[i].steps % 16 == 0) {
+				finalSteps = 16;
+			} else {
+				finalSteps = channelSlices[i].steps;
+			}
+
+			createClipCustom(nextTrack, nextFeeeMidi, finalSteps, channelSlices[i].seq, s, false); //sSlicesArray[i].slice
+
+			if (channelSlices[i].seq != "blank") {
+				createNotes(nextTrack, nextFeeeMidi);
+			}
+		}
+	}
+
+	setBuilderChannel();
+	resetBang();
+
+}
+
+setNote("C");
+
+setMeter();
+
+setTotalTime();
+
+readJSON();
+
+function PHPSelect(s) {
+
+	ajaxreqs = new XMLHttpRequest();
+	ajaxreqs.open("GET", "http://localhost:8888/connect.php?db=pack2&table=" + s + "&action=select");
+	ajaxreqs.onreadystatechange = readyPHP;
+	ajaxreqs.send("{}");
+}
+
+function PHPUpdate(table, synth) {
+	ajaxreqs = new XMLHttpRequest();
+	ajaxreqs.open("GET", "http://localhost:8888/connect.php?db=pack2&table=" + table + "&action=update&synth=" + synth);
+	ajaxreqs.onreadystatechange = generalResponse;
+	ajaxreqs.send("{}");
+}
+
+function generalResponse() {
+
+}
+
+
+function readyPHP() {
+	if (this.readyState == 4) {
+		// Get the data from the server's response
+		var phpData = this.responseText.split(",");
+		for (var i = 0; i < phpData.length; i++) {
+			if (phpData[i] != "" && i > 0) {
+				inSynthArray(phpData[0], phpData[i]);
+
+			}
+		}
+	}
+
+}
+
+
+function inSynthArray(a, v) {
+	this["ap" + a].push(v);
+}
+
+function getResponses() {
+	apbass = [];
+	apkick = [];
+	apkickcut = [];
+	aphats = [];
+	apfx = [];
+	aplead = [];
+	aploop = [];
+	aplowend = [];
+	appad = [];
+	apperc = [];
+	apshot = [];
+	apsnare = [];
+	apvocals = [];
+	for (var i = 0; i < arrayofTables.length; i++) {
+		PHPSelect(arrayofTables[i]);
+		log("Statistics loaded from " + arrayofTables[i]);
+	};
+}
+//getResponses();
 
 
 
